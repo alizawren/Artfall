@@ -6,6 +6,7 @@ body {
 }
 
 #header {
+    margin-top: 15px;
     text-align: center;
     color: #6da2e3;
 }
@@ -18,7 +19,7 @@ body {
 
 .sidebar {
     /*background-color: #bcb1d6;*/
-    background: linear-gradient(to bottom, #f9bbf7 0%, #bd99f4 100%);
+    background: linear-gradient(to bottom, #fce99f 0%, #ff8b9a 100%);
     border: 1px solid rgba(175, 31, 22, 0.3);
     border-radius: 10px;
     padding: 10px;
@@ -70,8 +71,8 @@ body {
 .choice {
     text-align: center;
     font-size: 18px;
-    background-color: #27a4dd;
-    border: 1px solid #2564a9;
+    background-color: #fffbf3;
+    border: 1px solid #f8a351;
     border-radius: 5px;
     cursor: pointer;
     margin: 5px 0px;
@@ -83,7 +84,6 @@ body {
 }
 
 #submit-button {
-    background-color: ;
     display: block;
     margin: auto;
     cursor: pointer;

@@ -14,6 +14,10 @@ const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orang
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
 const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
 
+var currentPlayer = 0;
+
+var currentSelectedChoice;
+
 function addClick(x, y, dragging) {
     //console.log('add click,' + x + ',' + y + ',' + dragging);
     clickX.push(x);
@@ -39,6 +43,17 @@ function clearCanvas() {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
 }
 
+function newGame() {
+    clearCanvas();
+    currentPlayer = 0;
+
+    // update "It's __'s turn!"
+    var currentPlayerText = document.getElementById('current-player');
+    currentPlayerText.innerHTML = players[currentPlayer];
+
+    context.strokeStyle = playerColors[0];
+}
+
 function redraw() {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
 
@@ -52,7 +67,7 @@ function redraw() {
         context.lineTo(clickX[i], clickY[i]);
         context.closePath();
 
-        context.lineWidth = 3;
+        context.lineWidth = 10;
         context.strokeStyle = clickColor[i];
 
         context.stroke();
@@ -73,13 +88,29 @@ function getMousePos(canvas, evt) {
 function selectChoice(choice) {
     var choiceButtons = document.getElementsByClassName('choice');
     var selectedChoiceButton = document.getElementById(choice);
+    if (selectedChoiceButton.classList.contains('selected-choice')) {
+        selectedChoiceButton.classList.remove('selected-choice');
+        currentSelectedChoice = null;
+        return;
+    }
 
     for (var button of choiceButtons) {
         if (button.classList.contains('selected-choice')) {
             button.classList.remove('selected-choice');
         }
     }
+    
     selectedChoiceButton.classList.add('selected-choice');
+    currentSelectedChoice = choice;
+}
+
+function nextPlayer() {
+    currentPlayer = (currentPlayer + 1) % numPlayers;
+    context.strokeStyle = playerColors[currentPlayer];
+
+    // update "It's __'s turn!"
+    var currentPlayerText = document.getElementById('current-player');
+    currentPlayerText.innerHTML = players[currentPlayer];
 }
 
 $(document).ready(function () {
@@ -89,20 +120,14 @@ $(document).ready(function () {
     if (canvas) {
         console.log("Canvas loaded.")
     }
-    var theWidth = canvas.offsetWidth;
-    var theHeight = canvas.offsetHeight;
+    // 16:9 ratio
     canvas.width = 1920;
     canvas.height = 1080;
     context = canvas.getContext('2d');
 
-    context.strokeStyle = "#df4b26";
-
-
+    context.strokeStyle = playerColors[0];
 
     $(canvas).mousedown(function (e) {
-        // var mouseX = e.pageX - $(canvas).offset().left;
-        // var mouseY = e.pageY - $(canvas).offset().top;
-
         var mouseX = getMousePos(canvas, e).x;
         var mouseY = getMousePos(canvas, e).y;
 
@@ -112,9 +137,6 @@ $(document).ready(function () {
     });
 
     $(canvas).mousemove(function (e) {
-        // var mouseX = e.pageX - $(canvas).offset().left;
-        // var mouseY = e.pageY - $(canvas).offset().top;
-
         var mouseX = getMousePos(canvas, e).x;
         var mouseY = getMousePos(canvas, e).y;
 
@@ -126,6 +148,7 @@ $(document).ready(function () {
 
     $(canvas).mouseup(function (e) {
         paint = false;
+        nextPlayer();
     });
 
     $(canvas).mouseleave(function (e) {
@@ -135,8 +158,8 @@ $(document).ready(function () {
     /* ========= Buttons ========== */
 
     // Clear button
-    var clearButton = document.getElementById('clear-button');
-    clearButton.onclick = clearCanvas;
+    var newGameButton = document.getElementById('new-game');
+    newGameButton.onclick = newGame;
 
     // Color buttons
     // const colors = { 'Blue': 'blue', 'Red': '#df4b26', 'Green': 'green' };
@@ -185,6 +208,10 @@ $(document).ready(function () {
         playerInfo.appendChild(playerText);
         playerDiv.appendChild(playerInfo);
     }
+
+    // update "It's __'s turn!"
+    var currentPlayerText = document.getElementById('current-player');
+    currentPlayerText.innerHTML = players[currentPlayer];
 
     /* ======== Choices ======== */
 
