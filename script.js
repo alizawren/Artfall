@@ -17,7 +17,7 @@ var itemIndex = Math.floor(Math.random() * choices.length);
 var item = choices[itemIndex];
 
 
-const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orange': '#ea7f1e', 'Teal': '#00b1b0' };
+//const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orange': '#ea7f1e', 'Teal': '#00b1b0' };
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
 const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
 
@@ -34,12 +34,27 @@ function addClick(x, y, dragging) {
 }
 
 // Button functions
-function getColor(colour) {
+function changeColor(colour) {
     context.strokeStyle = colour;
 }
 
-function getSize(size) {
+function changeSize(size) {
     context.lineWidth = size;
+}
+
+function eraseLastLine() {
+    var i = clickDrag.length - 1;
+    while (i >= 0) {
+        clickX.pop();
+        clickY.pop();
+        clickDrag.pop();
+        clickColor.pop();
+        i = clickDrag.length - 1;
+        if (!clickDrag[i]) {
+            break;
+        }
+    }
+    redraw();
 }
 
 function clearCanvas() {
@@ -76,7 +91,7 @@ function newGame() {
     else {
         instructionText.innerHTML = `You are the Art Thief!`;
     }
-    
+
 }
 
 function redraw() {
@@ -163,12 +178,14 @@ $(document).ready(function () {
     context.lineJoin = 'round';
 
     $(canvas).mousedown(function (e) {
+        if (e.which == 1) {
+            paint = true;
+            addClick(mouseX, mouseY, false);
+            redraw();
+        }
         var mouseX = getMousePos(canvas, e).x;
         var mouseY = getMousePos(canvas, e).y;
 
-        paint = true;
-        addClick(mouseX, mouseY, false);
-        redraw();
     });
 
     $(canvas).mousemove(function (e) {
@@ -182,8 +199,46 @@ $(document).ready(function () {
     });
 
     $(canvas).mouseup(function (e) {
-        paint = false;
-        nextPlayer();
+        if (e.which == 1) {
+            console.log(clickDrag);
+
+            var minimumLineLength = 5;
+            var tooShort = false;
+            for (var i = 1; i <= minimumLineLength; i++) {
+                if (!clickDrag[clickDrag.length - i]) {
+                    eraseLastLine();
+                    tooShort = true;
+                }
+            }
+            if (tooShort) {
+                var drawALine = document.createElement('div');
+                drawALine.classList.add('notice');
+                drawALine.innerHTML = 'Your line is too short.';
+                var xpos = e.pageX - canvas.offsetLeft;
+                var ypos = e.pageY - canvas.offsetTop;
+                drawALine.style.left = xpos + 'px';
+                drawALine.style.top = ypos + 'px';
+                drawALine.style.opacity = 0.9;
+
+                var contentDiv = document.getElementById('content');
+                contentDiv.appendChild(drawALine);
+
+                setTimeout(function () {
+                    var interval = setInterval(function () {
+                        if (drawALine.style.opacity <= 0) {
+                            clearInterval(interval);
+                            contentDiv.removeChild(drawALine);
+                        }
+                        drawALine.style.opacity -= 0.1;
+                    }, 50);
+                }, 1000);
+            }
+            else {
+                nextPlayer();
+            }
+            paint = false;
+        }
+
     });
 
     $(canvas).mouseleave(function (e) {
@@ -194,7 +249,7 @@ $(document).ready(function () {
 
     // Clear button
     var newGameButton = document.getElementById('new-game');
-    newGameButton.onclick = newGame;    
+    newGameButton.onclick = newGame;
 
     /* ======== PLAYERS ======== */
 

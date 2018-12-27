@@ -153,3 +153,13 @@ body {
 .bolded-player {
     font-weight: bold;
 }
+
+.notice {
+    opacity: 0.9;
+    background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
+    padding: 10px;
+    position: fixed;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: default;
+}
