@@ -1,11 +1,13 @@
 body {
     background-color: #42417a; 
-    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%);
+    font-family: 'Sarabun', sans-serif;
+    color: #353370;
 }
 
 #header {
     text-align: center;
-    color: #e3e8f1;
+    color: #6da2e3;
 }
 
 #content {
@@ -14,8 +16,13 @@ body {
     margin: auto;
 }
 
-#left-sidebar {
-    background-color: #bcb1d6;
+.sidebar {
+    /*background-color: #bcb1d6;*/
+    background: linear-gradient(to bottom, #f9bbf7 0%, #bd99f4 100%);
+    border: 1px solid rgba(175, 31, 22, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 2px 5px 2px rgba(0, 0, 0, 0.3);
 }
 
 #middle-area {
@@ -36,10 +43,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border: 1px solid black;
-    background: #FFF;
+    border: 1px solid rgba(175, 31, 22, 0.3);
+    background: linear-gradient(to bottom, #fff 60%,#c1c0c8 100%);
     cursor: pointer;
     display: block;
+    border-radius: 10px;
 }
 
 #settings { 
@@ -47,26 +55,50 @@ body {
     text-align: center;
 }
 
-#right-sidebar {
-    background-color: #bcb1d6;
-}
-
-.choice {
-    text-align: center;
-    font-size: 18px;
-    background-color: #6984b1;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-
-.color-button {
+/* .color-button {
     text-align: center;
     background-color: #d33f65;
-    border: 1px solid black;
+    border: thick solid black;
 }
 
 .size-button {
     text-align: center;
     background-color: #6984b1;
-    border: 1px solid black;
+    border: thick solid black;
+} */
+
+.choice {
+    text-align: center;
+    font-size: 18px;
+    background-color: #27a4dd;
+    border: 1px solid #2564a9;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px 0px;
+}
+
+.selected-choice {
+    background-color: #d4e7ff;
+    box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
+#submit-button {
+    background-color: ;
+    display: block;
+    margin: auto;
+    cursor: pointer;
+}
+
+.player-info {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.player-dot {
+    width: 20px;
+    height: 15px;
+    border-radius: 50%;
+    margin: 0px 5px;
 }
