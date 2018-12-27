@@ -6,7 +6,7 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Sarabun|Righteous" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
     <!-- <script src="client.js"></script>
@@ -15,29 +15,41 @@
 </head>
 
 <body>
-    <div id="header">
-        <h2>Artfall</h2>
+    <div id="title">
+        Artfall
     </div>
 
     <div id="content" class="container-fluid">
         <div class="row">
-            <div class="col-md-2" id="left-sidebar">
-                <div id="choice-list"></div>
+            <div class="col-md-2 sidebar" id="left-sidebar">
+                <h3>It's <span id="current-player"></span>'s turn!</h3>
+                <hr>
+
+                <h3><span id="instruction-text"></span></h3>
+                <hr>
+
+                <h3>Players</h3>
+                <div id="players"><!-- Script will add --></div>
+                <hr>
+
+                <h3>Vote</h3>
+                <div class="scroll" id="choice-list"><!-- Script will add --></div>
+                <button id="submit-button">Submit</button>
             </div>
             <div class="col-md-8" id="middle-area">
                 <div id="board-wrapper">
                     <canvas id="the-board"></canvas>
                 </div>
                 <div id="settings">
-                    <button id="clear-button">Clear</button>
-                    <div class="settings-row" id="color-button-row">Brush Colors
+                    <button id="new-game">New Game</button>
+                    <!-- <div class="settings-row" id="color-button-row">Brush Colors
                     </div>
 
                     <div class="settings-row" id="size-button-row">Brush Size
-                    </div>
+                    </div> -->
                 </div>
             </div>
-            <div class="col-md-2" id="right-sidebar">
+            <div class="col-md-2 sidebar" id="right-sidebar">
                 TEXT
             </div>
         </div>
