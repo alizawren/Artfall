@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+//!/usr/bin/env node
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 
@@ -25,7 +25,7 @@ function originIsAllowed(origin) {
   // put logic here to detect whether the specified origin is allowed.
   return true;
 }
-
+var numClients = 0;
 wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
@@ -35,8 +35,9 @@ wsServer.on('request', function(request) {
     }
 
     var connection = request.accept('echo-protocol', request.origin);
+    numClients++;
     console.log((new Date()) + ' Connection accepted.');
-    connection.on('message', function(message) {
+    connection.on('chat', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
             connection.sendUTF(message.utf8Data);
@@ -50,3 +51,30 @@ wsServer.on('request', function(request) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
+//
+// var express = require('express');
+// var http = require('http');
+// var app = express();
+// var httpServer = http.createServer(app);
+//
+// var io = require('socket.io')(httpServer);
+//
+// app.use(express.static('src'));
+//
+// httpServer.listen(3000, function() {
+//     console.log("Listening on port 3000");
+// });
+//
+// var numClients = 0;
+// io.on('connection', function(client) {
+//     console.log('Client', numClients++, 'connected.');
+//
+//     client.on('join', function(data) {
+//         console.log(data);
+//     });
+//
+//     client.on("chat", function(msg) {
+//         console.log(msg);
+//         client.broadcast.emit('chat msg', msg);
+//     })
+// });

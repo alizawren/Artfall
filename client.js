@@ -1,34 +1,35 @@
-//!/usr/bin/env node
-var WebSocketClient = require('websocket').client;
+var inputElem = null;// = document.querySelector('.chatMessage');
+var messages = null;// = document.querySelector('.messages');
 
-var client = new WebSocketClient();
-
-client.on('connectFailed', function(error) {
-    console.log('Connect Error: ' + error.toString());
+$( document ).ready(function() {
+  inputElem = document.getElementById('chatMessage');
+  messages = document.getElementById('messages')
+  console.log(inputElem);
 });
+const socket = io('http://localhost:8000');
 
-client.on('connect', function(connection) {
-    console.log('WebSocket Client Connected');
-    connection.on('error', function(error) {
-        console.log("Connection Error: " + error.toString());
-    });
-    connection.on('close', function() {
-        console.log('echo-protocol Connection Closed');
-    });
-    connection.on('message', function(message) {
-        if (message.type === 'utf8') {
-            console.log("Received: '" + message.utf8Data + "'");
-        }
-    });
+function createHTMLMessage(msg,source) {
+    console.log(msg);
+    var li = document.createElement("li");
+    var div = document.createElement("div");
+    div.innerHTML += msg;
+    div.className += "messageInstance " + source;
+    li.appendChild(div);
+    messages.appendChild(li);
+}
 
-    function sendNumber() {
-        if (connection.connected) {
-            var number = Math.round(Math.random() * 0xFFFFFF);
-            connection.sendUTF(number.toString());
-            setTimeout(sendNumber, 1000);
-        }
+inputElem.addEventListener('keypress', function(e) {
+    var key = e.which || e.keyCode;
+    if (key === 13) {
+        createHTMLMessage(inputElem.value, 'client');
+        socket.emit('chat', inputElem.value);
     }
-    sendNumber();
 });
 
-client.connect('ws://localhost:8080/', 'echo-protocol');
+socket.on('connect', function(data) {
+    socket.emit('join', 'Hello server from client');
+});
+
+socket.on('chat msg', function(msg) {
+    createHTMLMessage(msg, 'server');
+});
