@@ -11,7 +11,7 @@ var numPlayers = 4;
 const players = ['Sammy', 'Whammy', 'Grammy', 'Cammy'];
 
 // const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
-const choices = ['funny', 'lousy', 'careful', 'lazy', 'drunk', 'playing', 'escalator', 'weights', 'monalisa', 'murderer', 'drinker', 'bartender', 'lunar', 'tricking', 'looking', 'hurting', 'killing', 'discarding'];
+const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
 
 var itemIndex = Math.floor(Math.random() * choices.length);
 var item = choices[itemIndex];
