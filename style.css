@@ -3,8 +3,7 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-header {
-    display: block;
+#header {
     text-align: center;
     color: #e3e8f1;
 }
@@ -19,17 +18,18 @@ header {
     background-color: #bcb1d6;
 }
 
-#the-board {
+#middle-area {
     margin: auto;
     width: 90%;
     height: 100%;
 }
 
-#the-canvas {
+#the-board {
     width: 100%;
     height: 80%;
     border: 1px solid black;
     background: #FFF;
+    cursor: pointer;
     display: block;
 }
 
@@ -40,4 +40,24 @@ header {
 
 #right-sidebar {
     background-color: #bcb1d6;
+}
+
+.choice {
+    text-align: center;
+    font-size: 18px;
+    background-color: #6984b1;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.color-button {
+    text-align: center;
+    background-color: #d33f65;
+    border: 1px solid black;
+}
+
+.size-button {
+    text-align: center;
+    background-color: #6984b1;
+    border: 1px solid black;
 }
