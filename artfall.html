@@ -50,14 +50,29 @@
 
                     <div class="settings-row" id="size-button-row">Brush Size
                     </div> -->
+                    <button id="change-username-button">Change Username</button>
+                    
                 </div>
             </div>
             <div class="col-md-2 sidebar" id="right-sidebar">
-              <ul id="messages"></ul>
-              <input id="chatMessage" />
+                <h4>Chat</h4> 
+                <div class="scroll" id="messages"></div>
+                <div id="textbox">
+                    <input id="chatMessage" />
+                </div>
             </div>
         </div>
     </div>
+
+
+    <!-- Overlays -->
+    <div id="change-username-overlay">
+            <div id="change-username-overlay-content">
+                Change Username
+                <span id="change-username-overlay-close">X</span>
+                <input id="change-username-input" />
+            </div>
+        </div>
 
 </body>
 
