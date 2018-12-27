@@ -1,0 +1,16 @@
+{
+  "name": "artfall",
+  "version": "1.0.0",
+  "description": "Spyfall but with drawing app",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alissa and Luke Ren",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "websocket": "^1.0.28",
+    "ws": "^6.1.2"
+  }
+}
