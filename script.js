@@ -13,6 +13,10 @@ const players = ['Sammy', 'Whammy', 'Grammy', 'Cammy'];
 // const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
 const choices = ['funny', 'lousy', 'careful', 'lazy', 'drunk', 'playing', 'escalator', 'weights', 'monalisa', 'murderer', 'drinker', 'bartender', 'lunar', 'tricking', 'looking', 'hurting', 'killing', 'discarding'];
 
+var itemIndex = Math.floor(Math.random() * choices.length);
+var item = choices[itemIndex];
+
+
 const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orange': '#ea7f1e', 'Teal': '#00b1b0' };
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
 const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
@@ -59,6 +63,20 @@ function newGame() {
     playerTexts[currentPlayer].classList.add('bolded-player');
 
     context.strokeStyle = playerColors[0];
+
+    // choose a new item
+    itemIndex = Math.floor(Math.random() * choices.length);
+    item = choices[itemIndex];
+
+    // update instruction text
+    var instructionText = document.getElementById('instruction-text');
+    if (true) { // later replace with (not the art thief)
+        instructionText.innerHTML = `The word is "${item}."`;
+    }
+    else {
+        instructionText.innerHTML = `You are the Art Thief!`;
+    }
+    
 }
 
 function redraw() {
@@ -176,31 +194,7 @@ $(document).ready(function () {
 
     // Clear button
     var newGameButton = document.getElementById('new-game');
-    newGameButton.onclick = newGame;
-
-    // Color buttons
-    // const colors = { 'Blue': 'blue', 'Red': '#df4b26', 'Green': 'green' };
-    // var colorButtonRow = document.getElementById('color-button-row');
-    // for (const color in colors) {
-    //     var colorButton = document.createElement('button');
-    //     colorButton.classList.add('color-button');
-    //     colorButton.innerHTML = color;
-    //     colorButton.onclick = function () { getColor(colors[color]) };
-
-    //     colorButtonRow.appendChild(colorButton);
-    // }
-
-    // Size buttons
-    // const sizes = { 'Small': 2, 'Medium': 5, 'Large': 10, 'XL': 20 };
-    // var sizeButtonRow = document.getElementById('size-button-row');
-    // for (const size in sizes) {
-    //     var sizeButton = document.createElement('button');
-    //     sizeButton.classList.add('size-button');
-    //     sizeButton.innerHTML = size;
-    //     sizeButton.onclick = function () { getSize(sizes[size]) };
-
-    //     sizeButtonRow.appendChild(sizeButton);
-    // }
+    newGameButton.onclick = newGame;    
 
     /* ======== PLAYERS ======== */
 
