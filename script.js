@@ -22,6 +22,7 @@ const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
 const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
 
 var currentPlayer = 0;
+var currColor = 0;
 
 var currentSelectedChoice;
 
@@ -30,12 +31,12 @@ function addClick(x, y, dragging) {
     clickX.push(x);
     clickY.push(y);
     clickDrag.push(dragging);
-    clickColor.push(context.strokeStyle);
+    clickColor.push(currColor);
 }
 
 // Button functions
 function changeColor(colour) {
-    context.strokeStyle = colour;
+    currColor = colour;
 }
 
 function changeSize(size) {
@@ -43,17 +44,25 @@ function changeSize(size) {
 }
 
 function eraseLastLine() {
+    console.log(clickDrag.length);
+    console.log(clickColor.length);
     var i = clickDrag.length - 1;
     while (i >= 0) {
+        if (!clickDrag[i]) {
+            clickX.pop();
+            clickY.pop();
+            clickDrag.pop();
+            clickColor.pop();
+            break;
+        }
         clickX.pop();
         clickY.pop();
         clickDrag.pop();
         clickColor.pop();
         i = clickDrag.length - 1;
-        if (!clickDrag[i]) {
-            break;
-        }
     }
+    console.log(clickDrag);
+    console.log(clickColor);
     redraw();
 }
 
@@ -68,6 +77,7 @@ function clearCanvas() {
 function newGame() {
     clearCanvas();
     currentPlayer = 0;
+    currColor = playerColors[currentPlayer];
 
     // update "It's __'s turn!"
     var currentPlayerText = document.getElementById('current-player');
@@ -146,7 +156,8 @@ function selectChoice(choice) {
 
 function nextPlayer() {
     currentPlayer = (currentPlayer + 1) % numPlayers;
-    context.strokeStyle = playerColors[currentPlayer];
+    currColor = playerColors[currentPlayer];
+    console.log('stroke style is now: ' + currColor)
 
     // update "It's __'s turn!"
     var currentPlayerText = document.getElementById('current-player');
@@ -173,7 +184,7 @@ $(document).ready(function () {
     canvas.height = 1080;
     context = canvas.getContext('2d');
 
-    context.strokeStyle = playerColors[0];
+    context.strokeStyle = currColor;
     context.lineCap = 'round';
     context.lineJoin = 'round';
 
@@ -200,7 +211,6 @@ $(document).ready(function () {
 
     $(canvas).mouseup(function (e) {
         if (e.which == 1) {
-            console.log(clickDrag);
 
             var minimumLineLength = 5;
             var tooShort = false;
@@ -234,6 +244,7 @@ $(document).ready(function () {
                 }, 1000);
             }
             else {
+                console.log('next player')
                 nextPlayer();
             }
             paint = false;
@@ -294,10 +305,6 @@ $(document).ready(function () {
 
 $(window).resize(function () {
     if (canvas) {
-        var theWidth = canvas.offsetWidth;
-        var theHeight = canvas.offsetHeight;
-        //canvas.width = theWidth;
-        //canvas.height = theHeight;
         redraw();
     }
 });
