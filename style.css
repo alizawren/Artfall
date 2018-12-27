@@ -1,0 +1,43 @@
+body {
+    background-color: #42417a; 
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    display: block;
+    text-align: center;
+    color: #e3e8f1;
+}
+
+#content {
+    width: 90%;
+    height: 600px;
+    margin: auto;
+}
+
+#left-sidebar {
+    background-color: #bcb1d6;
+}
+
+#the-board {
+    margin: auto;
+    width: 90%;
+    height: 100%;
+}
+
+#the-canvas {
+    width: 100%;
+    height: 80%;
+    border: 1px solid black;
+    background: #FFF;
+    display: block;
+}
+
+#settings { 
+    height: 20%;
+    text-align: center;
+}
+
+#right-sidebar {
+    background-color: #bcb1d6;
+}
