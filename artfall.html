@@ -1,9 +1,46 @@
 <html>
-    <head>
-        <script src="script.js"></script>
-        <link rel="stylesheet" href="styles.css"></style>
-    </head>
-    <body>
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    </style>
+</head>
+
+<body>
+    <div id="header">
         <h2>Artfall</h2>
-    </body>
+    </div>
+
+    <div id="content" class="container-fluid">
+        <div class="row">
+            <div class="col-md-2" id="left-sidebar">
+                <div id="choice-list"></div>
+            </div>
+            <div class="col-md-8" id="middle-area">
+                <div id="board-wrapper">
+                    <canvas id="the-board"></canvas>
+                </div>
+                <div id="settings">
+                    <button id="clear-button">Clear</button>
+                    <div class="settings-row" id="color-button-row">Brush Colors
+                    </div>
+
+                    <div class="settings-row" id="size-button-row">Brush Size
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" id="right-sidebar">
+                TEXT
+            </div>
+        </div>
+    </div>
+
+</body>
+
 </html>
