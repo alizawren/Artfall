@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "fs": "0.0.1-security",
+    "body-parser": "^1.18.3",
     "websocket": "^1.0.28",
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0",
     "ws": "^6.1.2"
   }
 }
