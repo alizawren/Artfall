@@ -10,6 +10,9 @@ var paint;
 var numPlayers = 4;
 const players = ['Sammy', 'Whammy', 'Grammy', 'Cammy'];
 
+// const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
+const choices = ['funny', 'lousy', 'careful', 'lazy', 'drunk', 'playing', 'escalator', 'weights', 'monalisa', 'murderer', 'drinker', 'bartender', 'lunar', 'tricking', 'looking', 'hurting', 'killing', 'discarding'];
+
 const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orange': '#ea7f1e', 'Teal': '#00b1b0' };
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
 const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
@@ -50,6 +53,10 @@ function newGame() {
     // update "It's __'s turn!"
     var currentPlayerText = document.getElementById('current-player');
     currentPlayerText.innerHTML = players[currentPlayer];
+
+    // update bold text
+    var playerTexts = document.getElementsByClassName('player-info');
+    playerTexts[currentPlayer].classList.add('bolded-player');
 
     context.strokeStyle = playerColors[0];
 }
@@ -99,7 +106,7 @@ function selectChoice(choice) {
             button.classList.remove('selected-choice');
         }
     }
-    
+
     selectedChoiceButton.classList.add('selected-choice');
     currentSelectedChoice = choice;
 }
@@ -111,6 +118,14 @@ function nextPlayer() {
     // update "It's __'s turn!"
     var currentPlayerText = document.getElementById('current-player');
     currentPlayerText.innerHTML = players[currentPlayer];
+
+    var playerTexts = document.getElementsByClassName('player-info');
+    for (var player of playerTexts) {
+        if (player.classList.contains('bolded-player')) {
+            player.classList.remove('bolded-player');
+        }
+    }
+    playerTexts[currentPlayer].classList.add('bolded-player');
 }
 
 $(document).ready(function () {
@@ -126,6 +141,8 @@ $(document).ready(function () {
     context = canvas.getContext('2d');
 
     context.strokeStyle = playerColors[0];
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
 
     $(canvas).mousedown(function (e) {
         var mouseX = getMousePos(canvas, e).x;
@@ -209,17 +226,10 @@ $(document).ready(function () {
         playerDiv.appendChild(playerInfo);
     }
 
-    // update "It's __'s turn!"
-    var currentPlayerText = document.getElementById('current-player');
-    currentPlayerText.innerHTML = players[currentPlayer];
-
     /* ======== Choices ======== */
 
-    items = ['apple', 'pear', 'orange'];
-
     var choiceList = document.getElementById('choice-list');
-
-    for (const item of items) {
+    for (const item of choices) {
         var choiceButton = document.createElement('div');
         choiceButton.classList.add('choice');
         choiceButton.id = item;
@@ -228,6 +238,9 @@ $(document).ready(function () {
 
         choiceList.appendChild(choiceButton);
     }
+
+    /* ======== New game ========= */
+    newGame();
 });
 
 $(window).resize(function () {

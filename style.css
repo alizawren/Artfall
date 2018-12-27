@@ -1,6 +1,7 @@
 body {
     background-color: #42417a; 
-    background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%);
+    background: linear-gradient(to bottom, #bbf1f9 0%, #9fc2ed 80%, #6da2e3 100%);
+    /* background: linear-gradient(to bottom, #403d59 0%, #27233f 100%); */
     font-family: 'Sarabun', sans-serif;
     color: #353370;
 }
@@ -8,7 +9,15 @@ body {
 #header {
     margin-top: 15px;
     text-align: center;
-    color: #6da2e3;
+    color: #ff9921;
+    text-shadow: -1px 0 #e98e23, 0 1px #e98e23, 1px 0 #e98e23, 0 -1px #e98e23;
+
+    /* background: -webkit-linear-gradient(#8b6eab , #d4bcdc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+    text-shadow: 0px 2px 4px #6da2e3; 
+    font-size: 3em;
+    font-family: 'Righteous', sans-serif;
 }
 
 #content {
@@ -20,6 +29,7 @@ body {
 .sidebar {
     /*background-color: #bcb1d6;*/
     background: linear-gradient(to bottom, #fce99f 0%, #ff8b9a 100%);
+    /* background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%); */
     border: 1px solid rgba(175, 31, 22, 0.3);
     border-radius: 10px;
     padding: 10px;
@@ -68,11 +78,48 @@ body {
     border: thick solid black;
 } */
 
+/* width */
+.scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.scroll::-webkit-scrollbar-track {
+    background: rgba(255, 247, 217, 0.5);
+    border: 1px solid rgba(175, 31, 22, 0.1);
+    
+    border-radius: 3px;
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb {
+    background: #f1646c;
+    border-radius: 3px;
+}
+
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover {
+    background: #e63d53;
+}
+
+
+#choice-list {
+    width: 100%;
+    height: 190px;
+    overflow-y: scroll;
+    background: linear-gradient(to bottom, #fce8c9 30%,#feb1c7 100%);
+    padding: 5px;
+    border: 1px solid rgba(175, 31, 22, 0.3);
+    border-radius: 5px;
+    box-shadow: inset -1px -1px 2px #933193;
+}
+
 .choice {
     text-align: center;
     font-size: 18px;
     background-color: #fffbf3;
     border: 1px solid #f8a351;
+    
     border-radius: 5px;
     cursor: pointer;
     margin: 5px 0px;
@@ -101,4 +148,8 @@ body {
     height: 15px;
     border-radius: 50%;
     margin: 0px 5px;
+}
+
+.bolded-player {
+    font-weight: bold;
 }
