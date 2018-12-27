@@ -1,27 +1,91 @@
+var canvas = null;
+var context = null;
+
+var clickX = [];
+var clickY = [];
+var clickDrag = [];
+var clickColor = [];
+var paint;
+
+function addClick(x, y, dragging) {
+    //console.log('add click,' + x + ',' + y + ',' + dragging);
+    clickX.push(x);
+    clickY.push(y);
+    clickDrag.push(dragging);
+    clickColor.push(context.strokeStyle);
+}
+
+// Button functions
+function getColor(colour) {
+    context.strokeStyle = colour;
+}
+
+function getSize(size) {
+    context.lineWidth = size;
+}
+
+function clearCanvas() {
+    clickColor = [];
+    clickDrag = [];
+    clickX = [];
+    clickY = [];
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+}
+
+function redraw() {
+    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+
+    for (var i = 0; i < clickX.length; i++) {
+        context.beginPath();
+        if (clickDrag[i] && i) {
+            context.moveTo(clickX[i - 1], clickY[i - 1]);
+        } else {
+            context.moveTo(clickX[i] - 1, clickY[i]);
+        }
+        context.lineTo(clickX[i], clickY[i]);
+        context.closePath();
+
+        context.lineWidth = 3;
+        context.strokeStyle = clickColor[i];
+
+        context.stroke();
+    }
+}
+
+function  getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect(), // abs. size of element
+        scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
+        scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
+  
+    return {
+      x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
+      y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+    }
+  }
+
 $(document).ready(function () {
 
     /* ======== CANVAS ======== */
-
-    var canvas = document.getElementById('the-board');
+    canvas = document.getElementById('the-board');
     if (canvas) {
         console.log("Canvas loaded.")
     }
-    var context = canvas.getContext('2d');
-
-    var clickX = [];
-    var clickY = [];
-    var clickDrag = [];
-    var clickColor = [];
-    var paint;
+    var theWidth = canvas.offsetWidth;
+    var theHeight = canvas.offsetHeight;
+    canvas.width = 1920;
+    canvas.height = 1080;
+    context = canvas.getContext('2d');
 
     context.strokeStyle = "#df4b26";
-    context.lineJoin = "round";
-    context.lineCap = 'round';
-    context.lineWidth = 3;
+
+    
 
     $(canvas).mousedown(function (e) {
-        var mouseX = e.pageX - this.offsetLeft;
-        var mouseY = e.pageY - this.offsetTop;
+        // var mouseX = e.pageX - $(canvas).offset().left;
+        // var mouseY = e.pageY - $(canvas).offset().top;
+
+        var mouseX = getMousePos(canvas, e).x;
+        var mouseY = getMousePos(canvas, e).y;
 
         paint = true;
         addClick(mouseX, mouseY, false);
@@ -29,8 +93,13 @@ $(document).ready(function () {
     });
 
     $(canvas).mousemove(function (e) {
-        var mouseX = e.pageX - this.offsetLeft;
-        var mouseY = e.pageY - this.offsetTop;
+        // var mouseX = e.pageX - $(canvas).offset().left;
+        // var mouseY = e.pageY - $(canvas).offset().top;
+
+        var mouseX = getMousePos(canvas, e).x;
+        var mouseY = getMousePos(canvas, e).y;
+
+        console.log(mouseX+','+mouseY)
 
         if (paint) {
             addClick(mouseX, mouseY, true);
@@ -46,53 +115,6 @@ $(document).ready(function () {
         paint = false;
     });
 
-    function addClick(x, y, dragging) {
-        //console.log('add click,' + x + ',' + y + ',' + dragging);
-        clickX.push(x);
-        clickY.push(y);
-        clickDrag.push(dragging);
-        clickColor.push(context.strokeStyle);
-    }
-
-    function redraw() {
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-
-        for (var i = 0; i < clickX.length; i++) {
-            context.beginPath();
-            if (clickDrag[i] && i) {
-                context.moveTo(clickX[i - 1], clickY[i - 1]);
-            } else {
-                context.moveTo(clickX[i] - 1, clickY[i]);
-            }
-
-            context.moveTo(clickX[i - 1], clickY[i - 1]);
-            context.lineTo(clickX[i], clickY[i]);
-            context.closePath();
-            context.stroke();
-        }
-    }
-
-    // Button functions
-    function getColor(colour) {
-        context.strokeStyle = colour;
-    }
-
-    function getSize(size) {
-        context.lineWidth = size;
-    }
-
-    function clearCanvas() {
-        clickColor = [];
-        clickDrag = [];
-        clickX = [];
-        clickY = [];
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-    }
-
-
-    
-
-
     /* ========= Buttons ========== */
 
     // Clear button
@@ -100,7 +122,7 @@ $(document).ready(function () {
     clearButton.onclick = clearCanvas;
 
     // Color buttons
-    const colors = { 'Blue': 'blue', 'Red': 'red', 'Green': 'green' };
+    const colors = { 'Blue': 'blue', 'Red': '#df4b26', 'Green': 'green' };
     var colorButtonRow = document.getElementById('color-button-row');
     for (const color in colors) {
         var colorButton = document.createElement('button');
@@ -125,7 +147,6 @@ $(document).ready(function () {
 
     /* ======== GAME ======== */
 
-
     items = ['apple', 'pear', 'orange'];
 
     var choiceList = document.getElementById('choice-list');
@@ -136,5 +157,15 @@ $(document).ready(function () {
         itemDiv.innerHTML = item;
 
         choiceList.appendChild(itemDiv);
+    }
+});
+
+$(window).resize(function () {
+    if (canvas) {
+        var theWidth = canvas.offsetWidth;
+        var theHeight = canvas.offsetHeight;
+        //canvas.width = theWidth;
+        //canvas.height = theHeight;
+        redraw();
     }
 });
