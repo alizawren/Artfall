@@ -65,11 +65,12 @@ socket.on('client connect msg', function (username) {
     clientUsername = username;
     console.log(clientUsername);
     createHTMLMessage(`You have entered the chatroom as ${clientUsername}.`, 'info');
-
+    addPlayer(username);
 });
 
 socket.on('connect msg', function (username) {
     createHTMLMessage(`${username} has entered the chatroom.`, 'info');
+    addPlayer(username);
 });
 
 socket.on('chat msg', function (msg, source, username) {

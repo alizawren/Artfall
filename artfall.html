@@ -8,6 +8,7 @@
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Sarabun|Righteous" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="gameScript.js"></script>
     <script src="script.js"></script>
 
     <!-- <script src="client.js"></script>
@@ -25,23 +26,28 @@
     <div id="content" class="container-fluid">
         <div class="row">
             <div class="sidebar" id="left-sidebar">
-                <h4>It's <span id="current-player"></span>'s turn!</h4>
+                <!-- <h4>It's <span id="current-player"></span>'s turn!</h4>
                 <hr>
 
                 <h4><span id="instruction-text"></span></h4>
                 <hr>
 
                 <h4>Players</h4>
-                <div id="players"><!-- Script will add --></div>
+                <div id="players"></div>
                 <hr>
 
                 <h4>Vote</h4>
-                <div class="scroll" id="choice-list"><!-- Script will add --></div>
-                <button id="submit-button">Submit</button>
+                <div class="scroll" id="choice-list"></div>
+                <button id="submit-button">Submit</button> -->
             </div>
             <div id="middle-area">
                 <div id="board-wrapper">
                     <canvas id="the-board"></canvas>
+                    <div id="board-overlay">
+                        <div id="board-overlay-content">
+                            <button id="start-game">Start Game</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="settings">
                     <button id="new-game">New Game</button>
