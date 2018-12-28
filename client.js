@@ -27,6 +27,7 @@ $(document).ready(function () {
     messages = document.getElementById('messages')
 
     chatInput.addEventListener('keypress', function (e) {
+        // socket.emit('typing');
         var key = e.which || e.keyCode;
         if (key === 13) {
             createHTMLMessage(chatInput.value, 'client'); // Create a message from the client
@@ -61,16 +62,18 @@ socket.on('connect', function () {
     socket.emit('join', 'Hello server from client');
 })
 
-socket.on('connect msg', function () {
-    let name = 'Sammy';
-    createHTMLMessage(`${name} has entered the chatroom.`, 'info');
+socket.on('connect msg', function (username) {
+    createHTMLMessage(`${username} has entered the chatroom.`, 'info');
 });
 
 socket.on('chat msg', function (msg, source) {
     createHTMLMessage(msg, source); // Create a message from the server
 });
 
-socket.on('disconnect msg', function () {
-    let name = 'Sammy';
-    createHTMLMessage(`${name} has left the chatroom.`, 'info');
+socket.on('disconnect msg', function (username) {
+    createHTMLMessage(`${username} has left the chatroom.`, 'info');
 })
+
+// socket.on('typing', (data) => {
+//     createHTMLMessage(`${username} is typing.`, 'info');
+// })

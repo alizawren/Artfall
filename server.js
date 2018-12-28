@@ -17,6 +17,7 @@ var numclientSockets = 0;
 io.on('connection', function(clientSocket) {
     console.log('clientSocket', numclientSockets++, 'connected.');
     clientSocket.username = 'Anonymous';
+    clientSocket.broadcast.emit('connect msg', clientSocket.username);
 
     clientSocket.on('change username', (data) => {
         clientSocket.username = data.username;
@@ -32,14 +33,17 @@ io.on('connection', function(clientSocket) {
     // clientSocket.on('leave', function() {
     //     console.log('left')
     // })
+    // clientsocket.on('typing', (data) => {
+
+    // });
 
     clientSocket.on('connect', function() {
-        clientSocket.broadcast.emit('connect msg');
+        // clientSocket.broadcast.emit('connect msg', clientSocket.username);
     })
 
     clientSocket.on('disconnect', function () {
         numclientSockets--;
-        clientSocket.broadcast.emit('disconnect msg');
+        clientSocket.broadcast.emit('disconnect msg', clientSocket.username);
     })
 
     clientSocket.on("chat", function(msg, source) { // When receiving a message from a client
