@@ -105,17 +105,47 @@ function newGame() {
     }
 
     /* ======== Choices ======== */
-
+    var clickedChoice = null;
     var choiceList = document.getElementById('choice-list');
     for (const item of choices) {
         var choiceButton = document.createElement('div');
         choiceButton.classList.add('choice');
         choiceButton.id = item;
         choiceButton.innerHTML = item;
-        choiceButton.onclick = function () { selectChoice(item) };
+        choiceButton.onclick = function () {
+          clickedChoice = item;
+          selectChoice(item);
+        };
 
         choiceList.appendChild(choiceButton);
     }
+
+    /* ===== Submit button ====== */
+    var leftSideBar = document.getElementById('left-sidebar');
+    var bar = document.createElement('hr');
+    var errorText = document.createElement('h4');
+    leftSideBar.appendChild(bar);
+    leftSideBar.appendChild(errorText);
+
+    var submitButton = document.getElementById('submit-button');
+    submitButton.onclick = function () {
+      if(clickedChoice != null){
+        submitVote(clickedChoice);
+      } else{
+        errorText.innerHTML = 'Pick a choice';
+      }
+    };
+
+}
+
+function submitVote(itemChoice){
+
+  if(isArtThief){
+    //decide whether the choice is incorrect or correct
+    //send to server that game ends
+  } else{
+    //send to server what the vote is /whether or not the game is over
+  }
 
 }
 
@@ -282,7 +312,7 @@ $(document).ready(function () {
     var newGameButton = document.getElementById('new-game');
     newGameButton.onclick = newGame;
 
-    
+
 
     /* ======== New game ========= */
     backToMenu();
