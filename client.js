@@ -3,7 +3,9 @@ var messages = null;// = document.querySelector('.messages');
 var changeUsername = null;
 var changeUsernameOverlay = null;
 
-function createHTMLMessage(msg, source) {
+var clientUsername = 'Anonymous';
+
+function createHTMLMessage(msg, source, username = '') {
     var li = document.createElement("li");
     var div = document.createElement("div");
     if (source == 'info') {
@@ -11,15 +13,16 @@ function createHTMLMessage(msg, source) {
         div.className += "messageInstance " + source;
     }
     else if (source == 'client') {
-        div.innerHTML = "You: " + msg;
+        div.innerHTML = clientUsername + ": " + msg;
         div.className += "messageInstance " + source;
     }
     else {
-        div.innerHTML = source + ": " + msg;
-        div.className += "messageInstance " + 'server';
+        div.innerHTML = username + ": " + msg;
+        div.className += "messageInstance " + source;
     }
     li.appendChild(div);
     messages.appendChild(li);
+    messages.scrollTop = messages.scrollHeight;
 }
 
 $(document).ready(function () {
@@ -48,26 +51,29 @@ $(document).ready(function () {
     changeUsernameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
         if (key === 13) {
-            let name = 'Sammy';
-            createHTMLMessage(`${name} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for client side
-            socket.emit('chat', `${name} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for server
-            socket.emit('change username', {username: changeUsernameInput.value}); // change username
+            createHTMLMessage(`${clientUsername} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for client side
+            socket.emit('chat', `${clientUsername} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for server
+            clientUsername = changeUsernameInput.value; // change username on client side
+            socket.emit('change username', { username: changeUsernameInput.value }); // change username on server side
             changeUsernameOverlay.style.display = 'none';
         }
     });
 });
 const socket = io('http://localhost:3000');
 
-socket.on('connect', function () {
-    socket.emit('join', 'Hello server from client');
-})
+socket.on('client connect msg', function (username) {
+    clientUsername = username;
+    console.log(clientUsername);
+    createHTMLMessage(`You have entered the chatroom as ${clientUsername}.`, 'info');
+
+});
 
 socket.on('connect msg', function (username) {
     createHTMLMessage(`${username} has entered the chatroom.`, 'info');
 });
 
-socket.on('chat msg', function (msg, source) {
-    createHTMLMessage(msg, source); // Create a message from the server
+socket.on('chat msg', function (msg, source, username) {
+    createHTMLMessage(msg, source, username); // Create a message from the server
 });
 
 socket.on('disconnect msg', function (username) {
