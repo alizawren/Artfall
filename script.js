@@ -8,86 +8,10 @@ $(document).ready(function () {
     leftSidebar = document.getElementById("left-sidebar");
     startButton = document.getElementById("start-game");
     boardOverlay = document.getElementById("board-overlay");
-    startButton.onclick = startGame;
+    startButton.onclick = startGameInServer;
 
     setLeftSidebarMenu();
 })
-
-function startGame() {
-    gameStarted = true;
-    setLeftSidebarGame();
-    boardOverlay.style.display = 'none';
-    newGame();
-}
-
-function addPlayer(username) {
-    if (!gameStarted) {
-        numPlayers++;
-        players.push(username);
-
-        var playerDiv = document.getElementById('players');
-
-        var playerInfo = document.createElement('span');
-        playerInfo.classList.add('player-info');
-
-        // player dot
-        var playerDotWrapper = document.createElement('span');
-        var playerDot = document.createElement('div');
-        playerDot.classList.add('player-dot');
-        playerDot.style.backgroundColor = playerColors[numPlayers - 1];
-        playerDot.style.border = `1px solid ${playerColorOutlines[numPlayers - 1]}`;
-        playerDotWrapper.appendChild(playerDot);
-
-        // player text
-        var playerText = document.createElement('span');
-        playerText.innerHTML = username;
-
-        playerInfo.appendChild(playerDotWrapper);
-        playerInfo.appendChild(playerText);
-        playerDiv.appendChild(playerInfo);
-    }
-    else {
-        audience.push(username);
-
-        var audienceDiv = document.getElementById('audience');
-
-        var playerInfo = document.createElement('span');
-        playerInfo.classList.add('player-info');
-
-        // player dot
-        var playerDotWrapper = document.createElement('span');
-        var playerDot = document.createElement('div');
-        playerDot.classList.add('player-dot');
-        playerDot.style.backgroundColor = playerColors[numPlayers - 1];
-        playerDot.style.border = `1px solid ${playerColorOutlines[numPlayers - 1]}`;
-        playerDotWrapper.appendChild(playerDot);
-
-        // player text
-        var playerText = document.createElement('span');
-        playerText.innerHTML = username;
-
-        playerInfo.appendChild(playerDotWrapper);
-        playerInfo.appendChild(playerText);
-        audienceDiv.appendChild(playerInfo);
-    }
-}
-
-function removePlayer(username) {
-    for (var i = 0; i < players.length; i++) {
-        if (players[i] === username) {
-            players.splice(i, 1);
-            numPlayers--;
-            newGame();
-            return;
-        }
-    }
-    for (var i = 0; i < audience.length; i++) {
-        if (audience[i] === username) {
-            audience.splice(i, 1);
-            return;
-        }
-    }
-}
 
 function setUsersDiv() {
     var playerDiv = document.getElementById('players');
@@ -129,7 +53,7 @@ function setUsersDiv() {
 
         // player text
         var playerText = document.createElement('span');
-        playerText.innerHTML = players[i];
+        playerText.innerHTML = audience[i].username;
 
         playerInfo.appendChild(playerDotWrapper);
         playerInfo.appendChild(playerText);
@@ -161,4 +85,11 @@ function setLeftSidebarMenu() {
 
     $(leftSidebar).append(playerText);
     $(leftSidebar).append(audienceText);
+}
+
+function setMiddleAreaMenu() {
+    boardOverlay.style.display = 'block';
+    boardOverlay.style.opacity = 1;
+    var boardOverlayContent = document.getElementById("board-overlay-content");
+    boardOverlayContent.style.display = 'block';
 }

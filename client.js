@@ -1,9 +1,11 @@
+const socket = io('http://localhost:3000');
+
 var chatInput = null;// = document.querySelector('.chatMessage');
 var messages = null;// = document.querySelector('.messages');
 var changeUsername = null;
 var changeUsernameOverlay = null;
 
-var clientUsername = 'Anonymous';
+var clientObject = null;
 
 function createHTMLMessage(msg, source, username = '') {
     var li = document.createElement("li");
@@ -13,7 +15,7 @@ function createHTMLMessage(msg, source, username = '') {
         div.className += "messageInstance " + source;
     }
     else if (source == 'client') {
-        div.innerHTML = clientUsername + ": " + msg;
+        div.innerHTML = clientObject.username + ": " + msg;
         div.className += "messageInstance " + source;
     }
     else {
@@ -23,6 +25,11 @@ function createHTMLMessage(msg, source, username = '') {
     li.appendChild(div);
     messages.appendChild(li);
     messages.scrollTop = messages.scrollHeight;
+}
+
+function startGameInServer() {
+    console.log('start game button clicked')
+    socket.emit('start game');
 }
 
 $(document).ready(function () {
@@ -51,18 +58,31 @@ $(document).ready(function () {
     changeUsernameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
         if (key === 13) {
-            createHTMLMessage(`${clientUsername} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for client side
-            socket.emit('chat', `${clientUsername} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for server
-            clientUsername = changeUsernameInput.value; // change username on client side
+            createHTMLMessage(`${clientObject.username} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for client side
+            socket.emit('chat', `${clientObject.username} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for server
+            clientObject.username = changeUsernameInput.value; // change username on client side
             socket.emit('change username', { username: changeUsernameInput.value }); // change username on server side
             changeUsernameOverlay.style.display = 'none';
         }
     });
 });
-const socket = io('http://localhost:3000');
 
 
 /* =========== Event Listeners =========== */
+
+socket.on('start game on client', function(serverItem, serverPlayers, artThiefId, serverChoices) {
+    players = serverPlayers;
+    item = serverItem;
+    choices = serverChoices;
+
+    if (clientObject.id === artThiefId) {
+        isArtThief = true;
+    }
+
+    setLeftSidebarGame();
+    boardOverlay.style.display = 'none';
+    newGame();
+});
 
 socket.on('load users', function(serverPlayers, serverAudience) {
     players = serverPlayers;
@@ -70,10 +90,18 @@ socket.on('load users', function(serverPlayers, serverAudience) {
     setUsersDiv();
 });
 
-socket.on('client connect msg', function (username) {
-    clientUsername = username;
-    console.log(clientUsername);
-    createHTMLMessage(`You have entered the chatroom as ${clientUsername}.`, 'info');
+socket.on('load for audience', function() {
+    boardOverlay.style.opacity = 0;
+    var boardOverlayContent = document.getElementById("board-overlay-content");
+    boardOverlayContent.style.display = 'none';
+    var waitForFinish = "Please wait for the current game to finish."
+    $(leftSidebar).append(waitForFinish);
+})
+
+socket.on('client connect msg', function (serverClientObject) {
+    clientObject = serverClientObject;
+    console.log(clientObject.username);
+    createHTMLMessage(`You have entered the chatroom as ${clientObject.username}.`, 'info');
     //addPlayer(username);
 });
 

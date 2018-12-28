@@ -13,12 +13,10 @@ var numPlayers = 0;
 var players = [];
 var audience = [];
 
-// const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
-const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
-
-var itemIndex = Math.floor(Math.random() * choices.length);
-var item = choices[itemIndex];
-
+// game variables
+var item;
+var isArtThief = false;
+var choices = [];
 
 //const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orange': '#ea7f1e', 'Teal': '#00b1b0' };
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
@@ -78,6 +76,8 @@ function clearCanvas() {
 }
 
 function newGame() {
+    gameStarted = true;
+
     clearCanvas();
     currentPlayer = 0;
     currColor = playerColors[currentPlayer];
@@ -85,22 +85,19 @@ function newGame() {
     // Get players from server
 
     // update "It's __'s turn!"
-    var currentPlayerText = document.getElementById('current-player');
-    currentPlayerText.innerHTML = players[currentPlayer];
+    // var currentPlayerText = document.getElementById('current-player');
+    // currentPlayerText.innerHTML = players[currentPlayer];
 
-    // update bold text
-    var playerTexts = document.getElementsByClassName('player-info');
-    playerTexts[currentPlayer].classList.add('bolded-player');
+    // // update bold text
+    // var playerTexts = document.getElementsByClassName('player-info');
+    // playerTexts[currentPlayer].classList.add('bolded-player');
 
-    context.strokeStyle = playerColors[0];
+    // context.strokeStyle = playerColors[0];
 
-    // choose a new item
-    itemIndex = Math.floor(Math.random() * choices.length);
-    item = choices[itemIndex];
 
     // update instruction text
     var instructionText = document.getElementById('instruction-text');
-    if (true) { // later replace with (not the art thief)
+    if (!isArtThief) { // later replace with (not the art thief)
         instructionText.innerHTML = `The word is "${item}."`;
     }
     else {
@@ -266,6 +263,7 @@ $(document).ready(function () {
                 }, 1000);
             }
             else {
+                //updateServerBoard();
                 console.log('next player')
                 nextPlayer();
             }
