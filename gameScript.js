@@ -265,7 +265,7 @@ $(document).ready(function () {
             else {
                 //updateServerBoard();
                 console.log('next player')
-                nextPlayer();
+                //nextPlayer();
             }
             paint = false;
         }
