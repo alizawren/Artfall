@@ -18,12 +18,20 @@ httpServer.listen(3000, function () {
 //const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
 const choices = ['cat', 'dog', 'mouse'];
 
+const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
 
 // global game variables
 
 var item = '';
-
 var gameStarted = false;
+
+var currentPlayerIndex = 0;
+var currentPlayer = '';
+var currentColor = playerColors[0];
+var clickX = [];
+var clickY = [];
+var clickColor = [];
+var clickDrag = [];
 
 var players = [];
 var audience = [];
@@ -34,7 +42,7 @@ var numClients = 0;
 io.on('connection', function (clientSocket) {
     console.log('Client', numClients++, 'connected.');
 
-    var clientObject = { id: clientSocket.id, username: 'Anonymous' + numClients, color: '#000', artThief: false};
+    var clientObject = { id: clientSocket.id, username: 'Anonymous' + numClients, color: '#000', artThief: false, artist: false };
 
     if (!gameStarted) {
         players.push(clientObject);
@@ -42,7 +50,7 @@ io.on('connection', function (clientSocket) {
     else {
         audience.push(clientObject);
     }
-    
+
     clientSocket.emit('client connect msg', clientObject);
     if (gameStarted) {
         clientSocket.emit('load for audience', null); // replace null with game stuff
@@ -52,7 +60,8 @@ io.on('connection', function (clientSocket) {
 
     /* =========== Event Listeners =========== */
 
-    clientSocket.on('start game', function() {
+    /* ------ Start game ------- */
+    clientSocket.on('start game', function () {
         console.log('The game has started for this server.');
         gameStarted = true;
         // choose random item
@@ -67,17 +76,42 @@ io.on('connection', function (clientSocket) {
                 players[i].artThief = false;
             }
         }
+        currentPlayerIndex = 0;
+        currentPlayer = players[currentPlayerIndex];
+        currentColor = playerColors[currentPlayerIndex];
         io.emit('start game on client', item, players, players[artThiefIndex].id, choices);
+        io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor); 
     });
 
-    clientSocket.on('end game', function() {
+    /* ------ End game ------- */
+    clientSocket.on('end game', function () {
         // todo
     })
 
-    clientSocket.on('change username', (data) => {
-        clientObject.username = data.username;
+    /* ------ Next player's turn ------- */
+    clientSocket.on('next player', function () {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+        currentPlayer = players[currentPlayerIndex]
+        currentColor = playerColors[currentPlayerIndex];
+        io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor);
+    })
+
+    /* ------ Redraw server ------- */
+    clientSocket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag) {
+        clickX = newClickX;
+        clickY = newClickY;
+        clickColor = newClickColor;
+        clickDrag = newClickDrag;
+        io.emit('redraw', clickX, clickY, clickColor, clickDrag);
     });
 
+    /* ------ Change username ------- */
+    clientSocket.on('change username', (data) => {
+        clientObject.username = data.username;
+        io.emit('load users', players, audience);
+    });
+
+    /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {
         // numClients--;
         for (var i = 0; i < players.length; i++) {
@@ -93,6 +127,7 @@ io.on('connection', function (clientSocket) {
         clientSocket.broadcast.emit('disconnect msg', clientObject.username, players, audience);
     })
 
+    /* ------ Chat message has been sent ------- */
     clientSocket.on("chat", function (msg, source) { // When receiving a message from a client
         chatHistory[msg] = source;
         if (source == 'client') {

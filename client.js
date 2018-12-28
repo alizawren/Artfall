@@ -7,6 +7,8 @@ var changeUsernameOverlay = null;
 
 var clientObject = null;
 
+/* Functions which emit messages to the server */
+
 function createHTMLMessage(msg, source, username = '') {
     var li = document.createElement("li");
     var div = document.createElement("div");
@@ -28,9 +30,23 @@ function createHTMLMessage(msg, source, username = '') {
 }
 
 function startGameInServer() {
-    console.log('start game button clicked')
+    // do an error check for number of players
+    if (players.length < 3) {
+        createNotice(50, 0, 'You need at least 3 players to start the game.');
+        return;
+    }
     socket.emit('start game');
 }
+
+function redrawServer() {
+    socket.emit('redraw', clickX, clickY, clickColor, clickDrag);
+}
+
+function nextPlayerServer() {
+    socket.emit('next player');
+}
+
+// want to move out of this file possibly
 
 $(document).ready(function () {
     chatInput = document.getElementById('chatMessage');
@@ -70,6 +86,7 @@ $(document).ready(function () {
 
 /* =========== Event Listeners =========== */
 
+/* ------ Start game ------- */
 socket.on('start game on client', function(serverItem, serverPlayers, artThiefId, serverChoices) {
     players = serverPlayers;
     item = serverItem;
@@ -78,8 +95,12 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
     if (clientObject.id === artThiefId) {
         isArtThief = true;
     }
+    else {
+        isArtThief = false;
+    }
 
     setLeftSidebarGame();
+    setUsersDiv();
     boardOverlay.style.display = 'none';
     newGame();
 });
@@ -96,7 +117,35 @@ socket.on('load for audience', function() {
     boardOverlayContent.style.display = 'none';
     var waitForFinish = "Please wait for the current game to finish."
     $(leftSidebar).append(waitForFinish);
-})
+});
+
+/* ------ Set the artist (whose turn) ------- */
+socket.on('set artist', function(serverPlayerIndex, serverPlayer, serverColor) {
+    currentPlayerIndex = serverPlayerIndex;
+    currentPlayer = serverPlayer;
+    currentColor = serverColor;
+
+    if (clientObject.id === serverPlayer.id) {
+        console.log(clientObject.username + ' is the current artist.')
+        isArtist = true;
+    } 
+    else {
+        console.log('Not artist.');
+        isArtist = false;
+    }
+
+    setArtist()
+});
+
+/* ------ Redraw ------- */
+socket.on('redraw', function(newClickX, newClickY, newClickColor, newClickDrag) {
+    clickX = newClickX;
+    clickY = newClickY;
+    clickColor = newClickColor;
+    clickDrag = newClickDrag;
+    console.log(clickX);
+    redraw();
+});
 
 socket.on('client connect msg', function (serverClientObject) {
     clientObject = serverClientObject;
