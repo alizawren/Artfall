@@ -290,3 +290,10 @@ input {
     cursor: pointer;
     opacity: 0.5;
 }
+
+
+
+.test {
+    background-color: #4080ff;
+    display: inline-block;
+}

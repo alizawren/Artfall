@@ -11,6 +11,7 @@ var paint;
 // var players = ['Sammy', 'Whammy', 'Grammy', 'Cammy'];
 var numPlayers = 0;
 var players = [];
+var audience = [];
 
 // const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
 const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
@@ -104,6 +105,19 @@ function newGame() {
     }
     else {
         instructionText.innerHTML = `You are the Art Thief!`;
+    }
+
+    /* ======== Choices ======== */
+
+    var choiceList = document.getElementById('choice-list');
+    for (const item of choices) {
+        var choiceButton = document.createElement('div');
+        choiceButton.classList.add('choice');
+        choiceButton.id = item;
+        choiceButton.innerHTML = item;
+        choiceButton.onclick = function () { selectChoice(item) };
+
+        choiceList.appendChild(choiceButton);
     }
 
 }
@@ -270,18 +284,7 @@ $(document).ready(function () {
     var newGameButton = document.getElementById('new-game');
     newGameButton.onclick = newGame;
 
-    /* ======== Choices ======== */
-
-    var choiceList = document.getElementById('choice-list');
-    for (const item of choices) {
-        var choiceButton = document.createElement('div');
-        choiceButton.classList.add('choice');
-        choiceButton.id = item;
-        choiceButton.innerHTML = item;
-        choiceButton.onclick = function () { selectChoice(item) };
-
-        choiceList.appendChild(choiceButton);
-    }
+    
 
     /* ======== New game ========= */
     backToMenu();

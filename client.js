@@ -61,24 +61,37 @@ $(document).ready(function () {
 });
 const socket = io('http://localhost:3000');
 
+
+/* =========== Event Listeners =========== */
+
+socket.on('load users', function(serverPlayers, serverAudience) {
+    players = serverPlayers;
+    audience = serverAudience;
+    setUsersDiv();
+});
+
 socket.on('client connect msg', function (username) {
     clientUsername = username;
     console.log(clientUsername);
     createHTMLMessage(`You have entered the chatroom as ${clientUsername}.`, 'info');
-    addPlayer(username);
+    //addPlayer(username);
 });
 
 socket.on('connect msg', function (username) {
     createHTMLMessage(`${username} has entered the chatroom.`, 'info');
-    addPlayer(username);
+    //addPlayer(username);
 });
 
 socket.on('chat msg', function (msg, source, username) {
     createHTMLMessage(msg, source, username); // Create a message from the server
 });
 
-socket.on('disconnect msg', function (username) {
+socket.on('disconnect msg', function (username, serverPlayers, serverAudience) {
     createHTMLMessage(`${username} has left the chatroom.`, 'info');
+    //removePlayer(username);
+    players = serverPlayers;
+    audience = serverAudience;
+    setUsersDiv();
 })
 
 // socket.on('typing', (data) => {
