@@ -12,29 +12,7 @@ var clientObject = null;
 
 /* Functions which emit messages to the server */
 
-function createHTMLMessage(msg, source, username = '') {
-    var li = document.createElement("li");
-    var div = document.createElement("div");
-    if (source == 'info') {
-        var infoIcon = document.createElement("img");
-        infoIcon.classList.add('info-icon');
-        infoIcon.src = 'info.png';
-        div.appendChild(infoIcon);
-        div.innerHTML += msg;
-        div.className += "messageInstance " + source;
-    }
-    else if (source == 'client') {
-        div.innerHTML = clientObject.username + ": " + msg;
-        div.className += "messageInstance " + source;
-    }
-    else {
-        div.innerHTML = username + ": " + msg;
-        div.className += "messageInstance " + source;
-    }
-    li.appendChild(div);
-    messages.appendChild(li);
-    messages.scrollTop = messages.scrollHeight;
-}
+
 
 function startGameInServer() {
     // do an error check for number of players
