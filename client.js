@@ -225,18 +225,18 @@ socket.on('chat msg', function (msg, source, username) {
     createHTMLMessage(msg, source, username); // Create a message from the server
 });
 
-socket.on('disconnect msg', function (username, serverPlayers, serverAudience, partOfGame) {
+socket.on('disconnect msg', function (username) {
     createHTMLMessage(`${username} has left the chatroom.`, 'info');
     //removePlayer(username);
-    players = serverPlayers;
-    audience = serverAudience;
+    // players = serverPlayers;
+    // audience = serverAudience;
     if (partOfGame) {
         gameStarted = false;
         setMiddleAreaMenu();
         setLeftSidebarMenu();
     }
 
-    setUsersDiv();
+    // setUsersDiv();
 })
 // socket.on('player disconnected', function () {
 //     gameStarted = false;

@@ -96,8 +96,48 @@ io.on('connection', function (clientSocket) {
     // clientSocket.on('end game', function () {
     //     // todo
     // });
+<<<<<<< HEAD
     clientSocket.on('player voted', function (isArtThief, itemChoice) {
         if (isArtThief) {
+=======
+    clientSocket.on('player voted',function(isArtThief,itemChoice){
+      if(isArtThief){
+        gameStarted = false;
+        console.log('the art thief has submitted their vote');
+        if(itemChoice == item){
+          io.emit('end game on client', isArtThief,true);
+          console.log('the game has ended, the art thief won');
+        } else{
+          io.emit('end game on client', isArtThief, false);
+          console.log('the game has ended, the art thief lost');
+        }
+      } else{
+        console.log('a non-art-thief has submitted their vote');
+        votes[clientSocket.id] = itemChoice.id;
+        totalVotes = 0;
+        let highest = 0;
+        for(let i in voteCounts){
+          voteCounts[i] = 0;
+        }
+        for(let j in votes){
+          totalVotes++;
+          voteCounts[votes[j]]++;
+          if(voteCounts[votes[j]] > highest){
+            highest = voteCounts[votes[j]];
+          }
+        }
+        io.emit('update votes',voteCounts);
+        if(totalVotes == players.length - 1){
+          let highestVoted = [];
+          for(let k in voteCounts){
+            if(voteCounts[votes[k]] == highest){
+              highestVoted.push(voteCounts[votes[k]])
+            }
+          }
+          if(highestVoted.length > 1){
+            socket.on('tie');
+          } else{
+>>>>>>> cf8afa323943875b78d4866f0affaf99dee7ee3c
             gameStarted = false;
             console.log('the art thief has submitted their vote');
             if (itemChoice == item) {
@@ -107,6 +147,7 @@ io.on('connection', function (clientSocket) {
                 io.emit('end game on client', isArtThief, false);
                 console.log('the game has ended, the art thief lost');
             }
+<<<<<<< HEAD
         } else {
             console.log('a non-art-thief has submitted their vote');
             votes[clientSocket.id] = itemChoice.id;
@@ -166,6 +207,15 @@ io.on('connection', function (clientSocket) {
                     console.log('the game has ended, the players lost');
 
                 }
+=======
+          }
+        }
+        else if(highest >= players.length/2){//if votes reach a certain number, end game
+          let highestVoted = '';
+          for(let m in voteCounts){
+            if(voteCounts[votes[m]] == highest){
+              highestVoted = voteCounts[votes[m]];
+>>>>>>> cf8afa323943875b78d4866f0affaf99dee7ee3c
             }
         }
     });
@@ -215,15 +265,15 @@ io.on('connection', function (clientSocket) {
                 audience.splice(i, 1);
             }
         }
-        if (gameStarted) {
+
+        if (partOfGame) {
             players = players.concat(audience);
             audience = [];
-            io.emit('load users', players, audience);
             gameStarted = false;
-            io.emit('player disconnected');
         }
 
-        clientSocket.broadcast.emit('disconnect msg', clientObject.username, players, audience, partOfGame);
+        clientSocket.broadcast.emit('disconnect msg', clientObject.username, partOfGame);
+        io.emit('load users', players, audience);
 
 
     });
