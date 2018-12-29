@@ -134,6 +134,9 @@ io.on('connection', function (clientSocket) {
             socket.on('tie');
           } else{
             gameStarted = false;
+            players = players.concat(audience);
+            audience = [];
+            io.emit('load users',players,audience);
             if(highestVoted[0] == artThiefId){//if the votes pick the art thief
               io.emit('end game on client', isArtThief, true);
               console.log('the game has ended, the players won');
@@ -152,11 +155,11 @@ io.on('connection', function (clientSocket) {
             }
           }
           gameStarted = false;
+          players = players.concat(audience);
+          audience = [];
+          io.emit('load users',players,audience);
           if(highestVoted == artThiefId){//if the votes pick the art thief
             io.emit('end game on client',isArtThief,true);
-            players = players.concat(audience);
-            audience = [];
-            io.emit('load users',players,audience);
             console.log('the game has ended, the players won');
           }{
             io.emit('end game on client',isArtThief,false);
@@ -207,6 +210,9 @@ io.on('connection', function (clientSocket) {
         clientSocket.broadcast.emit('disconnect msg', clientObject.username, players, audience);
 
         if(gameStarted){
+          players = players.concat(audience);
+          audience = [];
+          io.emit('load users',players,audience);
           gameStarted = false;
           io.emit('player disconnected');
         }
