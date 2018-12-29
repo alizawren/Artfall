@@ -3,16 +3,12 @@
 // const socket = io('http://54.67.88.29:3000');
 const socket = io('http://localhost:3000');
 
-var chatInput = null;// = document.querySelector('.chatMessage');
-var messages = null;// = document.querySelector('.messages');
 var changeUsername = null;
 var changeUsernameOverlay = null;
 
 var clientObject = null;
 
 /* Functions which emit messages to the server */
-
-
 
 function startGameInServer() {
     // do an error check for number of players
