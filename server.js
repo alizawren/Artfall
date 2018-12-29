@@ -88,7 +88,7 @@ io.on('connection', function (clientSocket) {
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
         currentColor = playerColors[currentPlayerIndex];
-        io.emit('start game on client', item, players, players[artThiefIndex].id, choices);
+        io.emit('start game on client', item, players, players[artThiefIndex].id, choices, clientObject);
         io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor);
     });
 
