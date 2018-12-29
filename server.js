@@ -192,6 +192,7 @@ io.on('connection', function (clientSocket) {
 
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {
+      console.log('player left');
         // numClients--;
         for (var i = 0; i < players.length; i++) {
             if (players[i].id === clientObject.id) {
