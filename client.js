@@ -104,8 +104,13 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
     }
     else {
         isArtThief = false;
-
-        choices = serverPlayers;
+        choices = [];
+        choices = [];
+        for(let player of serverPlayers){
+          if(!player.id == clientObject.id){
+            choices.push(player);
+          }
+        }
     }
 
     setLeftSidebarGame();
@@ -119,9 +124,13 @@ socket.on('load users', function(serverPlayers, serverAudience) {
     audience = serverAudience;
     if(gameStarted){
       if(!isArtThief){
-        choices = serverPlayers;
+        choices = [];
+        for(let player of serverPlayers){
+          if(!player.id == clientObject.id){
+            choices.push(player);
+          }
+        }
         for(const item of choices){
-
           let newChoiceButton = document.getElementById(''+item.id);
           newChoiceButton.innerHTML = item.username;
         }
