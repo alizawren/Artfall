@@ -20,8 +20,8 @@ function setMenu() {
 function setLeftSidebarMenu() {
     leftSidebar.innerHTML = '';
 
-    var playerText = "<h4>Players</h4><div id='players'><!-- Script will add --></div><hr>";
-    var audienceText = "<h4>Audience</h4><div id='audience'></div><hr>";
+    var playerText = "<h4>Players</h4><div class='scroll' id='players'><!-- Script will add --></div><hr>";
+    var audienceText = "<h4>Audience</h4><div class='scroll' id='audience'></div><hr>";
 
     $(leftSidebar).append(playerText);
     $(leftSidebar).append(audienceText);

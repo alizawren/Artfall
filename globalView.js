@@ -19,7 +19,7 @@ $(document).ready(function () {
     boardOverlay = document.getElementById("board-overlay");
 
     chatInput = document.getElementById('chatMessage');
-    messages = document.getElementById('messages')
+    messages = document.getElementById('message-holder')
 
     changeUsernameButton = document.getElementById('change-username-button');
     changeUsernameOverlay = document.getElementById('change-username-overlay');
@@ -118,10 +118,16 @@ function setChat() {
     changeUsernameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
         if (key === 13) {
-            createHTMLMessage(`${clientObject.username} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for client side
-            socket.emit('chat', `${clientObject.username} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for server
-            clientObject.username = changeUsernameInput.value; // change username on client side
-            socket.emit('change username', { username: changeUsernameInput.value }); // change username on server side
+            var newUsername = changeUsernameInput.value;
+            // check if username too long
+            if (newUsername.length > 15) {
+                createNotice(0,0,'Username may not have more than 15 characters.');
+                return;
+            }
+            createHTMLMessage(`${clientObject.username} has changed their name to ${newUsername}.`, 'info'); // Create a message for client side
+            socket.emit('chat', `${clientObject.username} has changed their name to ${newUsername}.`, 'info'); // Create a message for server
+            clientObject.username = newUsername; // change username on client side
+            socket.emit('change username', { username: newUsername }); // change username on server side
             changeUsernameOverlay.style.display = 'none';
         }
     });

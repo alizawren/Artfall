@@ -16,8 +16,8 @@ function setLeftSidebarGame() {
 
     var turnText = "<h4>It's <span id='current-player'></span> turn!</h4><hr>";
     var instructionText = "<h4><span id='instruction-text'></span></h4><hr>";
-    var playerText = "<h4>Players</h4><div id='players'></div><hr>";
-    var audienceText = "<h4>Audience</h4><div id='audience'></div><hr>";
+    var playerText = "<h4>Players</h4><div class='scroll' id='players'></div><hr>";
+    var audienceText = "<h4>Audience</h4><div class='scroll' id='audience'></div><hr>";
     var voteText = "<h4>Vote</h4><p id='vote-instructions'></p><div class='scroll inner-box' id='choice-list'><!-- Script will add --></div><button id='submit-button'>Submit</button>";
 
     $(leftSidebar).append(turnText);

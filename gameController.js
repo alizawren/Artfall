@@ -199,7 +199,6 @@ $(document).ready(function () {
                 var xpos = e.pageX - canvas.offsetLeft;
                 var ypos = e.pageY - canvas.offsetTop;
                 createNotice(xpos, ypos, 'Your line is too short.');
-
             }
             else {
                 redrawServer();
