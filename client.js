@@ -131,21 +131,12 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
 
 socket.on('end game on client', function (isArtThief, didWin) {
     setMenu();
-    //send chat message that says the game has ended or something
+    createHTMLMessage('The game has ended!','info');
     gameStarted = false;
-    if (isArtThief) {
-        if (didWin) {
-            endGameMessage.innerHTML = 'The Art Thief Won! They guessed the word correctly!';
-        } else {
-            endGameMessage.innerHTML = 'The Art Thief Lost! They guessed the word incorrectly!';
-        }
-    } else {
-        if (didWin) {
-            endGameMessage.innerHTML = 'The Players Won! They guessed the Art Thief correctly!';
-        } else {
-            endGameMessage.innerHTML = 'The Players Lost! They guessed the Art Thief incorrectly!';
-        }
-    }
+    createHTMLMessage(`The ${isArtThief ? 'Art Thief' : 'Players'}
+                    ${didWin ? 'Won!': 'Lost!'}
+                      They guessed the ${(isArtThief ? 'word' : 'Art Thief'}
+                      ${didWin ? 'correctly' :'incorrectly'}.`);
 });
 socket.on('tie', function () {
     var extraText = document.getElementById('extra-text');

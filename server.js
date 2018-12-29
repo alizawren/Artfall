@@ -206,6 +206,7 @@ io.on('connection', function (clientSocket) {
             players = players.concat(audience);
             audience = [];
             gameStarted = false;
+            //end game stuff
         }
 
         clientSocket.broadcast.emit('disconnect msg', clientObject.username, partOfGame);
