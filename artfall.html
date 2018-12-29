@@ -25,7 +25,7 @@
 
     <div id="content" class="container-fluid">
         <div class="row">
-            <div class="sidebar" id="left-sidebar">
+            <div class="sidebar box" id="left-sidebar">
                 <!-- <h4>It's <span id="current-player"></span>'s turn!</h4>
                 <hr>
 
@@ -44,16 +44,22 @@
                 <div id="board-wrapper">
                     <canvas id="the-board"></canvas>
                     <div id="board-overlay">
-
-                        <div id="board-overlay-content">
-                          <div class='end-game-message' id='end-game-message'></div>
-
+                        <div class="box" id="board-overlay-content">
+                            <p>Welcome to Artfall!</p>
+                            <p>In this game, everyone knows the chosen item except for one person. This person is the Art
+                                Thief, and their goal is to figure out the chosen item. Everyone else's goal is to vote for
+                                and rat out the Art Thief.
+                            </p>
+                            <p>On your turn, you may draw one line on the board. Together, you and the other players will draw
+                                out the chosen item. However, if you are the Art Thief, it's your job to blend in by drawing
+                                a believable line!
+                            </p>
                             <button id="start-game">Start Game</button>
 
                         </div>
                     </div>
                 </div>
-                <div id="settings">
+                <div class="box" id="bottom-area">
                     <button id="new-game">New Game</button>
                     <!-- <div class="settings-row" id="color-button-row">Brush Colors
                     </div>
@@ -64,9 +70,9 @@
 
                 </div>
             </div>
-            <div class="sidebar" id="right-sidebar">
+            <div class="sidebar box" id="right-sidebar">
                 <h4>Chat</h4>
-                <div class="scroll" id="messages"></div>
+                <div class="scroll inner-box" id="messages"></div>
                 <div id="textbox">
                     <input id="chatMessage" />
                 </div>
@@ -74,11 +80,15 @@
         </div>
     </div>
 
+    <div class="footer">&copy; Alizawren and Luke Ren</div>
+
 
     <!-- Overlays -->
+    <div id="banner"></div>
+
     <div id="change-username-overlay">
-            <div id="change-username-overlay-content">
-                Change Username
+            <div class="box" id="change-username-overlay-content">
+                <p class="overlay-text">Change Username</p>
                 <span id="change-username-overlay-close">X</span>
                 <input id="change-username-input" />
             </div>

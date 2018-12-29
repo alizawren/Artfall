@@ -56,7 +56,8 @@ io.on('connection', function (clientSocket) {
 
     clientSocket.emit('client connect msg', clientObject);
     if (gameStarted) {
-        clientSocket.emit('load for audience', null); // replace null with game stuff
+        clientSocket.emit('load for audience'); // replace null with game stuff
+        clientSocket.emit('redraw', clickX, clickY, clickColor, clickDrag);
     }
     clientSocket.broadcast.emit('connect msg', clientObject.username);
     io.emit('load users', players, audience);

@@ -127,6 +127,9 @@ socket.on('load users', function(serverPlayers, serverAudience) {
       }
     }
     setUsersDiv();
+    if (gameStarted) {
+        setArtist();
+    }
 });
 
 socket.on('load for audience', function() {
@@ -168,7 +171,9 @@ socket.on('redraw', function(newClickX, newClickY, newClickColor, newClickDrag) 
 socket.on('end game on client', function(isArtThief,didWin){
   setMiddleAreaMenu();
   setLeftSidebarMenu();
-  var endGameMessage = document.getElementById('end-game-message');
+  var boardOverlayContent = document.getElementById('board-overlay-content');
+  var endGameMessage = document.createElement('div');
+  endGameMessage.classList.add('end-game-message');
   gameStarted = false;
   if(isArtThief){
     if(didWin){
