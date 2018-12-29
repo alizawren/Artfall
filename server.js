@@ -110,7 +110,8 @@ io.on('connection', function (clientSocket) {
 
     clientSocket.on('player voted',function(isArtThief,itemChoice){
       if(isArtThief){
-        endGame(isArtThief,itemChoice == item);
+        endGame();
+        endGameMessage(isArtThief,isArtThief,itemChoice == item);
       } else{
         votes[clientSocket.id] = itemChoice.id;
         let totalVotes = 0;
@@ -140,7 +141,8 @@ io.on('connection', function (clientSocket) {
             io.emit('tie');
           } else{
             //otheriwse end the game
-            endGame(isArtThief,itemChoice == item);
+            endGame();
+            endGameMessage(isArtThief,itemChoice == item);
           }
         }
         else if(highest >= players.length/2){//if votes reach a certain number, end game
@@ -150,7 +152,8 @@ io.on('connection', function (clientSocket) {
             if(voteCounts[votes[m]] == highest){
               highestVoted = voteCounts[votes[m]];
             }
-            endGame(isArtThief,highestVoted == artThiefId);
+            endGame();
+            endGameMessage(isArtThief,highestVoted == artThiefId);
           }
         }
       }
