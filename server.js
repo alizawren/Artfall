@@ -198,6 +198,7 @@ io.on('connection', function (clientSocket) {
         // if there are no players left, reset numClients to 0
         if (players.length === 0) {
             numClients = 0;
+            chatHistory = [];
         }
 
         var partOfGame = false;
