@@ -129,14 +129,18 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
     redraw();
 });
 
-socket.on('end game on client', function (isArtThief, didWin) {
+socket.on('end game on client', function () {
     setMenu();
-    createHTMLMessage('The game has ended!','info');
     gameStarted = false;
-    createHTMLMessage(`The ${isArtThief ? 'Art Thief' : 'Players'}
-                    ${didWin ? 'Won!': 'Lost!'}
-                      They guessed the ${(isArtThief ? 'word' : 'Art Thief'}
-                      ${didWin ? 'correctly' :'incorrectly'}.`);
+    createHTMLMessage('The game has ended!','info');
+    //clear the canvas
+});
+socket.on('end game message', function(isArtThief, didWin){
+  createHTMLMessage(`The
+                    ${isArtThief ? 'Art Thief' : 'Players'}
+                    ${didWin ? 'Won!': 'Lost!'} They guessed the
+                    ${(isArtThief ? 'word' : 'Art Thief'}
+                    ${didWin ? 'correctly' :'incorrectly'}.`);
 });
 socket.on('tie', function () {
     var extraText = document.getElementById('extra-text');
