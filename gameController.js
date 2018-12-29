@@ -1,3 +1,5 @@
+/* The purpose of this file is to handle the flow of the game and connect input and view. */
+
 var canvas = null;
 var context = null;
 
@@ -7,13 +9,12 @@ var clickDrag = [];
 var clickColor = [];
 var paint;
 
-// var numPlayers = 4;
-// var players = ['Sammy', 'Whammy', 'Grammy', 'Cammy'];
 var numPlayers = 0;
 var players = [];
 var audience = [];
 
 // game variables
+var gameStarted = false;
 var item;
 var isArtThief = false;
 var isArtist = false;
@@ -82,88 +83,15 @@ function newGame() {
     for(let player of players){
         clientVoteCounts[player.id] = 0;
     }
-    // update instruction text
-    var instructionText = document.getElementById('instruction-text');
-    var voteInstructionText = document.getElementById('vote-instructions');
-    if (!isArtThief) { // later replace with (not the art thief)
-        instructionText.innerHTML = `The word is "${item}."`;
-        voteInstructionText.innerHTML = "Guess the Art Thief's identity.";
-    }
-    else {
-        instructionText.innerHTML = `You are the Art Thief!`;
-        voteInstructionText.innerHTML = "You have one try to guess the item. When you click Submit, the game ends.";
-    }
-
-    /* ======== Choices ======== */
-    var clickedChoice = null;
-    var choiceList = document.getElementById('choice-list');
-    for (const item of choices) {
-        var choiceButton = document.createElement('div');
-        choiceButton.classList.add('choice');
-        if(isArtThief){
-          choiceButton.id = item;
-          choiceButton.innerHTML = item;
-          choiceButton.onclick = function () {
-            clickedChoice = item;
-            selectChoice(item);
-          };
-        } else{
-          choiceButton.id = ''+item.id;
-          choiceButton.innerHTML = item.username;
-          choiceButton.onclick = function () {
-            if(choiceButton.id == clientObject.id){
-              createNotice(50,0,'Don\'t vote yourself!');
-            } else{
-              clickedChoice = item;
-              selectChoice(''+item.id);
-            }
-          };
-        }
-        choiceList.appendChild(choiceButton);
-    }
-
-    /* ===== Submit button ====== */
-    var leftSideBar = document.getElementById('left-sidebar');
-    var bar = document.createElement('hr');
-    var extraText = document.createElement('h4');
-    extraText.id = 'extra-text';
-    leftSideBar.appendChild(bar);
-    leftSideBar.appendChild(extraText);
-    var submitButton = document.getElementById('submit-button');
-    submitButton.onclick = function () {
-      if(clickedChoice != null){
-        submitVote(clickedChoice,isArtThief);
-      } else{
-        createNotice(50,0,'Please pick a choice');
-      }
-    };
+    
+    setInstructionText();
+    setChoices(choices);
+    setSubmitButton();
 
 }
-
-function setArtist() {
-
-    // update "It's __'s turn!"
-    var currentPlayerText = document.getElementById('current-player');
-    if (isArtist) {
-        currentPlayerText.innerHTML = "your";
-    }
-    else {
-        currentPlayerText.innerHTML = currentPlayer.username + "'s";
-    }
-
-    // update bolded text
-    var playerTexts = document.getElementsByClassName('player-info');
-    for (var player of playerTexts) {
-        if (player.classList.contains('bolded-player')) {
-            player.classList.remove('bolded-player');
-        }
-    }
-    playerTexts[currentPlayerIndex].classList.add('bolded-player');
-}
-
 
 function backToMenu() {
-
+    setMenu();
 }
 
 function redraw() {
