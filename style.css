@@ -337,6 +337,10 @@ input {
     line-height: 15px;
 }
 
+.info-icon {
+    margin: 0 4px;
+}
+
 .client {
     background: #b4b1da8c;
     /* color: white; */

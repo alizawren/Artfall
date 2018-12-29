@@ -32,8 +32,13 @@ function setLeftSidebarMenu() {
  * Pre-conditions: A game is not currently running.
  */
 function setMiddleAreaMenu() {
+    var boardOverlayContent = document.getElementById("board-overlay-content");
+    boardOverlayContent.innerHTML = "<p>Welcome to Artfall!</p>";
+    boardOverlayContent.innerHTML += "<p>In this game, everyone knows the chosen item except for one person. This person is the Art Thief, and their goal is to figure out the chosen item. Everyone else's goal is to vote for and rat out the Art Thief.</p>"
+    boardOverlayContent.innerHTML += "<p>On your turn, you may draw one line on the board. Together, you and the other players will draw out the chosen item. However, if you are the Art Thief, it's your job to blend in by drawing a believable line!</p>"
+    boardOverlayContent.innerHTML += "<button id='start-game'>Start Game</button>"
+
     boardOverlay.style.display = 'block';
     boardOverlay.style.opacity = 1;
-    var boardOverlayContent = document.getElementById("board-overlay-content");
     boardOverlayContent.style.display = 'block';
 }
