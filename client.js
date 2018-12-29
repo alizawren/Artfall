@@ -109,6 +109,9 @@ socket.on('load users', function(serverPlayers, serverAudience) {
     players = serverPlayers;
     audience = serverAudience;
     setUsersDiv();
+    if (gameStarted) {
+        setArtist();
+    }
 });
 
 socket.on('load for audience', function() {

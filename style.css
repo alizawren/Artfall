@@ -3,48 +3,113 @@ body {
     background: linear-gradient(to bottom, #bbf1f9 0%, #9fc2ed 80%, #6da2e3 100%);
     /* background: linear-gradient(to bottom, #403d59 0%, #27233f 100%); */
     /* background: linear-gradient(to bottom, #bbf1f9 0%, #9fc2ed 80%, #a492a8 100%); */
+    background: linear-gradient(to bottom, #fff6f5 0%, #aea0c3 100%);
+    background: linear-gradient(to bottom, #f8e252 0%, #f8b752 100%);
+    /* background: linear-gradient(to bottom, #fff6f5 0%, #9fc2ed 100%); */
     font-family: 'Sarabun', sans-serif;
-    color: #353370;
+    color: #502644;
 }
 
 #title {
-    margin-top: 15px;
+    padding-top: 10px;
+    margin-bottom: 20px;
     text-align: center;
+    background: #eafcd0;
+    /* background: #5fd0bf; */
+    /* background: linear-gradient(to bottom, #7ee0e9 0%, #5fd0bf 100%); */
+    background: #ffa766;
+    background: #3f9b6a;
+    background: linear-gradient(to bottom, #4eb980 0%, #3f9b6a 100%);
+    background: #ff808f;
+    
 }
 
 #title a {
-    color: #ff9921;
-    text-shadow: -1px 0 #e98e23, 0 1px #e98e23, 1px 0 #e98e23, 0 -1px #e98e23;
+    --shadow-color: #6da2e3;
+    --shadow-color: #a14536;
+    --shadow-color: #1f7e62;
+    --shadow-color: #5e6cd9;
 
-    /* background: -webkit-linear-gradient(#8b6eab , #d4bcdc);
+    /* color: #ff9921; */
+    color: #f77144;
+    color: #b8f5d2;
+
+    /* background: -webkit-linear-gradient(#ff9921, #dd663d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent; */
-    text-shadow: 0px 2px 4px #6da2e3;
-    font-size: 3em;
+
+    /* text-shadow: -1px 0 var(--shadow-color), 0 1px var(--shadow-color), 1px 0 var(--shadow-color), 0 -1px var(--shadow-color); */
+    text-shadow: 0px 2px 4px var(--shadow-color);
+
+    font-size: 3.2em;
     font-family: 'Righteous', sans-serif;
     text-decoration: none;
+}
+
+#banner {
+    position: fixed;
+    top: 85px;
+    left: 0px;
+    width: 100%;
+    height: 30px;
+    z-index: 100;
+    background: #a14536;
+    background: #f65372;
+    box-shadow: 2px 5px 2px rgba(0, 0, 0, 0.3);
 }
 
 h4 {
     font-size: 20px;
 }
 
+hr {
+    margin: 4px;
+}
+
+p {
+    line-height: 16px;
+}
+
 #content {
     width: 95%;
-    height: 600px;
+    height: 550px;
     margin: auto;
 }
 
-.sidebar {
+.box {
     /*background-color: #bcb1d6;*/
     background: linear-gradient(to bottom, #fce99f 0%, #ff8b9a 100%);
+    background: linear-gradient(to bottom, #ff9921 0%, #f86622 100%);
+    background: linear-gradient(to bottom, #ce613b 0%, #ba4c5b 100%);
+    background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
     /* background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%); */
     border: 1px solid rgba(175, 31, 22, 0.3);
     border-radius: 10px;
     padding: 1%;
     box-shadow: 2px 5px 2px rgba(0, 0, 0, 0.3);
-    width: 20%;
+}
 
+.inner-box {
+    background: linear-gradient(to bottom, #fce8c971 30%,#feb1c785 100%);
+    box-shadow: inset -1px -1px 2px #933193;
+}
+
+.notice {
+    opacity: 0.9;
+    background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
+    background: linear-gradient(to bottom, #ff9921 0%, #f86622 100%);
+    background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
+    padding: 10px;
+    position: fixed;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: default;
+}
+
+
+.sidebar {
+    padding-top: 30px;
+    width: 20%;
 }
 
 #middle-area {
@@ -58,11 +123,6 @@ h4 {
     height: 0;
     padding-top: 56.25%; /* 16:9 */
     border-radius: 10px;
-}
-
-/* @media Rule */
-@media all and (max-width: 800px) {
-    /* What to do on small screens? */
 }
 
 #the-board {
@@ -85,27 +145,27 @@ h4 {
     height: 100%;
     width: 100%;
     z-index: 1;
-    background-color: rgba(0,0,0, 0.5);
+    background-color: rgba(39, 56, 66, 0.5);
     overflow: hidden;
     border-radius: inherit;
 }
 
 #board-overlay-content {
     position: relative;
-    top: 10%;
-    width: 200px;
+    width: 60%;
     height: auto;
     padding: 10px;
     text-align: center;
-    margin: 30px auto 0px;
-    background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
-    box-shadow: 2px 8px 10px rgba(0, 0, 0, .3);
+    margin: 7% auto 0px;
+    z-index: 300;
+
+    line-height: 16px;
 }
 
-#settings {
-    height: 20%;
-    text-align: center;
-    margin: auto;
+#bottom-area {
+    height: auto;
+    /* text-align: center; */
+    margin-top: 1%;
 }
 
 /* .color-button {
@@ -144,16 +204,15 @@ h4 {
     background: #e63d53;
 }
 
-
 #choice-list {
     width: 100%;
     height: 190px;
     overflow-y: scroll;
-    background: linear-gradient(to bottom, #fce8c9 30%,#feb1c7 100%);
+    /* background: linear-gradient(to bottom, #fce8c9 30%,#feb1c7 100%); */
     padding: 5px;
     border: 1px solid rgba(175, 31, 22, 0.3);
     border-radius: 5px;
-    box-shadow: inset -1px -1px 2px #933193;
+    /* box-shadow: inset -1px -1px 2px #933193; */
 }
 
 .choice {
@@ -172,10 +231,30 @@ h4 {
     box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
+button {
+    padding: 5px;
+    text-align: center;
+    font-size: 18px;
+    background-color: #fffbf3;
+    border: 1px solid #f8a351;
+
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px 0px;
+}
+
+button:hover {
+    background-color: #d4e7ff;
+    box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
+}
+
 #submit-button {
+    width: 50%;
+    min-width: 70px;
     display: block;
     margin: auto;
-    cursor: pointer;
+    margin-top: 8px;
+ 
 }
 
 .player-info {
@@ -196,15 +275,7 @@ h4 {
     font-weight: bold;
 }
 
-.notice {
-    opacity: 0.9;
-    background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
-    padding: 10px;
-    position: fixed;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    cursor: default;
-}
+
 
 #type-box {
     display: flex;
@@ -226,34 +297,38 @@ input {
 }
 
 #messages {
-    background: linear-gradient(to bottom, #fce8c9 30%,#feb1c7 100%);
+    
     height: 90%;
     overflow-y: scroll;
     display: flex;
     list-style-type: none;
     flex-direction: column;
     align-items: flex-start;
-    box-shadow: inset -1px -1px 2px #933193;
+    /* box-shadow: inset -1px -1px 2px #933193; */
 }
 
 .messageInstance {
     width: fit-content;
     width: -moz-fit-content;
     text-align: left;
-    
+
+    margin-left: 3px;
+    margin-bottom: 3px;
+    color: #52315f;
     font-size: 14px;
     padding: 5px;
     border-radius: 5px;
+    line-height: 15px;
 }
 
 .client {
-    background-color: #4080ff;
-    color: white;
+    background-color: #ef768c8c;
+    /* color: white; */
 }
   
 .server {
-    background: #E5E5EA;
-    color: black;
+    background: #93e7e07c;
+    /* color: black; */
 }
 
 #change-username-overlay {
@@ -261,11 +336,10 @@ input {
     height: 100%;
     width: 100%;
     position: fixed;
-    z-index: 1;
+    z-index: 200;
     left: 0;
     top: 0;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0, 0.5);
+    background-color: rgba(39, 56, 66, 0.5);
     overflow-x: hidden;
 }
 
@@ -277,8 +351,11 @@ input {
     padding: 10px;
     text-align: center;
     margin: 30px auto 0px;
-    background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
-    box-shadow: 2px 8px 10px rgba(0, 0, 0, .3);
+    z-index: 300;
+}
+
+.overlay-text {
+    display: inline-block;
 }
 
 #change-username-overlay-close {
@@ -291,9 +368,32 @@ input {
     opacity: 0.5;
 }
 
+.footer {
+    font-size: 14px;
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    text-align: center;
+}
 
 
-.test {
-    background-color: #4080ff;
-    display: inline-block;
+
+/* @media Rule */
+@media all and (max-width: 1200px) {
+    /* What to do on small screens? */
+    #board-overlay-content {
+        margin: 5% auto 0px;
+        width: 75%;
+        line-height: 16px;
+    }
+}
+
+/* @media Rule */
+@media all and (max-width: 1000px) {
+    /* What to do on small screens? */
+    #board-overlay-content {
+        width: 90%;
+        font-size: 14px;
+        line-height: 14px;
+    }
 }

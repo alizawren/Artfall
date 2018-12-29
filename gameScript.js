@@ -80,11 +80,14 @@ function newGame() {
 
     // update instruction text
     var instructionText = document.getElementById('instruction-text');
+    var voteInstructionText = document.getElementById('vote-instructions');
     if (!isArtThief) { // later replace with (not the art thief)
         instructionText.innerHTML = `The word is "${item}."`;
+        voteInstructionText.innerHTML = "Guess the Art Thief's identity.";
     }
     else {
         instructionText.innerHTML = `You are the Art Thief!`;
+        voteInstructionText.innerHTML = "You have one try to guess the item. When you click Submit, the game ends.";
     }
 
     /* ======== Choices ======== */
@@ -106,7 +109,12 @@ function setArtist() {
 
     // update "It's __'s turn!"
     var currentPlayerText = document.getElementById('current-player');
-    currentPlayerText.innerHTML = currentPlayer.username;
+    if (isArtist) {
+        currentPlayerText.innerHTML = "your";
+    }
+    else {
+        currentPlayerText.innerHTML = currentPlayer.username + "'s";
+    }
 
     // update bolded text
     var playerTexts = document.getElementsByClassName('player-info');
@@ -174,7 +182,7 @@ function selectChoice(choice) {
 }
 
 
-
+// if you want an element centered, pass in 0 for ypos
 function createNotice(xpos, ypos, message) {
     var notice = document.createElement('div');
     notice.classList.add('notice');
@@ -185,6 +193,12 @@ function createNotice(xpos, ypos, message) {
 
     var contentDiv = document.getElementById('content');
     contentDiv.appendChild(notice);
+
+    // center element
+    if (ypos === 0) {
+        notice.style.left = '50%';
+        notice.style.marginLeft = -(notice.offsetWidth / 2);
+    } 
 
     setTimeout(function () {
         var interval = setInterval(function () {
@@ -266,16 +280,10 @@ $(document).ready(function () {
         }
     });
 
-    /* ========= Buttons ========== */
-
     // New Game button
     var newGameButton = document.getElementById('new-game');
-    newGameButton.onclick = newGame;
+    newGameButton.onclick = backToMenu;
 
-
-
-    /* ======== New game ========= */
-    backToMenu();
 });
 
 $(window).resize(function () {
