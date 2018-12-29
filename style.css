@@ -104,6 +104,7 @@ p {
     background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
     background: linear-gradient(to bottom, #ff9921 0%, #f86622 100%);
     background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
+    background: linear-gradient(to bottom, #90e4dd 40%, #5eb2ab 100%);
     padding: 10px;
     position: fixed;
     border-bottom-left-radius: 5px;
