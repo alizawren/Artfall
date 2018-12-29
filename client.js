@@ -107,7 +107,7 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
         choices = [];
         choices = [];
         for(let player of serverPlayers){
-          if(!player.id == clientObject.id){
+          if(!(player.id == clientObject.id)){
             choices.push(player);
           }
         }
