@@ -19,7 +19,6 @@ function setUsersDiv() {
     for (var i = 0; i < players.length; i++) {
         var playerInfo = document.createElement('span');
         playerInfo.classList.add('player-info');
-
         // player dot
         var playerDotWrapper = document.createElement('span');
         var playerDot = document.createElement('div');
@@ -32,9 +31,17 @@ function setUsersDiv() {
         var playerText = document.createElement('span');
         playerText.innerHTML = players[i].username;
 
+        //player votes
+        var playerVoteCount = document.createElement('span');
+        playerVoteCount.classList.add('vote-count');
+        playerVoteCount.id = players[i].id+'-votecount';
+        playerVoteCount.innerHTML = '';
+        playerText.appendChild(playerVoteCount);
+
         playerInfo.appendChild(playerDotWrapper);
         playerInfo.appendChild(playerText);
         playerDiv.appendChild(playerInfo);
+
     }
 
     var audienceDiv = document.getElementById('audience');

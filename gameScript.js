@@ -18,7 +18,7 @@ var item;
 var isArtThief = false;
 var isArtist = false;
 var choices = [];
-
+var clientVoteCounts = {};
 //const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orange': '#ea7f1e', 'Teal': '#00b1b0' };
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
 const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
@@ -78,6 +78,10 @@ function newGame() {
 
     context.strokeStyle = currentColor;
 
+    //set client vote counts
+    for(let player of players){
+        clientVoteCounts[player.id] = 0;
+    }
     // update instruction text
     var instructionText = document.getElementById('instruction-text');
     var voteInstructionText = document.getElementById('vote-instructions');
@@ -91,17 +95,48 @@ function newGame() {
     }
 
     /* ======== Choices ======== */
-
+    var clickedChoice = null;
     var choiceList = document.getElementById('choice-list');
     for (const item of choices) {
         var choiceButton = document.createElement('div');
         choiceButton.classList.add('choice');
-        choiceButton.id = item;
-        choiceButton.innerHTML = item;
-        choiceButton.onclick = function () { selectChoice(item) };
-
+        if(isArtThief){
+          choiceButton.id = item;
+          choiceButton.innerHTML = item;
+          choiceButton.onclick = function () {
+            clickedChoice = item;
+            selectChoice(item);
+          };
+        } else{
+          choiceButton.id = ''+item.id;
+          choiceButton.innerHTML = item.username;
+          choiceButton.onclick = function () {
+            if(choiceButton.id == clientObject.id){
+              createNotice(50,0,'Don\'t vote yourself!');
+            } else{
+              clickedChoice = item;
+              selectChoice(''+item.id);
+            }
+          };
+        }
         choiceList.appendChild(choiceButton);
     }
+
+    /* ===== Submit button ====== */
+    var leftSideBar = document.getElementById('left-sidebar');
+    var bar = document.createElement('hr');
+    var extraText = document.createElement('h4');
+    extraText.id = 'extra-text';
+    leftSideBar.appendChild(bar);
+    leftSideBar.appendChild(extraText);
+    var submitButton = document.getElementById('submit-button');
+    submitButton.onclick = function () {
+      if(clickedChoice != null){
+        submitVote(clickedChoice,isArtThief);
+      } else{
+        createNotice(50,0,'Please pick a choice');
+      }
+    };
 
 }
 

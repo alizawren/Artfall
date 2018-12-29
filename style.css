@@ -22,7 +22,7 @@ body {
     background: #3f9b6a;
     background: linear-gradient(to bottom, #4eb980 0%, #3f9b6a 100%);
     background: #ff808f;
-    
+
 }
 
 #title a {
@@ -264,7 +264,7 @@ button:hover {
     display: block;
     margin: auto;
     margin-top: 8px;
- 
+
 }
 
 .player-info {
@@ -281,11 +281,32 @@ button:hover {
     margin: 0px 5px;
 }
 
+
 .bolded-player {
     font-weight: bold;
 }
 
+.vote-count {
+  background-color: #d4e7ff;
+  margin: 0px 5px;
+  font-weight: bold;
+}
 
+.end-game-message {
+  background:linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
+  opacity: 0.9;
+  margin: 10px 0px;
+}
+
+.notice {
+    opacity: 0.9;
+    background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
+    padding: 10px;
+    position: fixed;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: default;
+}
 
 #type-box {
     display: flex;
@@ -303,7 +324,7 @@ input {
 }
 
 #chatMessage{
-    margin-top: 12px;  
+    margin-top: 12px;
 }
 
 #messages {
@@ -321,10 +342,6 @@ input {
     width: -moz-fit-content;
     text-align: left;
 
-    margin-left: 3px;
-    margin-bottom: 3px;
-    color: #52315f;
-    color: #454f88;
     font-size: 14px;
     padding: 5px;
     border-radius: 5px;
@@ -335,7 +352,7 @@ input {
     background-color: #ef768c8c;
     /* color: white; */
 }
-  
+
 .server {
     background: #93e7e07c;
     /* color: black; */
@@ -385,8 +402,6 @@ input {
     width: 100%;
     text-align: center;
 }
-
-
 
 /* @media Rule */
 @media all and (max-width: 1200px) {
