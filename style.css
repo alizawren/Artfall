@@ -328,18 +328,20 @@ input {
     text-align: left;
     color: #624188;
     font-size: 14px;
-    padding: 5px;
+    padding: 3px;
+    margin-left: 4px;
+    margin-bottom: 2px;
     border-radius: 5px;
     line-height: 15px;
 }
 
 .client {
-    background-color: #ef768c8c;
+    background: #c9c9c98c;
     /* color: white; */
 }
 
 .server {
-    background: #93e7e07c;
+    background: #ffffff91;
     /* color: black; */
 }
 
