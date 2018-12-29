@@ -18,7 +18,7 @@ httpServer.listen(3000, function () {
 //const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
 const choices = ['cat', 'dog', 'mouse'];
 
-const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
+const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
 
 // global game variables
 
