@@ -307,7 +307,7 @@ input {
 }
 
 #messages {
-    height: 90%;
+    height: 425px;
     overflow-y: scroll;
     display: flex;
     list-style-type: none;

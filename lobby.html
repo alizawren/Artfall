@@ -1,0 +1,62 @@
+<html>
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Sarabun|Righteous" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lobbyStyle.css">
+
+    <!-- <script src="client.js"></script>
+    <script src="server.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="lobbyClient.js"></script>
+    </style>
+</head>
+
+<body>
+    <div id="title">
+        <a href="">Artfall</a>
+    </div>
+    <div id="banner"></div>
+
+    <div id="content" class="container-fluid">
+        <div class="row">
+            <div class="box" id="rooms">
+                <h4>Rooms</h4>
+                <div class="inner-box" id="rooms-list">
+                    <!-- Script will add -->
+                </div>
+                <div id="lobby-buttons">
+                    <!-- Script will add -->
+                </div>
+            </div>
+           
+            <div class="lobby-chat box">
+                <h4>Chat</h4> 
+                <div class="scroll inner-box" id="messages"></div>
+                <div id="textbox">
+                    <input id="chatMessage" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">&copy; Alizawren and Luke Ren</div>
+
+
+    <!-- Overlays -->
+    <div id="change-username-overlay">
+            <div class="box" id="change-username-overlay-content">
+                <p class="overlay-text">Change Username</p>
+                <span id="change-username-overlay-close">X</span>
+                <input id="change-username-input" />
+            </div>
+        </div>
+
+</body>
+
+</html>
