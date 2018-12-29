@@ -174,7 +174,6 @@ socket.on('redraw', function(newClickX, newClickY, newClickColor, newClickDrag) 
     clickY = newClickY;
     clickColor = newClickColor;
     clickDrag = newClickDrag;
-    console.log(clickX);
     redraw();
 });
 
