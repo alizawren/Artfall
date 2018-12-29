@@ -101,7 +101,7 @@ function setChat() {
         // socket.emit('typing');
         var key = e.which || e.keyCode;
         if (key === 13) {
-            createHTMLMessage(chatInput.value, 'client'); // Create a message from the client
+            createHTMLMessage(chatInput.value, 'client', clientObject.username); // Create a message from the client
             socket.emit('chat', chatInput.value, 'client'); // send message to server
             chatInput.value = '';
         }
@@ -125,6 +125,36 @@ function setChat() {
             changeUsernameOverlay.style.display = 'none';
         }
     });
+}
+
+/** Function: Creates a message and appends it to the right sidebar
+ * Pre-conditions: None.
+ * @param {*} msg The message to send
+ * @param {*} source Where the message is coming from, 'client', 'server', or 'info'
+ * @param {*} username Username of who wrote the message. By default blank (if it came from info)
+ */
+function createHTMLMessage(msg, source, username = '') {
+    var li = document.createElement("li");
+    var div = document.createElement("div");
+    if (source == 'info') {
+        var infoIcon = document.createElement("img");
+        infoIcon.classList.add('info-icon');
+        infoIcon.src = 'info.png';
+        div.appendChild(infoIcon);
+        div.innerHTML += msg;
+        div.className += "messageInstance " + source;
+    }
+    else if (source == 'client') {
+        div.innerHTML = username + ": " + msg;
+        div.className += "messageInstance " + source;
+    }
+    else {
+        div.innerHTML = username + ": " + msg;
+        div.className += "messageInstance " + source;
+    }
+    li.appendChild(div);
+    messages.appendChild(li);
+    messages.scrollTop = messages.scrollHeight;
 }
 
 /** Function: Creates a notice message.
