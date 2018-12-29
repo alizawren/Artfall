@@ -8,6 +8,7 @@ body {
     /* background: linear-gradient(to bottom, #fff6f5 0%, #9fc2ed 100%); */
     font-family: 'Sarabun', sans-serif;
     color: #502644;
+    color: #144f74;
 }
 
 #title {
@@ -33,6 +34,7 @@ body {
     /* color: #ff9921; */
     color: #f77144;
     color: #b8f5d2;
+    color: #c3f5fd;
 
     /* background: -webkit-linear-gradient(#ff9921, #dd663d);
     -webkit-background-clip: text;
@@ -78,10 +80,12 @@ p {
 
 .box {
     /*background-color: #bcb1d6;*/
-    background: linear-gradient(to bottom, #fce99f 0%, #ff8b9a 100%);
+    /* background: linear-gradient(to bottom, #fce99f 0%, #ff8b9a 100%);
     background: linear-gradient(to bottom, #ff9921 0%, #f86622 100%);
-    background: linear-gradient(to bottom, #ce613b 0%, #ba4c5b 100%);
+    background: linear-gradient(to bottom, #ce613b 0%, #ba4c5b 100%); */
     background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
+    background: linear-gradient(to bottom, #b9caf8 40%, #9687ec 100%);
+    background: linear-gradient(to bottom, #c3f5fd 40%, #a6e8fa 100%);
     /* background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%); */
     border: 1px solid rgba(175, 31, 22, 0.3);
     border-radius: 10px;
@@ -297,7 +301,6 @@ input {
 }
 
 #messages {
-    
     height: 90%;
     overflow-y: scroll;
     display: flex;
@@ -315,6 +318,7 @@ input {
     margin-left: 3px;
     margin-bottom: 3px;
     color: #52315f;
+    color: #454f88;
     font-size: 14px;
     padding: 5px;
     border-radius: 5px;
