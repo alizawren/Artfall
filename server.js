@@ -51,7 +51,7 @@ io.on('connection', function (clientSocket) {
 
     /* =========== What happens when a client has connected. =========== */
     console.log('Client', clientNumber++, 'connected.');
-    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber, color: '#000' }; // later: get rid of artThief/artist if not necessary
+    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber }; // later: get rid of artThief/artist if not necessary
     if (!gameStarted) {
         players.push(clientObject);
     }
@@ -64,36 +64,19 @@ io.on('connection', function (clientSocket) {
         clientSocket.emit('redraw', clickX, clickY, clickColor, clickDrag);
     }
     clientSocket.broadcast.emit('connect msg', clientObject.username);
-    io.emit('load users', players, audience);
+    io.emit('update users', players, audience);
 
     /* ========== End the Game ==========*/
     function endGame(){
       gameStarted = false;
       players = players.concat(audience);
       audience = [];
-      io.emit('load users',players, audience)
+      io.emit('update users',players, audience)
       io.emit('end game on client');
 
     }
     function endGameMessage(isArtThief,didWin){
       io.emit('end game message',isArtThief,didWin);
-    }
-
-    /* Get choices for this client */
-    function getClientChoices() {
-        var clientChoices = [];
-        if (clientObject.id === artThiefId) {
-            clientChoices = choices;
-        }
-        else {
-            clientChoices = [];
-            for (let player of players) {
-                if (!(player.id == clientObject.id)) {
-                    clientChoices.push(player);
-                }
-            }
-        }
-        return clientChoices;
     }
 
     /* =========== Event Listeners =========== */
@@ -106,10 +89,7 @@ io.on('connection', function (clientSocket) {
         item = choices[Math.floor(Math.random() * choices.length)];
         // choose random art thief
         artThiefIndex = Math.floor(Math.random() * players.length);
-        artThiefId = players[artThiefIndex];
-
-        var isArtThief = (clientObject.id === artThiefId);
-        var clientChoices = getClientChoices();
+        artThiefId = players[artThiefIndex].id;
         
         //start vote counts at zero
         for (let player of players) {voteCounts[player.id] = 0;}
@@ -117,7 +97,8 @@ io.on('connection', function (clientSocket) {
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
         currentColor = playerColors[currentPlayerIndex];
-        io.emit('start game on client', item, clientChoices, isArtThief, clientObject);
+        io.emit('start game on client', item, artThiefId, clientObject);
+        io.emit('update choices', choices, artThiefId);
         io.emit('update artist', currentPlayerIndex, currentPlayer, currentColor);
     });
 
@@ -190,9 +171,9 @@ io.on('connection', function (clientSocket) {
     /* ------ Change username ------- */
     clientSocket.on('change username', (data) => {
         clientObject.username = data.username;
-        io.emit('load users', players, audience);
+        io.emit('update users', players, audience);
         if (clientObject.id != artThiefId) {
-            clientObject.emit('update choices', getClientChoices());
+            clientSocket.emit('update choices', choices, artThiefId);
         }
         
     });
@@ -227,7 +208,7 @@ io.on('connection', function (clientSocket) {
         }
 
         clientSocket.broadcast.emit('disconnect msg', clientObject.username, partOfGame);
-        io.emit('load users', players, audience);
+        io.emit('update users', players, audience);
 
     });
 

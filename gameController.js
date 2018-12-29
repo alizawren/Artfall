@@ -85,7 +85,6 @@ function newGame() {
 
     setVoteCounts(clientVoteCounts);
     setInstructionText();
-    setChoices();
     setSubmitButton();
 }
 

@@ -26,15 +26,14 @@ function submitVote(itemChoice, isArtThief) {
 /* =========== Event Listeners =========== */
 
 /* ------ Start game ------- */
-socket.on('start game on client', function (serverItem, serverChoices, serverIsArtThief, whoStartedGame) {
+socket.on('start game on client', function (serverItem, artThiefId, whoStartedGame) {
     item = serverItem;
-    choices = serverChoices;
-    isArtThief = serverIsArtThief;
+    isArtThief = (clientObject.id === artThiefId);
     createHTMLMessage(`${whoStartedGame.username} has started the game.`, 'info');
     newGame();
 });
 
-socket.on('load users', function (serverPlayers, serverAudience) {
+socket.on('update users', function (serverPlayers, serverAudience) {
     players = serverPlayers;
     audience = serverAudience;
     setUsersDiv();
@@ -43,9 +42,19 @@ socket.on('load users', function (serverPlayers, serverAudience) {
     }
 });
 
-socket.on('update choices', function (serverChoices) {
-    console.log('called')
-    choices = serverChoices;
+socket.on('update choices', function (serverChoices, artThiefId) {
+    /* Get choices for this client */
+    if (clientObject.id === artThiefId) {
+        choices = serverChoices;
+    }
+    else {
+        choices = [];
+        for (let player of players) {
+            if (!(player.id == clientObject.id)) {
+                choices.push(player);
+            }
+        }
+    }
     setChoices();
 });
 
@@ -75,13 +84,13 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
 socket.on('end game on client', function () {
     setMenu();
     gameStarted = false;
-    createHTMLMessage('The game has ended!','info');
+    createHTMLMessage('The game has ended!', 'info');
     //clear the canvas
 });
-socket.on('end game message', function(isArtThief, didWin){
-  createHTMLMessage(`The
+socket.on('end game message', function (isArtThief, didWin) {
+    createHTMLMessage(`The
                     ${isArtThief ? 'Art Thief' : 'Players'}
-                    ${didWin ? 'Won!': 'Lost!'} They guessed the
+                    ${didWin ? 'Won!' : 'Lost!'} They guessed the
                     ${isArtThief ? 'word' : 'Art Thief'}
                     ${didWin ? 'correctly' : 'incorrectly'}.`);
 });
