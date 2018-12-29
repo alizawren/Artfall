@@ -86,7 +86,8 @@ p {
     background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
     background: linear-gradient(to bottom, #b9caf8 40%, #9687ec 100%);
     background: linear-gradient(to bottom, #c3f5fd 40%, #a6e8fa 100%);
-    background: linear-gradient(to bottom, #90e4dd 40%, #5eb2ab 100%);
+    background: linear-gradient(to bottom, #b2f7e2 40%, #a6faf6 100%);
+    /* background: linear-gradient(to bottom, #90e4dd 40%, #5eb2ab 100%); */
     /* background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%); */
     border: 1px solid rgba(175, 31, 22, 0.3);
     border-radius: 10px;
@@ -105,6 +106,7 @@ p {
     background: linear-gradient(to bottom, #ff9921 0%, #f86622 100%);
     background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
     background: linear-gradient(to bottom, #90e4dd 40%, #5eb2ab 100%);
+    background: linear-gradient(to bottom, #c3fdf0 40%, #a6faf6 100%);
     padding: 10px;
     position: fixed;
     border-bottom-left-radius: 5px;
@@ -242,6 +244,7 @@ button {
     text-align: center;
     font-size: 18px;
     background-color: #fffbf3;
+    background-color: #ff808f;
     border: 1px solid #f8a351;
 
     border-radius: 5px;
@@ -250,7 +253,7 @@ button {
 }
 
 button:hover {
-    background-color: #d4e7ff;
+    background-color: #f65372;
     box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
