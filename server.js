@@ -14,16 +14,15 @@ httpServer.listen(3000, function () {
 });
 
 
-// constants
-
+/* =========== Constants =========== */
 // const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
 const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
 // const choices = ['cat', 'dog', 'mouse'];
 
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
 
-// global game variables
 
+/* =========== Global game variables =========== */
 var item = '';
 var gameStarted = false;
 
@@ -31,32 +30,34 @@ var currentPlayerIndex = 0;
 var currentPlayer = '';
 var currentColor = playerColors[0];
 var artThiefId = '';
+var totalVotes = 0;
+var votes = {};
+var voteCounts = {};
+
 var clickX = [];
 var clickY = [];
 var clickColor = [];
 var clickDrag = [];
 
+
+/* =========== Global site variables =========== */
 var players = [];
 var audience = [];
 
-var totalVotes = 0;
-var votes = {};
-var voteCounts = {};
 var chatHistory = {};
 
-var numClients = 0;
+var clientNumber = 0;
 io.on('connection', function (clientSocket) {
-    console.log('Client', numClients++, 'connected.');
 
-    var clientObject = { id: clientSocket.id, username: 'Anonymous' + numClients, color: '#000', artThief: false, artist: false };
-
+    /* =========== What happens when a client has connected. =========== */
+    console.log('Client', clientNumber++, 'connected.');
+    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber, color: '#000', artThief: false, artist: false };
     if (!gameStarted) {
         players.push(clientObject);
     }
     else {
         audience.push(clientObject);
     }
-
     clientSocket.emit('client connect msg', clientObject);
     if (gameStarted) {
         clientSocket.emit('load for audience'); // replace null with game stuff
@@ -64,6 +65,7 @@ io.on('connection', function (clientSocket) {
     }
     clientSocket.broadcast.emit('connect msg', clientObject.username);
     io.emit('load users', players, audience);
+
 
     /* =========== Event Listeners =========== */
 
@@ -201,7 +203,7 @@ io.on('connection', function (clientSocket) {
         console.log('player left');
         // if there are no players left, reset numClients to 0
         if (players.length === 0) {
-            numClients = 0;
+            clientNumber = 0;
             chatHistory = [];
         }
 

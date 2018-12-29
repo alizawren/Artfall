@@ -17,7 +17,7 @@ var changeUsernameClose = null;
 $(document).ready(function () {
     leftSidebar = document.getElementById("left-sidebar");
     boardOverlay = document.getElementById("board-overlay");
-    
+
     chatInput = document.getElementById('chatMessage');
     messages = document.getElementById('messages')
 
@@ -127,4 +127,37 @@ function setChat() {
     });
 }
 
+/** Function: Creates a notice message.
+ * Pre-conditions: None.
+ * @param xpos The x-position of the message relative to the screen.
+ * @param ypos The y-position of the message relative to the screen. If 0 is passed in, then the element will automatically 
+ * be centered horizontally at the top of the screen.
+ * @param message The message to display.
+ */
+function createNotice(xpos, ypos, message) {
+    var notice = document.createElement('div');
+    notice.classList.add('notice');
+    notice.innerHTML = message;
+    notice.style.left = xpos + 'px';
+    notice.style.top = ypos + 'px';
+    notice.style.opacity = 0.9;
 
+    var contentDiv = document.getElementById('content');
+    contentDiv.appendChild(notice);
+
+    // center element
+    if (ypos === 0) {
+        notice.style.left = '50%';
+        notice.style.marginLeft = -(notice.offsetWidth / 2);
+    } 
+
+    setTimeout(function () {
+        var interval = setInterval(function () {
+            if (notice.style.opacity <= 0) {
+                clearInterval(interval);
+                contentDiv.removeChild(notice);
+            }
+            notice.style.opacity -= 0.1;
+        }, 50);
+    }, 1000);
+}

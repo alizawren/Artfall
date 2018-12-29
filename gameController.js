@@ -145,34 +145,7 @@ function selectChoice(choice) {
 }
 
 
-// if you want an element centered, pass in 0 for ypos
-function createNotice(xpos, ypos, message) {
-    var notice = document.createElement('div');
-    notice.classList.add('notice');
-    notice.innerHTML = message;
-    notice.style.left = xpos + 'px';
-    notice.style.top = ypos + 'px';
-    notice.style.opacity = 0.9;
 
-    var contentDiv = document.getElementById('content');
-    contentDiv.appendChild(notice);
-
-    // center element
-    if (ypos === 0) {
-        notice.style.left = '50%';
-        notice.style.marginLeft = -(notice.offsetWidth / 2);
-    } 
-
-    setTimeout(function () {
-        var interval = setInterval(function () {
-            if (notice.style.opacity <= 0) {
-                clearInterval(interval);
-                contentDiv.removeChild(notice);
-            }
-            notice.style.opacity -= 0.1;
-        }, 50);
-    }, 1000);
-}
 
 $(document).ready(function () {
 

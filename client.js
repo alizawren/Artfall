@@ -16,7 +16,11 @@ function createHTMLMessage(msg, source, username = '') {
     var li = document.createElement("li");
     var div = document.createElement("div");
     if (source == 'info') {
-        div.innerHTML = msg;
+        var infoIcon = document.createElement("img");
+        infoIcon.classList.add('info-icon');
+        infoIcon.src = 'info.png';
+        div.appendChild(infoIcon);
+        div.innerHTML += msg;
         div.className += "messageInstance " + source;
     }
     else if (source == 'client') {
