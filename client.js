@@ -1,4 +1,7 @@
-const socket = io('http://54.67.88.29:3000');
+/* The purpose of this file is to connect pass messages between the client and the server. */
+
+// const socket = io('http://54.67.88.29:3000');
+const socket = io('http://localhost:3000');
 
 var chatInput = null;// = document.querySelector('.chatMessage');
 var messages = null;// = document.querySelector('.messages');
@@ -51,42 +54,7 @@ function submitVote(itemChoice, isArtThief) {
     socket.emit('player voted', isArtThief, itemChoice);
 }
 
-// want to move out of this file possibly
 
-$(document).ready(function () {
-    chatInput = document.getElementById('chatMessage');
-    messages = document.getElementById('messages')
-
-    chatInput.addEventListener('keypress', function (e) {
-        // socket.emit('typing');
-        var key = e.which || e.keyCode;
-        if (key === 13) {
-            createHTMLMessage(chatInput.value, 'client'); // Create a message from the client
-            socket.emit('chat', chatInput.value, 'client'); // send message to server
-            chatInput.value = '';
-        }
-    });
-
-    changeUsernameButton = document.getElementById('change-username-button');
-    changeUsernameOverlay = document.getElementById('change-username-overlay');
-    changeUsernameInput = document.getElementById('change-username-input');
-    changeUsernameButton.onclick = () => {
-        changeUsernameOverlay.style.display = 'block';
-    }
-    document.getElementById('change-username-overlay-close').onclick = () => {
-        changeUsernameOverlay.style.display = 'none';
-    }
-    changeUsernameInput.addEventListener('keypress', function (e) {
-        var key = e.which || e.keyCode;
-        if (key === 13) {
-            createHTMLMessage(`${clientObject.username} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for client side
-            socket.emit('chat', `${clientObject.username} has changed their name to ${changeUsernameInput.value}.`, 'info'); // Create a message for server
-            clientObject.username = changeUsernameInput.value; // change username on client side
-            socket.emit('change username', { username: changeUsernameInput.value }); // change username on server side
-            changeUsernameOverlay.style.display = 'none';
-        }
-    });
-});
 
 
 /* =========== Event Listeners =========== */
@@ -112,8 +80,8 @@ socket.on('start game on client', function (serverItem, serverPlayers, artThiefI
         }
     }
 
-    setLeftSidebarGame();
-    setUsersDiv();
+    setGame();
+    setUsersDiv(players, audience);
     boardOverlay.style.display = 'none';
     newGame();
 });
@@ -121,11 +89,12 @@ socket.on('start game on client', function (serverItem, serverPlayers, artThiefI
 socket.on('load users', function (serverPlayers, serverAudience) {
     players = serverPlayers;
     audience = serverAudience;
-    setUsersDiv();
+    setUsersDiv(players, audience);
     if (gameStarted) {
         setArtist();
     }
 });
+
 socket.on('update choices', function (serverPlayers, serverChoices) {
     if (isArtThief) {
         choices = serverChoices;
@@ -142,6 +111,7 @@ socket.on('update choices', function (serverPlayers, serverChoices) {
         }
     }
 });
+
 socket.on('load for audience', function () {
     boardOverlay.style.opacity = 0;
     var boardOverlayContent = document.getElementById("board-overlay-content");
@@ -178,8 +148,7 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
 });
 
 socket.on('end game on client', function (isArtThief, didWin) {
-    setMiddleAreaMenu();
-    setLeftSidebarMenu();
+    setMenu();
     var boardOverlayContent = document.getElementById('board-overlay-content');
     var endGameMessage = document.createElement('div');
     endGameMessage.classList.add('end-game-message');
@@ -204,10 +173,8 @@ socket.on('tie', function () {
 });
 socket.on('update votes', function (voteCounts) {
     clientVoteCounts = voteCounts;
-    for (let i = 0; i < players.length; i++) {
-        let playerVoteCount = document.getElementById(players[i].id + '-votecount');
-        playerVoteCount.innerHTML = '' + voteCounts[players[i].id];
-    }
+    setVoteCounts(clientVoteCounts);
+    
 });
 socket.on('client connect msg', function (serverClientObject) {
     clientObject = serverClientObject;
@@ -225,15 +192,14 @@ socket.on('chat msg', function (msg, source, username) {
     createHTMLMessage(msg, source, username); // Create a message from the server
 });
 
-socket.on('disconnect msg', function (username) {
+socket.on('disconnect msg', function (username, partOfGame) {
     createHTMLMessage(`${username} has left the chatroom.`, 'info');
     //removePlayer(username);
     // players = serverPlayers;
     // audience = serverAudience;
     if (partOfGame) {
         gameStarted = false;
-        setMiddleAreaMenu();
-        setLeftSidebarMenu();
+        setMenu();
     }
 
     // setUsersDiv();
@@ -250,4 +216,5 @@ socket.on('disconnect msg', function (username) {
 
 socket.on('disconnect', function () {
     alert('Server disconnected.');
+    createHTMLMessage('The server has disconnected. :(', 'info');
 })

@@ -1,3 +1,5 @@
+/* The purpose of this file is to maintain server data (global game data), which is sent to every client. */
+
 var express = require('express');
 var http = require('http');
 var app = express();
