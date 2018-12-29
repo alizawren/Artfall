@@ -160,12 +160,14 @@ io.on('connection', function (clientSocket) {
             if (highestVoted == artThiefId) {//if the votes pick the art thief
                 io.emit('end game on client', isArtThief, true);
                 console.log('the game has ended, the players won');
-            } {
+            } else{
                 io.emit('end game on client', isArtThief, false);
                 console.log('the game has ended, the players lost');
 
             }
+          }
         }
+      }
     });
     /* ------ Next player's turn ------- */
     clientSocket.on('next player', function () {
