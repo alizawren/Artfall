@@ -112,10 +112,10 @@ io.on('connection', function (clientSocket) {
         votes[clientSocket.id] = itemChoice.id;
         totalVotes = 0;
         let highest = 0;
-        for(let i of voteCounts){
+        for(let i in voteCounts){
           voteCounts[i] = 0;
         }
-        for(let j of votes){
+        for(let j in votes){
           totalVotes++;
           voteCounts[votes[j]]++;
           if(voteCounts[votes[j]] > highest){
@@ -125,7 +125,7 @@ io.on('connection', function (clientSocket) {
         io.emit('update votes',voteCounts);
         if(totalVotes == players.length - 1){
           let highestVoted = [];
-          for(let k of voteCounts){
+          for(let k in voteCounts){
             if(voteCounts[votes[k]] == highest){
               highestVoted.push(voteCounts[votes[k]])
             }
@@ -149,7 +149,7 @@ io.on('connection', function (clientSocket) {
         }
         else if(highest >= players.length/2){//if votes reach a certain number, end game
           let highestVoted = '';
-          for(let m of voteCounts){
+          for(let m in voteCounts){
             if(voteCounts[votes[m]] == highest){
               highestVoted = voteCounts[votes[m]];
             }
@@ -200,10 +200,10 @@ io.on('connection', function (clientSocket) {
         // if there are no players left, reset numClients to 0
         if (players.length === 0) {
             numClients = 0;
-        }  
+        }
 
         var partOfGame = false;
-      
+
         for (var i = 0; i < players.length; i++) {
             if (players[i].id === clientObject.id) {
                 partOfGame = true;
