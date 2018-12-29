@@ -201,9 +201,12 @@ io.on('connection', function (clientSocket) {
         if (players.length === 0) {
             numClients = 0;
         }  
+
+        var partOfGame = false;
       
         for (var i = 0; i < players.length; i++) {
             if (players[i].id === clientObject.id) {
+                partOfGame = true;
                 players.splice(i, 1);
             }
         }
@@ -212,15 +215,15 @@ io.on('connection', function (clientSocket) {
                 audience.splice(i, 1);
             }
         }
-        clientSocket.broadcast.emit('disconnect msg', clientObject.username, players, audience);
+        clientSocket.broadcast.emit('disconnect msg', clientObject.username, players, audience, partOfGame);
 
-        if(gameStarted){
-          players = players.concat(audience);
-          audience = [];
-          io.emit('load users',players,audience);
-          gameStarted = false;
-          io.emit('player disconnected');
-        }
+        // if(gameStarted){
+        //   players = players.concat(audience);
+        //   audience = [];
+        //   io.emit('load users',players,audience);
+        //   gameStarted = false;
+        //   io.emit('player disconnected');
+        // }
     });
 
     /* ------ Chat message has been sent ------- */

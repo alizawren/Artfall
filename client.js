@@ -46,9 +46,9 @@ function nextPlayerServer() {
     socket.emit('next player');
 }
 
-function submitVote(itemChoice,isArtThief){
-  console.log('submitted vote');
-  socket.emit('player voted',isArtThief,itemChoice);
+function submitVote(itemChoice, isArtThief) {
+    console.log('submitted vote');
+    socket.emit('player voted', isArtThief, itemChoice);
 }
 
 // want to move out of this file possibly
@@ -92,7 +92,7 @@ $(document).ready(function () {
 /* =========== Event Listeners =========== */
 
 /* ------ Start game ------- */
-socket.on('start game on client', function(serverItem, serverPlayers, artThiefId, serverChoices, whoStartedGame) {
+socket.on('start game on client', function (serverItem, serverPlayers, artThiefId, serverChoices, whoStartedGame) {
     players = serverPlayers;
     item = serverItem;
 
@@ -105,10 +105,10 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
     else {
         isArtThief = false;
         choices = [];
-        for(let player of serverPlayers){
-          if(!(player.id == clientObject.id)){
-            choices.push(player);
-          }
+        for (let player of serverPlayers) {
+            if (!(player.id == clientObject.id)) {
+                choices.push(player);
+            }
         }
     }
 
@@ -118,7 +118,7 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
     newGame();
 });
 
-socket.on('load users', function(serverPlayers, serverAudience) {
+socket.on('load users', function (serverPlayers, serverAudience) {
     players = serverPlayers;
     audience = serverAudience;
     setUsersDiv();
@@ -126,23 +126,23 @@ socket.on('load users', function(serverPlayers, serverAudience) {
         setArtist();
     }
 });
-socket.on('update choices', function(serverPlayers,serverChoices){
-  if(isArtThief){
-    choices = serverChoices;
-  } else{
-    choices = [];
-    for(let player of serverPlayers){
-      if(!player.id == clientObject.id){
-        choices.push(player);
-      }
+socket.on('update choices', function (serverPlayers, serverChoices) {
+    if (isArtThief) {
+        choices = serverChoices;
+    } else {
+        choices = [];
+        for (let player of serverPlayers) {
+            if (!player.id == clientObject.id) {
+                choices.push(player);
+            }
+        }
+        for (const item of choices) {
+            let newChoiceButton = document.getElementById('' + item.id);
+            newChoiceButton.innerHTML = item.username;
+        }
     }
-    for(const item of choices){
-      let newChoiceButton = document.getElementById(''+item.id);
-      newChoiceButton.innerHTML = item.username;
-    }
-  }
 });
-socket.on('load for audience', function() {
+socket.on('load for audience', function () {
     boardOverlay.style.opacity = 0;
     var boardOverlayContent = document.getElementById("board-overlay-content");
     boardOverlayContent.style.display = 'none';
@@ -151,7 +151,7 @@ socket.on('load for audience', function() {
 });
 
 /* ------ Set the artist (whose turn) ------- */
-socket.on('set artist', function(serverPlayerIndex, serverPlayer, serverColor) {
+socket.on('set artist', function (serverPlayerIndex, serverPlayer, serverColor) {
     currentPlayerIndex = serverPlayerIndex;
     currentPlayer = serverPlayer;
     currentColor = serverColor;
@@ -169,7 +169,7 @@ socket.on('set artist', function(serverPlayerIndex, serverPlayer, serverColor) {
 });
 
 /* ------ Redraw ------- */
-socket.on('redraw', function(newClickX, newClickY, newClickColor, newClickDrag) {
+socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag) {
     clickX = newClickX;
     clickY = newClickY;
     clickColor = newClickColor;
@@ -177,37 +177,37 @@ socket.on('redraw', function(newClickX, newClickY, newClickColor, newClickDrag) 
     redraw();
 });
 
-socket.on('end game on client', function(isArtThief,didWin){
-  setMiddleAreaMenu();
-  setLeftSidebarMenu();
-  var boardOverlayContent = document.getElementById('board-overlay-content');
-  var endGameMessage = document.createElement('div');
-  endGameMessage.classList.add('end-game-message');
-  gameStarted = false;
-  if(isArtThief){
-    if(didWin){
-      endGameMessage.innerHTML = 'The Art Thief Won! They guessed the word correctly!';
-    } else{
-      endGameMessage.innerHTML = 'The Art Thief Lost! They guessed the word incorrectly!';
+socket.on('end game on client', function (isArtThief, didWin) {
+    setMiddleAreaMenu();
+    setLeftSidebarMenu();
+    var boardOverlayContent = document.getElementById('board-overlay-content');
+    var endGameMessage = document.createElement('div');
+    endGameMessage.classList.add('end-game-message');
+    gameStarted = false;
+    if (isArtThief) {
+        if (didWin) {
+            endGameMessage.innerHTML = 'The Art Thief Won! They guessed the word correctly!';
+        } else {
+            endGameMessage.innerHTML = 'The Art Thief Lost! They guessed the word incorrectly!';
+        }
+    } else {
+        if (didWin) {
+            endGameMessage.innerHTML = 'The Players Won! They guessed the Art Thief correctly!';
+        } else {
+            endGameMessage.innerHTML = 'The Players Lost! They guessed the Art Thief incorrectly!';
+        }
     }
-  } else{
-    if(didWin){
-      endGameMessage.innerHTML = 'The Players Won! They guessed the Art Thief correctly!';
-    } else{
-      endGameMessage.innerHTML = 'The Players Lost! They guessed the Art Thief incorrectly!';
+});
+socket.on('tie', function () {
+    var extraText = document.getElementById('extra-text');
+    extra.innerHTML = 'There\'s a tie! Someone must switch their vote';
+});
+socket.on('update votes', function (voteCounts) {
+    clientVoteCounts = voteCounts;
+    for (let i = 0; i < players.length; i++) {
+        let playerVoteCount = document.getElementById(players[i].id + '-votecount');
+        playerVoteCount.innerHTML = '' + voteCounts[players[i].id];
     }
-  }
-});
-socket.on('tie',function(){
-  var extraText = document.getElementById('extra-text');
-  extra.innerHTML = 'There\'s a tie! Someone must switch their vote';
-});
-socket.on('update votes', function(voteCounts){
-  clientVoteCounts = voteCounts;
-  for(let i = 0; i < players.length; i++){
-    let playerVoteCount = document.getElementById(players[i].id+'-votecount');
-    playerVoteCount.innerHTML = ''+voteCounts[players[i].id];
-  }
 });
 socket.on('client connect msg', function (serverClientObject) {
     clientObject = serverClientObject;
@@ -225,22 +225,29 @@ socket.on('chat msg', function (msg, source, username) {
     createHTMLMessage(msg, source, username); // Create a message from the server
 });
 
-socket.on('disconnect msg', function (username, serverPlayers, serverAudience) {
+socket.on('disconnect msg', function (username, serverPlayers, serverAudience, partOfGame) {
     createHTMLMessage(`${username} has left the chatroom.`, 'info');
     //removePlayer(username);
     players = serverPlayers;
     audience = serverAudience;
+    if (partOfGame) {
+        gameStarted = false;
+    }
+    
+    setMiddleAreaMenu();
+    setLeftSidebarMenu();
     setUsersDiv();
 })
-socket.on('player disconnected',function(){
-  gameStarted = false;
-  setMiddleAreaMenu();
-  setLeftSidebarMenu();
-});
+// socket.on('player disconnected', function () {
+//     gameStarted = false;
+//     setMiddleAreaMenu();
+//     setLeftSidebarMenu();
+//     setUsersDiv();
+// });
 // socket.on('typing', (data) => {
 //     createHTMLMessage(`${username} is typing.`, 'info');
 // })
 
-socket.on('disconnect', function() {
+socket.on('disconnect', function () {
     alert('Server disconnected.');
 })
