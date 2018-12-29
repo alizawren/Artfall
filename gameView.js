@@ -38,7 +38,7 @@ function setMiddleAreaGame() {
 
 /** Function: Sets vote counts for each player
  * Pre-conditions: Game started. setUsersDiv() has been called.
- * 
+ *
  * @param voteCounts a dictionary. Keys: user ids. Values: number of counts for that user
  */
 function setVoteCounts(voteCounts) {
@@ -80,7 +80,7 @@ function setInstructionText() {
     // update instruction text
     var instructionText = document.getElementById('instruction-text');
     var voteInstructionText = document.getElementById('vote-instructions');
-    if (!isArtThief) { 
+    if (!isArtThief) {
         instructionText.innerHTML = `The word is "${item}."`;
         voteInstructionText.innerHTML = "Guess the Art Thief's identity.";
     }
@@ -92,7 +92,7 @@ function setInstructionText() {
 
 /** Function: This method sets the choices for the user.
  * Pre-conditions: The game has started and setLeftSidebarGame() has been called.
- * 
+ *
  * @param choices The choices to display to the user.
  */
 function setChoices(choices) {
@@ -111,13 +111,13 @@ function setChoices(choices) {
           };
         // otherwise, the choices are usernames
         } else{
-          choiceButton.id = ''+item.id;
+          choiceButton.id = item.id;
           choiceButton.innerHTML = item.username;
           choiceButton.onclick = function () {
             if(choiceButton.id == clientObject.id){
               createNotice(50,0,'Don\'t vote yourself!');
             } else{
-              selectChoice(''+item.id);
+              selectChoice(item.id);
             }
           };
         }

@@ -79,16 +79,22 @@ socket.on('load users', function (serverPlayers, serverAudience) {
 
 socket.on('update choices', function (serverPlayers, serverChoices) {
     if (isArtThief) {
+      //the artthief just grabs the list of strings/words as choices
         choices = serverChoices;
+      //we could add a loop here to update the choice buttons in the left leftSideBar
+      //but the choices shouldn't ever change midgame
     } else {
+      /* the players grab the list of player objects,
+      deep copies them to a new list without the current player*/
         choices = [];
         for (let player of serverPlayers) {
             if (!player.id == clientObject.id) {
                 choices.push(player);
             }
         }
+        //then update the choice buttons
         for (const item of choices) {
-            let newChoiceButton = document.getElementById('' + item.id);
+            let newChoiceButton = document.getElementById(item.id);
             newChoiceButton.innerHTML = item.username;
         }
     }
