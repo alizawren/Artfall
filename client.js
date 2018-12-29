@@ -75,16 +75,22 @@ socket.on('load users', function (serverPlayers, serverAudience) {
 
 socket.on('update choices', function (serverPlayers, serverChoices) {
     if (isArtThief) {
+      //the artthief just grabs the list of strings/words as choices
         choices = serverChoices;
+      //we could add a loop here to update the choice buttons in the left leftSideBar
+      //but the choices shouldn't ever change midgame
     } else {
+      /* the players grab the list of player objects,
+      deep copies them to a new list without the current player*/
         choices = [];
         for (let player of serverPlayers) {
             if (!player.id == clientObject.id) {
                 choices.push(player);
             }
         }
+        //then update the choice buttons
         for (const item of choices) {
-            let newChoiceButton = document.getElementById('' + item.id);
+            let newChoiceButton = document.getElementById(item.id);
             newChoiceButton.innerHTML = item.username;
         }
     }
@@ -125,25 +131,18 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
     redraw();
 });
 
-socket.on('end game on client', function (isArtThief, didWin) {
+socket.on('end game on client', function () {
     setMenu();
-    var boardOverlayContent = document.getElementById('board-overlay-content');
-    var endGameMessage = document.createElement('div');
-    endGameMessage.classList.add('end-game-message');
     gameStarted = false;
-    if (isArtThief) {
-        if (didWin) {
-            endGameMessage.innerHTML = 'The Art Thief Won! They guessed the word correctly!';
-        } else {
-            endGameMessage.innerHTML = 'The Art Thief Lost! They guessed the word incorrectly!';
-        }
-    } else {
-        if (didWin) {
-            endGameMessage.innerHTML = 'The Players Won! They guessed the Art Thief correctly!';
-        } else {
-            endGameMessage.innerHTML = 'The Players Lost! They guessed the Art Thief incorrectly!';
-        }
-    }
+    createHTMLMessage('The game has ended!','info');
+    //clear the canvas
+});
+socket.on('end game message', function(isArtThief, didWin){
+  createHTMLMessage(`The
+                    ${isArtThief ? 'Art Thief' : 'Players'}
+                    ${didWin ? 'Won!': 'Lost!'} They guessed the
+                    ${(isArtThief ? 'word' : 'Art Thief'}
+                    ${didWin ? 'correctly' :'incorrectly'}.`);
 });
 socket.on('tie', function () {
     var extraText = document.getElementById('extra-text');
@@ -152,7 +151,7 @@ socket.on('tie', function () {
 socket.on('update votes', function (voteCounts) {
     clientVoteCounts = voteCounts;
     setVoteCounts(clientVoteCounts);
-    
+
 });
 socket.on('client connect msg', function (serverClientObject) {
     clientObject = serverClientObject;

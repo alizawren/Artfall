@@ -66,13 +66,16 @@ io.on('connection', function (clientSocket) {
     clientSocket.broadcast.emit('connect msg', clientObject.username);
     io.emit('load users', players, audience);
     /* ========== End the Game ==========*/
-    function endGame(isArtThief,didWin){
+    function endGame(){
       gameStarted = false;
       players = players.concat(audience);
       audience = [];
       io.load('load users',players, audience)
-      //io.emit clear canvas pixel data for new game
-      io.emit('end game on client', isArtThief,didWin);
+      io.emit('end game on client');
+
+    }
+    function endGameMessage(isArtThief,didWin){
+      io.emit('end game message',isArtThief,didWin);
     }
     /* =========== Event Listeners =========== */
 
@@ -93,9 +96,9 @@ io.on('connection', function (clientSocket) {
                 players[i].artThief = false;
             }
         }
-        for (let player of players) {
-            voteCounts[player.id] = 0;
-        }
+        //start vote counts at zero
+        for (let player of players) {voteCounts[player.id] = 0;}
+        //set current player info
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
         currentColor = playerColors[currentPlayerIndex];
@@ -113,9 +116,7 @@ io.on('connection', function (clientSocket) {
         let totalVotes = 0;
             highest = 0;
         //set votecounts to zero and then tally votes
-        for(let i in voteCounts){
-          voteCounts[i] = 0;
-        }
+        for(let i in voteCounts){voteCounts[i] = 0;}
         for(let j in votes){
           totalVotes++;
           voteCounts[votes[j]]++;
@@ -203,9 +204,8 @@ io.on('connection', function (clientSocket) {
         }
 
         if (partOfGame) {
-            players = players.concat(audience);
-            audience = [];
-            gameStarted = false;
+            endGame();
+            //end game stuff
         }
 
         clientSocket.broadcast.emit('disconnect msg', clientObject.username, partOfGame);
