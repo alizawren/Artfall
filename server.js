@@ -70,7 +70,7 @@ io.on('connection', function (clientSocket) {
       gameStarted = false;
       players = players.concat(audience);
       audience = [];
-      io.load('load users',players, audience)
+      io.emit('load users',players, audience)
       io.emit('end game on client');
 
     }
