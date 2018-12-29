@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000');
+const socket = io('http://54.67.88.29:3000');
 
 var chatInput = null;// = document.querySelector('.chatMessage');
 var messages = null;// = document.querySelector('.messages');
@@ -92,10 +92,11 @@ $(document).ready(function () {
 /* =========== Event Listeners =========== */
 
 /* ------ Start game ------- */
-socket.on('start game on client', function(serverItem, serverPlayers, artThiefId, serverChoices) {
+socket.on('start game on client', function(serverItem, serverPlayers, artThiefId, serverChoices, whoStartedGame) {
     players = serverPlayers;
     item = serverItem;
 
+    createHTMLMessage(`${whoStartedGame.username} has started the game.`, 'info');
 
     if (clientObject.id === artThiefId) {
         isArtThief = true;
