@@ -149,9 +149,7 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
 
 socket.on('end game on client', function (isArtThief, didWin) {
     setMenu();
-    var boardOverlayContent = document.getElementById('board-overlay-content');
-    var endGameMessage = document.createElement('div');
-    endGameMessage.classList.add('end-game-message');
+    //send chat message that says the game has ended or something
     gameStarted = false;
     if (isArtThief) {
         if (didWin) {
@@ -174,7 +172,7 @@ socket.on('tie', function () {
 socket.on('update votes', function (voteCounts) {
     clientVoteCounts = voteCounts;
     setVoteCounts(clientVoteCounts);
-    
+
 });
 socket.on('client connect msg', function (serverClientObject) {
     clientObject = serverClientObject;
