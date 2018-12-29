@@ -96,7 +96,7 @@ io.on('connection', function (clientSocket) {
     // clientSocket.on('end game', function () {
     //     // todo
     // });
-    clicentSocket.on('player voted',function(isArtThief,itemChoice){
+    clientSocket.on('player voted',function(isArtThief,itemChoice){
       if(isArtThief){
         gameStarted = false;
         console.log('the art thief has submitted their vote');

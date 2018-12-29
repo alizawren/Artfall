@@ -85,7 +85,7 @@ p {
     background: linear-gradient(to bottom, #ce613b 0%, #ba4c5b 100%); */
     background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
     background: linear-gradient(to bottom, #b9caf8 40%, #9687ec 100%);
-    background: linear-gradient(to bottom, #d1f3f8 40%, #afe4f3 100%);
+    /* background: linear-gradient(to bottom, #d1f3f8 40%, #afe4f3 100%); */
     /* background: linear-gradient(to bottom, #b2f7e2 40%, #a6faf6 100%); */
     /* background: linear-gradient(to bottom, #90e4dd 40%, #5eb2ab 100%); */
     /* background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%); */
@@ -103,17 +103,12 @@ p {
 .notice {
     opacity: 0.9;
     background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
-    background: linear-gradient(to bottom, #ff9921 0%, #f86622 100%);
-    background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
-    background: linear-gradient(to bottom, #90e4dd 40%, #5eb2ab 100%);
-    background: linear-gradient(to bottom, #c3fdf0 40%, #a6faf6 100%);
     padding: 10px;
     position: fixed;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     cursor: default;
 }
-
 
 .sidebar {
     padding-top: 30px;
@@ -298,16 +293,6 @@ button:hover {
   margin: 10px 0px;
 }
 
-.notice {
-    opacity: 0.9;
-    background: linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
-    padding: 10px;
-    position: fixed;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    cursor: default;
-}
-
 #type-box {
     display: flex;
 }
@@ -328,7 +313,7 @@ input {
 }
 
 #messages {
-    height: 425px;
+    height: 78%;
     overflow-y: scroll;
     display: flex;
     list-style-type: none;
