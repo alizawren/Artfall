@@ -3,7 +3,15 @@ var startButton = null;
 
 $(document).ready(function () {
     startButton = document.getElementById("start-game");
-    startButton.onclick = startGameInServer;
+    startButton.onclick = function() {
+        // do an error check for number of players
+        if (players.length < 3) {
+            createNotice(50, 0, 'You need at least 3 players to start the game.');
+        }
+        else {
+            startGameInServer();
+        }
+    };
 })
 
 /** Function: This method sets the left sidebar and middle area for the menu.
@@ -12,6 +20,7 @@ $(document).ready(function () {
 function setMenu() {
     setLeftSidebarMenu();
     setMiddleAreaMenu();
+    setUsersDiv();
 }
 
 /** Function: This method sets the left sidebar for the menu.

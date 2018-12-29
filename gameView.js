@@ -6,6 +6,7 @@
 function setGame() {
     setLeftSidebarGame();
     setMiddleAreaGame();
+    setUsersDiv();
 }
 
 /** Function: This method sets the left sidebar for the game.
@@ -32,6 +33,17 @@ function setLeftSidebarGame() {
  */
 function setMiddleAreaGame() {
     boardOverlay.style.display = 'none';
+}
+
+/** Function: Sets the whole area if the client is an audience member walking in on a game.
+ * Pre-conditions: A game has started, and the client has just joined. 
+ */
+function setForAudience() {
+    boardOverlay.style.opacity = 0;
+    var boardOverlayContent = document.getElementById("board-overlay-content");
+    boardOverlayContent.style.display = 'none';
+    var waitForFinish = "Please wait for the current game to finish."
+    $(leftSidebar).append(waitForFinish);
 }
 
 /* ========= Player stuff ========= */
@@ -92,10 +104,8 @@ function setInstructionText() {
 
 /** Function: This method sets the choices for the user.
  * Pre-conditions: The game has started and setLeftSidebarGame() has been called.
- *
- * @param choices The choices to display to the user.
  */
-function setChoices(choices) {
+function setChoices() {
     var choiceList = document.getElementById('choice-list');
     // go through all the choices
     for (const item of choices) {

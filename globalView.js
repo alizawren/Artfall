@@ -34,11 +34,8 @@ $(document).ready(function () {
 /** Function: This method will set the front-end users based on what is currently stored in the "players" 
  * and "audience" arrays on the client side.
  * Pre-conditions: A div with the id "players" exists. (setLeftSidebarMenu() or setLeftSidebarGame() has been called.)
- * 
- * @param players An array of the players (which contains objects, each with a username field).
- * @param audience An array of the audience (which contains objects, each with a username field).
  */
-function setUsersDiv(players, audience) {
+function setUsersDiv() {
     var playerDiv = document.getElementById('players');
     playerDiv.innerHTML = '';
     for (var i = 0; i < players.length; i++) {
