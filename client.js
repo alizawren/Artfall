@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000');
+const socket = io('http://ec2-54-67-88-29.us-west-1.compute.amazonaws.com:3000');
 
 var chatInput = null;// = document.querySelector('.chatMessage');
 var messages = null;// = document.querySelector('.messages');
@@ -103,8 +103,13 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
     }
     else {
         isArtThief = false;
-
-        choices = serverPlayers;
+        choices = [];
+        choices = [];
+        for(let player of serverPlayers){
+          if(!player.id == clientObject.id){
+            choices.push(player);
+          }
+        }
     }
 
     setLeftSidebarGame();
@@ -118,9 +123,13 @@ socket.on('load users', function(serverPlayers, serverAudience) {
     audience = serverAudience;
     if(gameStarted){
       if(!isArtThief){
-        choices = serverPlayers;
+        choices = [];
+        for(let player of serverPlayers){
+          if(!player.id == clientObject.id){
+            choices.push(player);
+          }
+        }
         for(const item of choices){
-
           let newChoiceButton = document.getElementById(''+item.id);
           newChoiceButton.innerHTML = item.username;
         }

@@ -109,7 +109,7 @@ io.on('connection', function (clientSocket) {
         }
       } else{
         console.log('a non-art-thief has submitted their vote');
-        votes[clientScoekt.id] = itemChoice.id;
+        votes[clientSocket.id] = itemChoice.id;
         totalVotes = 0;
         let highest = 0;
         for(let i of voteCounts){
