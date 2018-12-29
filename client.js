@@ -120,6 +120,7 @@ socket.on('load users', function(serverPlayers, serverAudience) {
       if(!isArtThief){
         choices = serverPlayers;
         for(const item of choices){
+
           let newChoiceButton = document.getElementById(''+item.id);
           newChoiceButton.innerHTML = item.username;
         }
