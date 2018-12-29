@@ -85,8 +85,8 @@ p {
     background: linear-gradient(to bottom, #ce613b 0%, #ba4c5b 100%); */
     background: linear-gradient(to bottom, #ec8448 0%, #ba4c5b 100%);
     background: linear-gradient(to bottom, #b9caf8 40%, #9687ec 100%);
-    background: linear-gradient(to bottom, #c3f5fd 40%, #a6e8fa 100%);
-    background: linear-gradient(to bottom, #b2f7e2 40%, #a6faf6 100%);
+    background: linear-gradient(to bottom, #d1f3f8 40%, #afe4f3 100%);
+    /* background: linear-gradient(to bottom, #b2f7e2 40%, #a6faf6 100%); */
     /* background: linear-gradient(to bottom, #90e4dd 40%, #5eb2ab 100%); */
     /* background: linear-gradient(to bottom, #c7eaf1 0%, #9fc2ed 80%, #6da2e3 100%); */
     border: 1px solid rgba(175, 31, 22, 0.3);
@@ -243,9 +243,10 @@ button {
     padding: 5px;
     text-align: center;
     font-size: 18px;
-    background-color: #fffbf3;
-    background-color: #ff808f;
-    border: 1px solid #f8a351;
+    background-color: #fff;
+    color: #c20f62;
+    border: 1px solid #9687ec;
+    /* box-shadow: inset -1px -1px 0px #ff7b93; */
 
     border-radius: 5px;
     cursor: pointer;
@@ -253,7 +254,7 @@ button {
 }
 
 button:hover {
-    background-color: #f65372;
+    background-color: #ffa1b1;
     box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
