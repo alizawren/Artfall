@@ -232,10 +232,10 @@ socket.on('disconnect msg', function (username, serverPlayers, serverAudience, p
     audience = serverAudience;
     if (partOfGame) {
         gameStarted = false;
+        setMiddleAreaMenu();
+        setLeftSidebarMenu();
     }
-    
-    setMiddleAreaMenu();
-    setLeftSidebarMenu();
+
     setUsersDiv();
 })
 // socket.on('player disconnected', function () {
