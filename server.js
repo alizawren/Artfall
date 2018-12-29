@@ -19,7 +19,6 @@ httpServer.listen(3000, function () {
 const choices = ['cat', 'dog', 'mouse'];
 
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#9dd5c0', '#f39cc3'];
-
 // global game variables
 
 var item = '';
@@ -28,6 +27,7 @@ var gameStarted = false;
 var currentPlayerIndex = 0;
 var currentPlayer = '';
 var currentColor = playerColors[0];
+var artThiefId = '';
 var clickX = [];
 var clickY = [];
 var clickColor = [];
@@ -36,6 +36,9 @@ var clickDrag = [];
 var players = [];
 var audience = [];
 
+var totalVotes = 0;
+var votes = {};
+var voteCounts = {};
 var chatHistory = {};
 
 var numClients = 0;
@@ -71,30 +74,103 @@ io.on('connection', function (clientSocket) {
         for (var i = 0; i < players.length; i++) {
             if (i == artThiefIndex) {
                 players[i].artThief = true;
+                artThiefId = players[i].id;
             }
             else {
                 players[i].artThief = false;
             }
         }
+        for(let player of players){
+          voteCounts[player.id] = 0;
+        }
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
         currentColor = playerColors[currentPlayerIndex];
         io.emit('start game on client', item, players, players[artThiefIndex].id, choices);
-        io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor); 
+        io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor);
     });
 
-    /* ------ End game ------- */
-    clientSocket.on('end game', function () {
-        // todo
-    })
+    /* ------ End game/Voting ------- */
+    // clientSocket.on('end game', function () {
+    //     // todo
+    // });
+    clicentSocket.on('player voted',function(isArtThief,itemChoice){
+      if(isArtThief){
+        gameStarted = false;
+        console.log('the art thief has submitted their vote');
+        if(itemChoice == item){
+          io.emit('end game on client', isArtThief,true);
+          console.log('the game has ended, the art thief won');
+        } else{
+          io.emit('end game on client', isArtThief, false);
+          console.log('the game has ended, the art thief lost');
+        }
+      } else{
+        console.log('a non-art-thief has submitted their vote');
+        votes[clientScoekt.id] = itemChoice.id;
+        totalVotes = 0;
+        let highest = 0;
+        for(let i of voteCounts){
+          voteCounts[i] = 0;
+        }
+        for(let j of votes){
+          totalVotes++;
+          voteCounts[votes[j]]++;
+          if(voteCounts[votes[j]] > highest){
+            highest = voteCounts[votes[j]];
+          }
+        }
+        io.emit('update votes',voteCounts);
+        if(totalVotes == players.length - 1){
+          let highestVoted = [];
+          for(let k of voteCounts){
+            if(voteCounts[votes[k]] == highest){
+              highestVoted.push(voteCounts[votes[k]])
+            }
+          }
+          if(highestVoted.length > 1){
+            socket.on('tie');
+          } else{
+            gameStarted = false;
+            if(highestVoted[0] == artThiefId){//if the votes pick the art thief
+              io.emit('end game on client', isArtThief, true);
+              console.log('the game has ended, the players won');
+            }{
+              io.emit('end game on client', isArtThief, false);
+              console.log('the game has ended, the players lost');
 
+            }
+          }
+        }
+        else if(highest >= players.length/2){//if votes reach a certain number, end game
+          let highestVoted = '';
+          for(let m of voteCounts){
+            if(voteCounts[votes[m]] == highest){
+              highestVoted = voteCounts[votes[m]];
+            }
+          }
+          gameStarted = false;
+          if(highestVoted == artThiefId){//if the votes pick the art thief
+            io.emit('end game on client players',true);
+            players = players.concat(audience);
+            audience = [];
+            io.emit('load users',players,audience);
+            console.log('the game has ended, the players won');
+          }{
+            io.emit('end game on client players',false);
+            console.log('the game has ended, the players lost');
+
+          }
+        }
+      }
+    });
     /* ------ Next player's turn ------- */
     clientSocket.on('next player', function () {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
         currentPlayer = players[currentPlayerIndex]
         currentColor = playerColors[currentPlayerIndex];
         io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor);
-    })
+    });
 
     /* ------ Redraw server ------- */
     clientSocket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag) {
@@ -111,6 +187,7 @@ io.on('connection', function (clientSocket) {
         io.emit('load users', players, audience);
     });
 
+
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {
         // numClients--;
@@ -125,7 +202,12 @@ io.on('connection', function (clientSocket) {
             }
         }
         clientSocket.broadcast.emit('disconnect msg', clientObject.username, players, audience);
-    })
+
+        if(gameStarted){
+          gameStarted = false;
+          io.emit('player disconnected');
+        }
+    });
 
     /* ------ Chat message has been sent ------- */
     clientSocket.on("chat", function (msg, source) { // When receiving a message from a client

@@ -192,8 +192,21 @@ h4 {
     margin: 0px 5px;
 }
 
+
 .bolded-player {
     font-weight: bold;
+}
+
+.vote-count {
+  background-color: #d4e7ff;
+  margin: 0px 5px;
+  font-weight: bold;
+}
+
+.end-game-message {
+  background:linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
+  opacity: 0.9;
+  margin: 10px 0px;
 }
 
 .notice {
@@ -222,7 +235,7 @@ input {
 }
 
 #chatMessage{
-    margin-top: 12px;  
+    margin-top: 12px;
 }
 
 #messages {
@@ -240,7 +253,7 @@ input {
     width: fit-content;
     width: -moz-fit-content;
     text-align: left;
-    
+
     font-size: 14px;
     padding: 5px;
     border-radius: 5px;
@@ -250,7 +263,7 @@ input {
     background-color: #4080ff;
     color: white;
 }
-  
+
 .server {
     background: #E5E5EA;
     color: black;

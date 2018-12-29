@@ -46,6 +46,11 @@ function nextPlayerServer() {
     socket.emit('next player');
 }
 
+function submitVote(itemChoice,isArtThief){
+  console.log('submitted vote');
+  socket.emit('player voted',isArtThief,itemChoice);
+}
+
 // want to move out of this file possibly
 
 $(document).ready(function () {
@@ -90,13 +95,16 @@ $(document).ready(function () {
 socket.on('start game on client', function(serverItem, serverPlayers, artThiefId, serverChoices) {
     players = serverPlayers;
     item = serverItem;
-    choices = serverChoices;
+
 
     if (clientObject.id === artThiefId) {
         isArtThief = true;
+        choices = serverChoices;
     }
     else {
         isArtThief = false;
+
+        choices = serverPlayers;
     }
 
     setLeftSidebarGame();
@@ -108,6 +116,16 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
 socket.on('load users', function(serverPlayers, serverAudience) {
     players = serverPlayers;
     audience = serverAudience;
+    if(gameStarted){
+      if(!isArtThief){
+        choices = serverPlayers;
+        for(const item in choices){
+
+          let newChoiceButton = document.getElementById(''+item.id);
+          newChoiceButton.innerHTML = item.username;
+        }
+      }
+    }
     setUsersDiv();
 });
 
@@ -128,7 +146,7 @@ socket.on('set artist', function(serverPlayerIndex, serverPlayer, serverColor) {
     if (clientObject.id === serverPlayer.id) {
         console.log(clientObject.username + ' is the current artist.')
         isArtist = true;
-    } 
+    }
     else {
         console.log('Not artist.');
         isArtist = false;
@@ -147,6 +165,36 @@ socket.on('redraw', function(newClickX, newClickY, newClickColor, newClickDrag) 
     redraw();
 });
 
+socket.on('end game on client', function(isArtThief,didWin){
+  setMiddleAreaMenu();
+  setLeftSidebarMenu();
+  var endGameMessage = document.getElementById('end-game-message');
+  gameStarted = false;
+  if(isArtThief){
+    if(didWin){
+      endGameMessage.innerHTML = 'The Art Thief Won! They guessed the word correctly!';
+    } else{
+      endGameMessage.innerHTML = 'The Art Thief Lost! They guessed the word incorrectly!';
+    }
+  } else{
+    if(didWin){
+      endGameMessage.innerHTML = 'The Players Won! They guessed the Art Thief correctly!';
+    } else{
+      endGameMessage.innerHTML = 'The Players Lost! They guessed the Art Thief incorrectly!';
+    }
+  }
+});
+socket.on('tie',function(){
+  var extraText = document.getElementById('extra-text');
+  extra.innerHTML = 'There\'s a tie! Someone must switch their vote';
+});
+socket.on('update votes', function(voteCounts){
+  clientVoteCounts = voteCounts;
+  for(let i = 0; i < players.length; i++){
+    let playerVoteCount = document.getElementById(players[i].id+'-votecount');
+    playerVoteCount.innerHTML = ''+voteCounts[players[i].id];
+  }
+});
 socket.on('client connect msg', function (serverClientObject) {
     clientObject = serverClientObject;
     console.log(clientObject.username);
@@ -170,7 +218,11 @@ socket.on('disconnect msg', function (username, serverPlayers, serverAudience) {
     audience = serverAudience;
     setUsersDiv();
 })
-
+socket.on('player disconnected',function(){
+  gameStarted = false;
+  setMiddleAreaMenu();
+  setLeftSidebarMenu();
+});
 // socket.on('typing', (data) => {
 //     createHTMLMessage(`${username} is typing.`, 'info');
 // })
