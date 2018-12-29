@@ -196,7 +196,11 @@ io.on('connection', function (clientSocket) {
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {
       console.log('player left');
-        // numClients--;
+        // if there are no players left, reset numClients to 0
+        if (players.length === 0) {
+            numClients = 0;
+        }  
+      
         for (var i = 0; i < players.length; i++) {
             if (players[i].id === clientObject.id) {
                 players.splice(i, 1);
