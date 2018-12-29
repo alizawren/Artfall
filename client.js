@@ -225,7 +225,7 @@ socket.on('chat msg', function (msg, source, username) {
     createHTMLMessage(msg, source, username); // Create a message from the server
 });
 
-socket.on('disconnect msg', function (username) {
+socket.on('disconnect msg', function (username, partOfGame) {
     createHTMLMessage(`${username} has left the chatroom.`, 'info');
     //removePlayer(username);
     // players = serverPlayers;
@@ -250,4 +250,5 @@ socket.on('disconnect msg', function (username) {
 
 socket.on('disconnect', function () {
     alert('Server disconnected.');
+    createHTMLMessage('The server has disconnected. :(', 'info');
 })
