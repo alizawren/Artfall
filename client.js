@@ -145,12 +145,12 @@ socket.on('end game message', function(isArtThief, didWin){
   createHTMLMessage(`The
                     ${isArtThief ? 'Art Thief' : 'Players'}
                     ${didWin ? 'Won!': 'Lost!'} They guessed the
-                    ${(isArtThief ? 'word' : 'Art Thief'}
-                    ${didWin ? 'correctly' :'incorrectly'}.`);
+                    ${isArtThief ? 'word' : 'Art Thief'}
+                    ${didWin ? 'correctly' : 'incorrectly'}.`);
 });
 socket.on('tie', function () {
     var extraText = document.getElementById('extra-text');
-    extra.innerHTML = 'There\'s a tie! Someone must switch their vote';
+    extraText.innerHTML = 'There\'s a tie! Someone must switch their vote';
 });
 socket.on('update votes', function (voteCounts) {
     clientVoteCounts = voteCounts;
