@@ -88,10 +88,6 @@ function newGame() {
     setSubmitButton();
 }
 
-function backToMenu() {
-    setMenu();
-}
-
 function redraw() {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
 
@@ -213,7 +209,7 @@ $(document).ready(function () {
 
     // New Game button
     var newGameButton = document.getElementById('new-game');
-    newGameButton.onclick = backToMenu;
+    newGameButton.onclick = endGame;
 
 });
 

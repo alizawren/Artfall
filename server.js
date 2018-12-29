@@ -103,6 +103,9 @@ io.on('connection', function (clientSocket) {
     });
 
     /* ------ End game/Voting ------- */
+    clientSocket.on('end game', function() {
+        endGame();
+    })
 
     clientSocket.on('player voted',function(isArtThief,itemChoice){
       if(isArtThief){

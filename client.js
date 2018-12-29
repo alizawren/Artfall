@@ -23,6 +23,10 @@ function submitVote(itemChoice, isArtThief) {
     socket.emit('player voted', isArtThief, itemChoice);
 }
 
+function endGame() {
+    socket.emit('end game');
+}
+
 /* =========== Event Listeners =========== */
 
 /* ------ Start game ------- */
