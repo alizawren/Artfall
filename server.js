@@ -96,7 +96,7 @@ io.on('connection', function (clientSocket) {
     // clientSocket.on('end game', function () {
     //     // todo
     // });
-    clicentSocket.on('player voted',function(isArtThief,itemChoice){
+    clientSocket.on('player voted',function(isArtThief,itemChoice){
       if(isArtThief){
         gameStarted = false;
         console.log('the art thief has submitted their vote');
@@ -153,13 +153,13 @@ io.on('connection', function (clientSocket) {
           }
           gameStarted = false;
           if(highestVoted == artThiefId){//if the votes pick the art thief
-            io.emit('end game on client players',true);
+            io.emit('end game on client',isArtThief,true);
             players = players.concat(audience);
             audience = [];
             io.emit('load users',players,audience);
             console.log('the game has ended, the players won');
           }{
-            io.emit('end game on client players',false);
+            io.emit('end game on client',isArtThief,false);
             console.log('the game has ended, the players lost');
 
           }

@@ -119,8 +119,7 @@ socket.on('load users', function(serverPlayers, serverAudience) {
     if(gameStarted){
       if(!isArtThief){
         choices = serverPlayers;
-        for(const item in choices){
-
+        for(const item of choices){
           let newChoiceButton = document.getElementById(''+item.id);
           newChoiceButton.innerHTML = item.username;
         }
