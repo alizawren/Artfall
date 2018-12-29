@@ -51,7 +51,7 @@ io.on('connection', function (clientSocket) {
 
     /* =========== What happens when a client has connected. =========== */
     console.log('Client', clientNumber++, 'connected.');
-    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber, color: '#000', artThief: false, artist: false };
+    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber }; // later: get rid of artThief/artist if not necessary
     if (!gameStarted) {
         players.push(clientObject);
     }
@@ -64,19 +64,21 @@ io.on('connection', function (clientSocket) {
         clientSocket.emit('redraw', clickX, clickY, clickColor, clickDrag);
     }
     clientSocket.broadcast.emit('connect msg', clientObject.username);
-    io.emit('load users', players, audience);
+    io.emit('update users', players, audience);
+
     /* ========== End the Game ==========*/
     function endGame(){
       gameStarted = false;
       players = players.concat(audience);
       audience = [];
-      io.emit('load users',players, audience)
+      io.emit('update users',players, audience)
       io.emit('end game on client');
 
     }
     function endGameMessage(isArtThief,didWin){
       io.emit('end game message',isArtThief,didWin);
     }
+
     /* =========== Event Listeners =========== */
 
     /* ------ Start game ------- */
@@ -87,26 +89,23 @@ io.on('connection', function (clientSocket) {
         item = choices[Math.floor(Math.random() * choices.length)];
         // choose random art thief
         artThiefIndex = Math.floor(Math.random() * players.length);
-        for (var i = 0; i < players.length; i++) {
-            if (i == artThiefIndex) {
-                players[i].artThief = true;
-                artThiefId = players[i].id;
-            }
-            else {
-                players[i].artThief = false;
-            }
-        }
+        artThiefId = players[artThiefIndex].id;
+        
         //start vote counts at zero
         for (let player of players) {voteCounts[player.id] = 0;}
         //set current player info
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
         currentColor = playerColors[currentPlayerIndex];
-        io.emit('start game on client', item, players, players[artThiefIndex].id, choices, clientObject);
-        io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor);
+        io.emit('start game on client', item, artThiefId, clientObject);
+        io.emit('update choices', choices, artThiefId);
+        io.emit('update artist', currentPlayerIndex, currentPlayer, currentColor);
     });
 
     /* ------ End game/Voting ------- */
+    clientSocket.on('end game', function() {
+        endGame();
+    })
 
     clientSocket.on('player voted',function(isArtThief,itemChoice){
       if(isArtThief){
@@ -163,7 +162,7 @@ io.on('connection', function (clientSocket) {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
         currentPlayer = players[currentPlayerIndex]
         currentColor = playerColors[currentPlayerIndex];
-        io.emit('set artist', currentPlayerIndex, currentPlayer, currentColor);
+        io.emit('update artist', currentPlayerIndex, currentPlayer, currentColor);
     });
 
     /* ------ Redraw server ------- */
@@ -178,8 +177,11 @@ io.on('connection', function (clientSocket) {
     /* ------ Change username ------- */
     clientSocket.on('change username', (data) => {
         clientObject.username = data.username;
-        io.emit('load users', players, audience);
-        io.emit('update choices', players, choices);
+        io.emit('update users', players, audience);
+        if (clientObject.id != artThiefId) {
+            clientSocket.emit('update choices', choices, artThiefId);
+        }
+        
     });
 
 
@@ -212,7 +214,7 @@ io.on('connection', function (clientSocket) {
         }
 
         clientSocket.broadcast.emit('disconnect msg', clientObject.username, partOfGame);
-        io.emit('load users', players, audience);
+        io.emit('update users', players, audience);
 
     });
 

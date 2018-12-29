@@ -3,19 +3,11 @@
 // const socket = io('http://54.67.88.29:3000');
 const socket = io('http://localhost:3000');
 
-var changeUsername = null;
-var changeUsernameOverlay = null;
-
 var clientObject = null;
 
-/* Functions which emit messages to the server */
+/* =========== Functions which emit messages to the server =========== */
 
 function startGameInServer() {
-    // do an error check for number of players
-    if (players.length < 3) {
-        createNotice(50, 0, 'You need at least 3 players to start the game.');
-        return;
-    }
     socket.emit('start game');
 }
 
@@ -28,98 +20,59 @@ function nextPlayerServer() {
 }
 
 function submitVote(itemChoice, isArtThief) {
-    console.log('submitted vote');
     socket.emit('player voted', isArtThief, itemChoice);
 }
 
-
-
+function endGame() {
+    socket.emit('end game');
+}
 
 /* =========== Event Listeners =========== */
 
 /* ------ Start game ------- */
-socket.on('start game on client', function (serverItem, serverPlayers, artThiefId, serverChoices, whoStartedGame) {
-    players = serverPlayers;
+socket.on('start game on client', function (serverItem, artThiefId, whoStartedGame) {
     item = serverItem;
-
+    isArtThief = (clientObject.id === artThiefId);
     createHTMLMessage(`${whoStartedGame.username} has started the game.`, 'info');
-
-    if (clientObject.id === artThiefId) {
-        isArtThief = true;
-        choices = serverChoices;
-    }
-    else {
-        isArtThief = false;
-        choices = [];
-        for (let player of serverPlayers) {
-            if (!(player.id == clientObject.id)) {
-                choices.push(player);
-            }
-        }
-    }
-
-    setGame();
-    setUsersDiv(players, audience);
-    boardOverlay.style.display = 'none';
     newGame();
 });
 
-socket.on('load users', function (serverPlayers, serverAudience) {
+socket.on('update users', function (serverPlayers, serverAudience) {
     players = serverPlayers;
     audience = serverAudience;
-    setUsersDiv(players, audience);
+    setUsersDiv();
     if (gameStarted) {
         setArtist();
     }
 });
 
-socket.on('update choices', function (serverPlayers, serverChoices) {
-    if (isArtThief) {
-      //the artthief just grabs the list of strings/words as choices
+socket.on('update choices', function (serverChoices, artThiefId) {
+    /* Get choices for this client */
+    if (clientObject.id === artThiefId) {
         choices = serverChoices;
-      //we could add a loop here to update the choice buttons in the left leftSideBar
-      //but the choices shouldn't ever change midgame
-    } else {
-      /* the players grab the list of player objects,
-      deep copies them to a new list without the current player*/
+    }
+    else {
         choices = [];
-        for (let player of serverPlayers) {
-            if (!player.id == clientObject.id) {
+        for (let player of players) {
+            if (!(player.id == clientObject.id)) {
                 choices.push(player);
             }
         }
-        //then update the choice buttons
-        for (const item of choices) {
-            let newChoiceButton = document.getElementById(item.id);
-            newChoiceButton.innerHTML = item.username;
-        }
     }
+    setChoices();
 });
 
 socket.on('load for audience', function () {
-    boardOverlay.style.opacity = 0;
-    var boardOverlayContent = document.getElementById("board-overlay-content");
-    boardOverlayContent.style.display = 'none';
-    var waitForFinish = "Please wait for the current game to finish."
-    $(leftSidebar).append(waitForFinish);
+    setForAudience();
 });
 
 /* ------ Set the artist (whose turn) ------- */
-socket.on('set artist', function (serverPlayerIndex, serverPlayer, serverColor) {
+socket.on('update artist', function (serverPlayerIndex, serverPlayer, serverColor) {
     currentPlayerIndex = serverPlayerIndex;
     currentPlayer = serverPlayer;
     currentColor = serverColor;
-
-    if (clientObject.id === serverPlayer.id) {
-        console.log(clientObject.username + ' is the current artist.')
-        isArtist = true;
-    }
-    else {
-        console.log('Not artist.');
-        isArtist = false;
-    }
-
-    setArtist()
+    isArtist = (clientObject.id === serverPlayer.id);
+    setArtist();
 });
 
 /* ------ Redraw ------- */
@@ -131,16 +84,17 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
     redraw();
 });
 
+
 socket.on('end game on client', function () {
     setMenu();
     gameStarted = false;
-    createHTMLMessage('The game has ended!','info');
+    createHTMLMessage('The game has ended!', 'info');
     //clear the canvas
 });
-socket.on('end game message', function(isArtThief, didWin){
-  createHTMLMessage(`The
+socket.on('end game message', function (isArtThief, didWin) {
+    createHTMLMessage(`The
                     ${isArtThief ? 'Art Thief' : 'Players'}
-                    ${didWin ? 'Won!': 'Lost!'} They guessed the
+                    ${didWin ? 'Won!' : 'Lost!'} They guessed the
                     ${isArtThief ? 'word' : 'Art Thief'}
                     ${didWin ? 'correctly' : 'incorrectly'}.`);
 });
@@ -171,27 +125,14 @@ socket.on('chat msg', function (msg, source, username) {
 
 socket.on('disconnect msg', function (username, partOfGame) {
     createHTMLMessage(`${username} has left the chatroom.`, 'info');
-    //removePlayer(username);
-    // players = serverPlayers;
-    // audience = serverAudience;
     if (partOfGame) {
         gameStarted = false;
         setMenu();
     }
-
-    // setUsersDiv();
+    setUsersDiv();
 })
-// socket.on('player disconnected', function () {
-//     gameStarted = false;
-//     setMiddleAreaMenu();
-//     setLeftSidebarMenu();
-//     setUsersDiv();
-// });
-// socket.on('typing', (data) => {
-//     createHTMLMessage(`${username} is typing.`, 'info');
-// })
 
 socket.on('disconnect', function () {
     alert('Server disconnected.');
-    createHTMLMessage('The server has disconnected. :(', 'info');
+    createHTMLMessage('The server has disconnected. :(', 'info'); // Please check Twitter for server status
 })

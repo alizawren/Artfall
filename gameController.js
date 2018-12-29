@@ -20,7 +20,7 @@ var isArtThief = false;
 var isArtist = false;
 var choices = [];
 var clientVoteCounts = {};
-//const colors = { 'Blue': '#0f6cb6', 'Red': '#b32017', 'Green': '#81b909', 'Orange': '#ea7f1e', 'Teal': '#00b1b0' };
+
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
 const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
 
@@ -36,7 +36,6 @@ function addClick(x, y, dragging) {
     clickColor.push(currentColor);
 }
 
-// Button functions
 function changeColor(colour) {
     currentColor = colour;
 }
@@ -75,23 +74,18 @@ function clearCanvas() {
 
 function newGame() {
     gameStarted = true;
-    clearCanvas();
 
-    context.strokeStyle = currentColor;
+    setGame();
+    clearCanvas();
 
     //set client vote counts
     for(let player of players){
         clientVoteCounts[player.id] = 0;
     }
-    
+
+    setVoteCounts(clientVoteCounts);
     setInstructionText();
-    setChoices(choices);
     setSubmitButton();
-
-}
-
-function backToMenu() {
-    setMenu();
 }
 
 function redraw() {
@@ -143,8 +137,6 @@ function selectChoice(choice) {
     selectedChoiceButton.classList.add('selected-choice');
     currentSelectedChoice = choice;
 }
-
-
 
 
 $(document).ready(function () {
@@ -217,7 +209,7 @@ $(document).ready(function () {
 
     // New Game button
     var newGameButton = document.getElementById('new-game');
-    newGameButton.onclick = backToMenu;
+    newGameButton.onclick = endGame;
 
 });
 
