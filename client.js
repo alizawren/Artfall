@@ -105,7 +105,6 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
     else {
         isArtThief = false;
         choices = [];
-        choices = [];
         for(let player of serverPlayers){
           if(!(player.id == clientObject.id)){
             choices.push(player);
@@ -122,26 +121,27 @@ socket.on('start game on client', function(serverItem, serverPlayers, artThiefId
 socket.on('load users', function(serverPlayers, serverAudience) {
     players = serverPlayers;
     audience = serverAudience;
-    if(gameStarted){
-      if(!isArtThief){
-        choices = [];
-        for(let player of serverPlayers){
-          if(!player.id == clientObject.id){
-            choices.push(player);
-          }
-        }
-        for(const item of choices){
-          let newChoiceButton = document.getElementById(''+item.id);
-          newChoiceButton.innerHTML = item.username;
-        }
-      }
-    }
     setUsersDiv();
     if (gameStarted) {
         setArtist();
     }
 });
-
+socket.on('update choices', function(serverPlayers,serverChoices){
+  if(isArtThief){
+    choices = serverChoices;
+  } else{
+    choices = [];
+    for(let player of serverPlayers){
+      if(!player.id == clientObject.id){
+        choices.push(player);
+      }
+    }
+    for(const item of choices){
+      let newChoiceButton = document.getElementById(''+item.id);
+      newChoiceButton.innerHTML = item.username;
+    }
+  }
+});
 socket.on('load for audience', function() {
     boardOverlay.style.opacity = 0;
     var boardOverlayContent = document.getElementById("board-overlay-content");

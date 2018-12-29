@@ -190,6 +190,7 @@ io.on('connection', function (clientSocket) {
     clientSocket.on('change username', (data) => {
         clientObject.username = data.username;
         io.emit('load users', players, audience);
+        io.emit('update choices',players,choices);
     });
 
 
