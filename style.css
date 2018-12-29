@@ -7,8 +7,8 @@ body {
     background: linear-gradient(to bottom, #f8e252 0%, #f8b752 100%);
     /* background: linear-gradient(to bottom, #fff6f5 0%, #9fc2ed 100%); */
     font-family: 'Sarabun', sans-serif;
-    color: #502644;
-    color: #144f74;
+    color: #362650;
+    /* color: #144f74; */
 }
 
 #title {
@@ -239,7 +239,7 @@ button {
     text-align: center;
     font-size: 18px;
     background-color: #fff;
-    color: #c20f62;
+    color: #362650;
     border: 1px solid #9687ec;
     /* box-shadow: inset -1px -1px 0px #ff7b93; */
 
@@ -249,7 +249,7 @@ button {
 }
 
 button:hover {
-    background-color: #ffa1b1;
+    background-color: #e5e7ec;
     box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
 }
 
@@ -326,7 +326,7 @@ input {
     width: fit-content;
     width: -moz-fit-content;
     text-align: left;
-
+    color: #624188;
     font-size: 14px;
     padding: 5px;
     border-radius: 5px;
