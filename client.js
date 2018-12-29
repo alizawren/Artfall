@@ -241,3 +241,7 @@ socket.on('player disconnected',function(){
 // socket.on('typing', (data) => {
 //     createHTMLMessage(`${username} is typing.`, 'info');
 // })
+
+socket.on('disconnect', function() {
+    alert('Server disconnected.');
+})
