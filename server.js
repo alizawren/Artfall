@@ -42,8 +42,8 @@ var clickDrag = [];
 
 
 /* =========== Global site variables =========== */
-var players = [];
-var audience = [];
+var players = []; // hold player objects
+var audience = []; // hold audience member objects
 
 var chatHistory = {};
 
@@ -186,6 +186,17 @@ io.on('connection', function (clientSocket) {
 
     });
 
+    /* ------ Be audience member ------- */
+    clientSocket.on('be audience member', () => {
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].id === clientObject.id) {
+                players.splice(i, 1);
+                audience.push(clientObject);
+            }
+        }
+        console.log(clientObject.username + ' becoming audience member');
+        io.emit('update users', players, audience);
+    })
 
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {

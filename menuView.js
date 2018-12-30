@@ -19,8 +19,13 @@ function setLeftSidebarMenu() {
     var playerText = "<h4>Players</h4><div class='scroll' id='players'><!-- Script will add --></div><hr>";
     var audienceText = "<h4>Audience</h4><div class='scroll' id='audience'></div><hr>";
 
+    var beAudienceMember = document.createElement('button');
+    beAudienceMember.innerHTML = "Be Audience Member";
+    beAudienceMember.onclick = beAudienceMemberServer;
+
     $(leftSidebar).append(playerText);
     $(leftSidebar).append(audienceText);
+    $(leftSidebar).append(beAudienceMember);
 
 }
 
