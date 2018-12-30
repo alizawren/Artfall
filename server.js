@@ -91,7 +91,7 @@ io.on('connection', function (clientSocket) {
         // choose random art thief
         artThiefIndex = Math.floor(Math.random() * players.length);
         artThiefId = players[artThiefIndex].id;
-        
+
         //start vote counts at zero
         for (let player of players) {voteCounts[player.id] = 0;}
         //set current player info
@@ -111,7 +111,7 @@ io.on('connection', function (clientSocket) {
     clientSocket.on('player voted',function(isArtThief,itemChoice){
       if(isArtThief){
         endGame();
-        endGameMessage(isArtThief,isArtThief,itemChoice == item);
+        endGameMessage(isArtThief,itemChoice == item);
       } else{
         votes[clientSocket.id] = itemChoice.id;
         let totalVotes = 0;
@@ -182,7 +182,7 @@ io.on('connection', function (clientSocket) {
         if (clientObject.id != artThiefId) {
             clientSocket.emit('update choices', choices, artThiefId);
         }
-        
+
     });
 
 
