@@ -133,7 +133,7 @@ io.on('connection', function (clientSocket) {
           //see if there's a tie
           let highestVoted = [];
           for(let k in voteCounts){
-            if(voteCounts[votes[k]] == highest){
+            if(voteCounts[k] == highest){
               highestVoted.push(voteCounts[votes[k]])
             }
           }
@@ -150,8 +150,8 @@ io.on('connection', function (clientSocket) {
           //see who got voted highest
           let highestVoted = '';
           for(let m in voteCounts){
-            if(voteCounts[votes[m]] == highest){
-              highestVoted = voteCounts[votes[m]];
+            if(voteCounts[m] == highest){
+              highestVoted = voteCounts[m];
             }
             endGame();
             endGameMessage(isArtThief,highestVoted == artThiefId);
