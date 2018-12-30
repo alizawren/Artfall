@@ -17,7 +17,7 @@ httpServer.listen(3000, function () {
 /* =========== Constants =========== */
 // const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
 // const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
-const choices = ["button","computer","shoe lace","nail clipper","buckle","remote",",twister","spring","keys","milk","lip gloss","lamp","cat","television","soap", "cork","camera","teddies","washing machine","drawer"];
+const choices = ["button","computer","shoe lace","nail clipper","buckle","remote","spring","keys","milk","lip gloss","lamp","cat","television","soap", "cork","camera","teddies","washing machine","drawer"];
 // const choices = ['cat', 'dog', 'mouse'];
 
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
@@ -42,8 +42,8 @@ var clickDrag = [];
 
 
 /* =========== Global site variables =========== */
-var players = [];
-var audience = [];
+var players = []; // hold player objects
+var audience = []; // hold audience member objects
 
 var chatHistory = {};
 
@@ -186,6 +186,17 @@ io.on('connection', function (clientSocket) {
 
     });
 
+    /* ------ Be audience member ------- */
+    clientSocket.on('be audience member', () => {
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].id === clientObject.id) {
+                players.splice(i, 1);
+                audience.push(clientObject);
+            }
+        }
+        console.log(clientObject.username + ' becoming audience member');
+        io.emit('update users', players, audience);
+    })
 
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {

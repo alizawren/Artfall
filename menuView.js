@@ -1,12 +1,6 @@
 /* The purpose of this file is to set front-end elements when the game is not running. */
 var startButton = null;
 
-$(document).ready(function () {
-    startButton = document.getElementById("start-game");
-    startButton.onclick = startGameInServer;
-    console.log('onclick set')
-})
-
 /** Function: This method sets the left sidebar and middle area for the menu.
  * Pre-conditions: A game is not currently running in the server.
  */
@@ -25,8 +19,13 @@ function setLeftSidebarMenu() {
     var playerText = "<h4>Players</h4><div class='scroll' id='players'><!-- Script will add --></div><hr>";
     var audienceText = "<h4>Audience</h4><div class='scroll' id='audience'></div><hr>";
 
+    var beAudienceMember = document.createElement('button');
+    beAudienceMember.innerHTML = "Be Audience Member";
+    beAudienceMember.onclick = beAudienceMemberServer;
+
     $(leftSidebar).append(playerText);
     $(leftSidebar).append(audienceText);
+    $(leftSidebar).append(beAudienceMember);
 
 }
 
@@ -44,4 +43,6 @@ function setMiddleAreaMenu() {
     boardOverlay.style.opacity = 1;
     boardOverlayContent.style.display = 'block';
 
+    startButton = document.getElementById("start-game");
+    startButton.onclick = startGameInServer;
 }

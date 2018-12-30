@@ -31,6 +31,10 @@ function endGame() {
     socket.emit('end game');
 }
 
+function beAudienceMemberServer() {
+    socket.emit('be audience member');
+}
+
 /* =========== Event Listeners =========== */
 
 /* ------ Start game ------- */
