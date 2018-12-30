@@ -94,6 +94,7 @@ io.on('connection', function (clientSocket) {
 
         //start vote counts at zero
         for (let player of players) {voteCounts[player.id] = 0;}
+        votes = {};
         //set current player info
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
