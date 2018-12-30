@@ -100,7 +100,7 @@ socket.on('end game message', function (isArtThief, didWin) {
                     ${isArtThief ? 'Art Thief' : 'Players'}
                     ${didWin ? 'Won!' : 'Lost!'} They guessed the
                     ${isArtThief ? 'word' : 'Art Thief'}
-                    ${didWin ? 'correctly' : 'incorrectly'}.`);
+                    ${didWin ? 'correctly' : 'incorrectly'}.`,'info');
 });
 socket.on('tie', function () {
     var extraText = document.getElementById('extra-text');
