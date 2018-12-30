@@ -3,15 +3,8 @@ var startButton = null;
 
 $(document).ready(function () {
     startButton = document.getElementById("start-game");
-    startButton.onclick = function() {
-        // do an error check for number of players
-        if (players.length < 3) {
-            createNotice(50, 0, 'You need at least 3 players to start the game.');
-        }
-        else {
-            startGameInServer();
-        }
-    };
+    startButton.onclick = startGameInServer;
+    console.log('onclick set')
 })
 
 /** Function: This method sets the left sidebar and middle area for the menu.
@@ -50,4 +43,5 @@ function setMiddleAreaMenu() {
     boardOverlay.style.display = 'block';
     boardOverlay.style.opacity = 1;
     boardOverlayContent.style.display = 'block';
+
 }

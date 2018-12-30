@@ -179,7 +179,7 @@ io.on('connection', function (clientSocket) {
     clientSocket.on('change username', (data) => {
         clientObject.username = data.username;
         io.emit('update users', players, audience);
-        if (clientObject.id != artThiefId) {
+        if (gameStarted) {
             clientSocket.emit('update choices', choices, artThiefId);
         }
         
