@@ -107,6 +107,7 @@ function setInstructionText() {
  */
 function setChoices() {
     var choiceList = document.getElementById('choice-list');
+    choiceList.innerHTML = '';
     // go through all the choices
     for (const item of choices) {
         // create a choice button for each
