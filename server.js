@@ -114,7 +114,7 @@ io.on('connection', function (clientSocket) {
         endGame();
         endGameMessage(isArtThief,itemChoice == item);
       } else{
-        votes[clientSocket.id] = itemChoice.id;
+        votes[clientSocket.id] = itemChoice;
         let totalVotes = 0;
             highest = 0;
         //set votecounts to zero and then tally votes
@@ -143,7 +143,7 @@ io.on('connection', function (clientSocket) {
           } else{
             //otheriwse end the game
             endGame();
-            endGameMessage(isArtThief,itemChoice == item);
+            endGameMessage(isArtThief,itemChoice == artThiefId);
           }
         }
         else if(highest >= players.length/2){//if votes reach a certain number, end game
