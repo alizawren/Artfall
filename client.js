@@ -134,5 +134,5 @@ socket.on('disconnect msg', function (username, partOfGame) {
 
 socket.on('disconnect', function () {
     alert('Server disconnected.');
-    createHTMLMessage('The server has disconnected. :(', 'info'); // Please check Twitter for server status
+    createHTMLMessage('You have been disconnected from the server.', 'info'); // Please check Twitter for server status
 })
