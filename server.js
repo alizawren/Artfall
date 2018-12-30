@@ -187,14 +187,23 @@ io.on('connection', function (clientSocket) {
     });
 
     /* ------ Be audience member ------- */
-    clientSocket.on('be audience member', () => {
-        for (var i = 0; i < players.length; i++) {
-            if (players[i].id === clientObject.id) {
-                players.splice(i, 1);
-                audience.push(clientObject);
+    clientSocket.on('toggle audience member', (roleChoice) => {
+        if (roleChoice === "Be Audience Member") {
+            for (var i = 0; i < players.length; i++) {
+                if (players[i].id === clientObject.id) {
+                    players.splice(i, 1);
+                    audience.push(clientObject);
+                }
             }
         }
-        console.log(clientObject.username + ' becoming audience member');
+        else {
+            for (var i = 0; i < audience.length; i++) {
+                if (audience[i].id === clientObject.id) {
+                    audience.splice(i, 1);
+                    players.push(clientObject);
+                }
+            }
+        }
         io.emit('update users', players, audience);
     })
 

@@ -8,10 +8,6 @@ var clientObject = null;
 /* =========== Functions which emit messages to the server =========== */
 
 function startGameInServer() {
-    if (players.length < 3) {
-        createNotice(50, 0, 'You need at least 3 players to start the game.');
-        return;
-    }
     socket.emit('start game');
 }
 
@@ -31,8 +27,8 @@ function endGame() {
     socket.emit('end game');
 }
 
-function beAudienceMemberServer() {
-    socket.emit('be audience member');
+function toggleAudienceMember(roleChoice) {
+    socket.emit('toggle audience member', roleChoice);
 }
 
 /* =========== Event Listeners =========== */

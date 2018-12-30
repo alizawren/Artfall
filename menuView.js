@@ -21,7 +21,11 @@ function setLeftSidebarMenu() {
 
     var beAudienceMember = document.createElement('button');
     beAudienceMember.innerHTML = "Be Audience Member";
-    beAudienceMember.onclick = beAudienceMemberServer;
+    beAudienceMember.onclick = function() {
+        var roleChoice = beAudienceMember.innerHTML;
+        beAudienceMember.innerHTML = (roleChoice === "Be Audience Member") ? "Be Player" : "Be Audience Member";
+        toggleAudienceMember(roleChoice);
+    };
 
     $(leftSidebar).append(playerText);
     $(leftSidebar).append(audienceText);
@@ -44,5 +48,11 @@ function setMiddleAreaMenu() {
     boardOverlayContent.style.display = 'block';
 
     startButton = document.getElementById("start-game");
-    startButton.onclick = startGameInServer;
+    startButton.onclick = function() {
+        if (players.length < 3) {
+            createNotice(50, 0, 'You need at least 3 players to start the game.');
+            return;
+        }
+        startGameInServer();
+    };
 }
