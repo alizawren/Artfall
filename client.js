@@ -8,6 +8,10 @@ var clientObject = null;
 /* =========== Functions which emit messages to the server =========== */
 
 function startGameInServer() {
+    if (players.length < 3) {
+        createNotice(50, 0, 'You need at least 3 players to start the game.');
+        return;
+    }
     socket.emit('start game');
 }
 
@@ -133,6 +137,6 @@ socket.on('disconnect msg', function (username, partOfGame) {
 })
 
 socket.on('disconnect', function () {
-    alert('Server disconnected.');
+    alert('You have been disconnected from the server.');
     createHTMLMessage('You have been disconnected from the server.', 'info'); // Please check Twitter for server status
 })
