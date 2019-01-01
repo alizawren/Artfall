@@ -56,3 +56,26 @@ function setMiddleAreaMenu() {
         startGameInServer();
     };
 }
+
+function setEndGame(isArtThief, didWin, item, itemChoice) {
+    var boardOverlayContent = document.getElementById("board-overlay-content");
+    boardOverlayContent.innerHTML = `<h4>The ${isArtThief ? 'Art Thief ' : 'Players '}${didWin ? 'Won!' : 'Lost!'}</h4>`;
+    boardOverlayContent.innerHTML += `<p>The item was ${item}.</p>`;
+    if (isArtThief) {
+        boardOverlayContent.innerHTML += `The Art Thief voted for "${itemChoice}."`;
+    }
+    else {
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].id === itemChoice) {
+                itemChoice = players[i].username;
+                break;
+            }
+        }
+        boardOverlayContent.innerHTML += `The players voted for ${itemChoice}.`;
+    }
+    
+
+    boardOverlay.style.display = 'block';
+    boardOverlay.style.opacity = 1;
+    boardOverlayContent.style.display = 'block';
+}

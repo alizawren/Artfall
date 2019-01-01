@@ -35,8 +35,10 @@ function toggleAudienceMember(roleChoice) {
 
 /* ------ Start game ------- */
 socket.on('start game on client', function (serverItem, artThiefId, whoStartedGame) {
-    item = serverItem;
     isArtThief = (clientObject.id === artThiefId);
+    if (!isArtThief) {
+        item = serverItem;
+    }
     createHTMLMessage(`${whoStartedGame.username} has started the game.`, 'info');
     newGame();
 });
@@ -93,11 +95,12 @@ socket.on('end game on client', function () {
     setMenu();
     gameStarted = false;
     createHTMLMessage('The game has ended!', 'info');
-    //clear the canvas
+    clearCanvas();
 });
-socket.on('end game message', function (isArtThief, didWin) {
+socket.on('end game message', function (isArtThief, didWin, item, itemChoice) {
+    setEndGame(isArtThief, didWin, item, itemChoice);
     createHTMLMessage(`The
-                    ${isArtThief ? 'Art Thief' : 'Players'}
+                    ${isArtThief ? 'Art Thief ' : 'Players '}
                     ${didWin ? 'Won!' : 'Lost!'} They guessed the
                     ${isArtThief ? 'word' : 'Art Thief'}
                     ${didWin ? 'correctly' : 'incorrectly'}.`,'info');
