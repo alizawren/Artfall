@@ -57,10 +57,11 @@ function setMiddleAreaMenu() {
     };
 }
 
-function setEndGame(isArtThief, didWin, item, itemChoice) {
+function setEndGame(isArtThief, didWin, item, itemChoice, artThiefUsername) {
     var boardOverlayContent = document.getElementById("board-overlay-content");
     boardOverlayContent.innerHTML = `<h4>The ${isArtThief ? 'Art Thief ' : 'Players '}${didWin ? 'Won!' : 'Lost!'}</h4>`;
     boardOverlayContent.innerHTML += `<p>The item was ${item}.</p>`;
+    boardOverlayContent.innerHTML += `<p>The Art Thief was ${artThiefUsername}.</p>`;
     if (isArtThief) {
         boardOverlayContent.innerHTML += `The Art Thief voted for "${itemChoice}."`;
     }

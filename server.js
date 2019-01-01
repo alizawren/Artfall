@@ -76,8 +76,8 @@ io.on('connection', function (clientSocket) {
       io.emit('end game on client');
 
     }
-    function endGameMessage(isArtThief,didWin, itemChoice){
-      io.emit('end game message',isArtThief,didWin, item, itemChoice);
+    function endGameMessage(isArtThief,didWin, itemChoice, artThiefUsername){
+      io.emit('end game message',isArtThief,didWin, item, itemChoice, artThiefUsername);
     }
 
     /* =========== Event Listeners =========== */
@@ -112,7 +112,7 @@ io.on('connection', function (clientSocket) {
     clientSocket.on('player voted',function(isArtThief,itemChoice){
       if(isArtThief){
         endGame();
-        endGameMessage(isArtThief,itemChoice == item, itemChoice);
+        endGameMessage(isArtThief,itemChoice == item, itemChoice, clientObject.username);
       } else{
         votes[clientSocket.id] = itemChoice;
         let totalVotes = 0;
@@ -143,7 +143,7 @@ io.on('connection', function (clientSocket) {
           } else{
             //otheriwse end the game
             endGame();
-            endGameMessage(isArtThief,itemChoice == artThiefId, itemChoice);
+            endGameMessage(isArtThief,itemChoice == artThiefId, itemChoice, clientObject.username);
           }
         }
         else if(highest >= players.length/2){//if votes reach a certain number, end game
@@ -154,7 +154,7 @@ io.on('connection', function (clientSocket) {
               highestVoted = voteCounts[m];
             }
             endGame();
-            endGameMessage(isArtThief,highestVoted == artThiefId, itemChoice);
+            endGameMessage(isArtThief,highestVoted == artThiefId, itemChoice, clientObject.username);
           }
         }
       }
@@ -209,7 +209,7 @@ io.on('connection', function (clientSocket) {
 
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {
-        console.log('player left');
+        console.log(`Player ${clientNumber} left`);
         // if there are no players left, reset numClients to 0
         if (players.length === 0) {
             clientNumber = 0;

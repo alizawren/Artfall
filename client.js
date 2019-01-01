@@ -1,7 +1,7 @@
 /* The purpose of this file is to connect pass messages between the client and the server. */
 
-// const socket = io('http://54.67.88.29:3000');
-const socket = io('http://localhost:3000');
+const socket = io('http://54.67.88.29:3000');
+// const socket = io('http://localhost:3000');
 
 var clientObject = null;
 
@@ -97,8 +97,8 @@ socket.on('end game on client', function () {
     createHTMLMessage('The game has ended!', 'info');
     clearCanvas();
 });
-socket.on('end game message', function (isArtThief, didWin, item, itemChoice) {
-    setEndGame(isArtThief, didWin, item, itemChoice);
+socket.on('end game message', function (isArtThief, didWin, item, itemChoice, artThiefUsername) {
+    setEndGame(isArtThief, didWin, item, itemChoice, artThiefUsername);
     createHTMLMessage(`The
                     ${isArtThief ? 'Art Thief ' : 'Players '}
                     ${didWin ? 'Won!' : 'Lost!'} They guessed the
