@@ -137,6 +137,7 @@ function setChat() {
  * @param {*} username Username of who wrote the message. By default blank (if it came from info)
  */
 function createHTMLMessage(msg, source, username = '') {
+    var messages = document.getElementById('message-holder');
     var li = document.createElement("li");
     var div = document.createElement("div");
     if (source == 'info') {

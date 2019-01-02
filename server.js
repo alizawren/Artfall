@@ -17,7 +17,7 @@ httpServer.listen(3000, function () {
 /* =========== Constants =========== */
 // const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
 // const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
-const choices = ["button","computer","shoe lace","nail clipper","buckle","remote","spring","keys","milk","lip gloss","lamp","cat","television","soap", "cork","camera","teddies","washing machine","drawer"];
+const choices = ["button", "computer", "shoe lace", "nail clipper", "buckle", "remote", "spring", "keys", "milk", "lip gloss", "lamp", "cat", "television", "soap", "cork", "camera", "teddies", "washing machine", "drawer"];
 // const choices = ['cat', 'dog', 'mouse'];
 
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
@@ -68,16 +68,23 @@ io.on('connection', function (clientSocket) {
     io.emit('update users', players, audience);
 
     /* ========== End the Game ==========*/
-    function endGame(){
-      gameStarted = false;
-      players = players.concat(audience);
-      audience = [];
-      io.emit('update users',players, audience)
-      io.emit('end game on client');
+    function endGame() {
+        gameStarted = false;
+        players = players.concat(audience);
+        audience = [];
+        io.emit('update users', players, audience)
+        io.emit('end game on client');
 
     }
-    function endGameMessage(isArtThief,didWin, itemChoice, artThiefUsername){
-      io.emit('end game message',isArtThief,didWin, item, itemChoice, artThiefUsername);
+    function endGameMessage(isArtThief, didWin, itemChoice) {
+        var artThiefUsername = "";
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].id === artThiefId) {
+                artThiefUsername = players[i].username;
+                break;
+            }
+        }
+        io.emit('end game message', isArtThief, didWin, item, itemChoice, artThiefUsername);
     }
 
     /* =========== Event Listeners =========== */
@@ -93,7 +100,7 @@ io.on('connection', function (clientSocket) {
         artThiefId = players[artThiefIndex].id;
 
         //start vote counts at zero
-        for (let player of players) {voteCounts[player.id] = 0;}
+        for (let player of players) { voteCounts[player.id] = 0; }
         votes = {};
         //set current player info
         currentPlayerIndex = 0;
@@ -105,59 +112,59 @@ io.on('connection', function (clientSocket) {
     });
 
     /* ------ End game/Voting ------- */
-    clientSocket.on('end game', function() {
+    clientSocket.on('end game', function () {
         endGame();
     })
 
-    clientSocket.on('player voted',function(isArtThief,itemChoice){
-      if(isArtThief){
-        endGame();
-        endGameMessage(isArtThief,itemChoice == item, itemChoice, clientObject.username);
-      } else{
-        votes[clientSocket.id] = itemChoice;
-        let totalVotes = 0;
+    clientSocket.on('player voted', function (isArtThief, itemChoice) {
+        if (isArtThief) {
+            endGame();
+            endGameMessage(isArtThief, itemChoice == item, itemChoice);
+        } else {
+            votes[clientSocket.id] = itemChoice;
+            let totalVotes = 0;
             highest = 0;
-        //set votecounts to zero and then tally votes
-        for(let i in voteCounts){voteCounts[i] = 0;}
-        for(let j in votes){
-          totalVotes++;
-          voteCounts[votes[j]]++;
-          if(voteCounts[votes[j]] > highest){
-            highest = voteCounts[votes[j]];
-          }
-        }
-        //update votecounts client side
-        io.emit('update votes',voteCounts);
-        //check if the game ends
-        if(totalVotes == players.length - 1){
-          //see if there's a tie
-          let highestVoted = [];
-          for(let k in voteCounts){
-            if(voteCounts[k] == highest){
-              highestVoted.push(voteCounts[votes[k]])
+            //set votecounts to zero and then tally votes
+            for (let i in voteCounts) { voteCounts[i] = 0; }
+            for (let j in votes) {
+                totalVotes++;
+                voteCounts[votes[j]]++;
+                if (voteCounts[votes[j]] > highest) {
+                    highest = voteCounts[votes[j]];
+                }
             }
-          }
-          //if multiple players have the highest vote count, let client side know
-          if(highestVoted.length > 1){
-            io.emit('tie');
-          } else{
-            //otheriwse end the game
-            endGame();
-            endGameMessage(isArtThief,itemChoice == artThiefId, itemChoice, clientObject.username);
-          }
-        }
-        else if(highest >= players.length/2){//if votes reach a certain number, end game
-          //see who got voted highest
-          let highestVoted = '';
-          for(let m in voteCounts){
-            if(voteCounts[m] == highest){
-              highestVoted = voteCounts[m];
+            //update votecounts client side
+            io.emit('update votes', voteCounts);
+            //check if the game ends
+            if (totalVotes == players.length - 1) {
+                //see if there's a tie
+                let highestVoted = [];
+                for (let k in voteCounts) {
+                    if (voteCounts[k] == highest) {
+                        highestVoted.push(voteCounts[votes[k]])
+                    }
+                }
+                //if multiple players have the highest vote count, let client side know
+                if (highestVoted.length > 1) {
+                    io.emit('tie');
+                } else {
+                    //otheriwse end the game
+                    endGame();
+                    endGameMessage(isArtThief, itemChoice == artThiefId, itemChoice);
+                }
             }
-            endGame();
-            endGameMessage(isArtThief,highestVoted == artThiefId, itemChoice, clientObject.username);
-          }
+            else if (highest >= players.length / 2) {//if votes reach a certain number, end game
+                //see who got voted highest
+                let highestVoted = '';
+                for (let m in voteCounts) {
+                    if (voteCounts[m] == highest) {
+                        highestVoted = voteCounts[m];
+                    }
+                    endGame();
+                    endGameMessage(isArtThief, highestVoted == artThiefId, itemChoice);
+                }
+            }
         }
-      }
     });
     /* ------ Next player's turn ------- */
     clientSocket.on('next player', function () {

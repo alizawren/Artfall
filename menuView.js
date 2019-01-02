@@ -21,7 +21,7 @@ function setLeftSidebarMenu() {
 
     var beAudienceMember = document.createElement('button');
     beAudienceMember.innerHTML = "Be Audience Member";
-    beAudienceMember.onclick = function() {
+    beAudienceMember.onclick = function () {
         var roleChoice = beAudienceMember.innerHTML;
         beAudienceMember.innerHTML = (roleChoice === "Be Audience Member") ? "Be Player" : "Be Audience Member";
         toggleAudienceMember(roleChoice);
@@ -48,7 +48,7 @@ function setMiddleAreaMenu() {
     boardOverlayContent.style.display = 'block';
 
     startButton = document.getElementById("start-game");
-    startButton.onclick = function() {
+    startButton.onclick = function () {
         if (players.length < 3) {
             createNotice(50, 0, 'You need at least 3 players to start the game.');
             return;
@@ -60,10 +60,19 @@ function setMiddleAreaMenu() {
 function setEndGame(isArtThief, didWin, item, itemChoice, artThiefUsername) {
     var boardOverlayContent = document.getElementById("board-overlay-content");
     boardOverlayContent.innerHTML = `<h4>The ${isArtThief ? 'Art Thief ' : 'Players '}${didWin ? 'Won!' : 'Lost!'}</h4>`;
-    boardOverlayContent.innerHTML += `<p>The item was ${item}.</p>`;
-    boardOverlayContent.innerHTML += `<p>The Art Thief was ${artThiefUsername}.</p>`;
+    boardOverlayContent.innerHTML += `<span>The item was <b>"${item}"</b>.</span><br>`;
+    boardOverlayContent.innerHTML += `<span>The Art Thief was <b>"${artThiefUsername}"</b>.</span><br>`;
     if (isArtThief) {
-        boardOverlayContent.innerHTML += `The Art Thief voted for "${itemChoice}."`;
+
+        var picked = document.createElement('span');
+        picked.innerHTML = `"${itemChoice}."`;
+        var classToAdd = didWin ? 'win' : 'lose';
+        picked.classList.add(classToAdd);
+
+        var sentenceWithPicked = document.createElement('span');
+        sentenceWithPicked.innerHTML = "The Art Thief voted for ";
+        sentenceWithPicked.appendChild(picked);
+        boardOverlayContent.appendChild(sentenceWithPicked);
     }
     else {
         for (var i = 0; i < players.length; i++) {
@@ -72,9 +81,17 @@ function setEndGame(isArtThief, didWin, item, itemChoice, artThiefUsername) {
                 break;
             }
         }
-        boardOverlayContent.innerHTML += `The players voted for ${itemChoice}.`;
+        var picked = document.createElement('span');
+        picked.innerHTML = `"${itemChoice}."`;
+        var classToAdd = didWin ? 'win' : 'lose';
+        picked.classList.add(classToAdd);
+
+        var sentenceWithPicked = document.createElement('span');
+        sentenceWithPicked.innerHTML = "The players voted for ";
+        sentenceWithPicked.appendChild(picked);
+        boardOverlayContent.appendChild(sentenceWithPicked);
     }
-    
+
 
     boardOverlay.style.display = 'block';
     boardOverlay.style.opacity = 1;

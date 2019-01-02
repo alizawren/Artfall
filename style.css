@@ -204,6 +204,14 @@ button:hover {
     line-height: 16px;
 }
 
+.win {
+    color: rgb(138, 247, 174);
+}
+
+.lose {
+    color: #df363e;
+}
+
 #bottom-area {
     height: auto;
     /* text-align: center; */

@@ -1,7 +1,7 @@
 /* The purpose of this file is to connect pass messages between the client and the server. */
 
-const socket = io('http://54.67.88.29:3000');
-// const socket = io('http://localhost:3000');
+// const socket = io('http://54.67.88.29:3000');
+const socket = io('http://localhost:3000');
 
 var clientObject = null;
 
