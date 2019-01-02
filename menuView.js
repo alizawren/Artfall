@@ -31,6 +31,8 @@ function setLeftSidebarMenu() {
     $(leftSidebar).append(audienceText);
     $(leftSidebar).append(beAudienceMember);
 
+
+
 }
 
 /** Function: This method sets the middle area for the menu.

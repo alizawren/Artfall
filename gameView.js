@@ -39,9 +39,20 @@ function setMiddleAreaGame() {
  * Pre-conditions: A game has started, and the client has just joined. 
  */
 function setForAudience() {
+    // middle
     boardOverlay.style.opacity = 0;
     var boardOverlayContent = document.getElementById("board-overlay-content");
     boardOverlayContent.style.display = 'none';
+
+    // left sidebar
+    leftSidebar.innerHTML = '';
+
+    var playerText = "<h4>Players</h4><div class='scroll' id='players'><!-- Script will add --></div><hr>";
+    var audienceText = "<h4>Audience</h4><div class='scroll' id='audience'></div><hr>";
+
+    $(leftSidebar).append(playerText);
+    $(leftSidebar).append(audienceText);
+    
     var waitForFinish = "Please wait for the current game to finish."
     $(leftSidebar).append(waitForFinish);
 }

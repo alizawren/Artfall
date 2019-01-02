@@ -261,8 +261,6 @@ button:hover {
     overflow-y: scroll;
     /* background: linear-gradient(to bottom, #fce8c9 30%,#feb1c7 100%); */
     padding: 5px;
-    border: 1px solid rgba(175, 31, 22, 0.3);
-    border-radius: 5px;
     /* box-shadow: inset -1px -1px 2px #933193; */
 }
 
