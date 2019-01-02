@@ -21,8 +21,8 @@ var isArtist = false;
 var choices = [];
 var clientVoteCounts = {};
 
-const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
-const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#968293', '#e85f95']
+const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#97dec3', '#f39cc3', '#e4ef8b', '#c494e8', '#625674'];
+const playerColorOutlines = ['#2564a9', '#e63d53', '#ee7659', '#908895', '#e85f95', '#d9926a', '#bb5bb1', '#5d3559']
 
 var currentPlayer = '';
 var currentColor = '#000';

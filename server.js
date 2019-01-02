@@ -20,7 +20,7 @@ httpServer.listen(3000, function () {
 const choices = ["button", "computer", "shoe lace", "nail clipper", "buckle", "remote", "spring", "keys", "milk", "lip gloss", "lamp", "cat", "television", "soap", "cork", "camera", "teddies", "washing machine", "drawer"];
 // const choices = ['cat', 'dog', 'mouse'];
 
-const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#8cdfc0', '#fd7db0'];
+const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#97dec3', '#f39cc3', '#e4ef8b', '#c494e8', '#625674'];
 
 
 /* =========== Global game variables =========== */
@@ -218,7 +218,7 @@ io.on('connection', function (clientSocket) {
     clientSocket.on('disconnect', function () {
         console.log(`Player ${clientNumber} left`);
         // if there are no players left, reset numClients to 0
-        if (players.length === 0) {
+        if (players.length === 0 && audience.length === 0) {
             clientNumber = 0;
             chatHistory = [];
         }
