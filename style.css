@@ -95,7 +95,7 @@ button:hover {
 
 .notice {
     opacity: 0.9;
-    background: linear-gradient(to bottom, rgb(255, 255, 255) 50%, rgba(240, 240, 243, 0.8) 100%);
+    background: linear-gradient(to bottom, #e6f7ff 0%, #c9d7ff 100%);
     padding: 10px;
     position: fixed;
     border-bottom-left-radius: 5px;
