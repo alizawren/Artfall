@@ -143,7 +143,7 @@ function createHTMLMessage(msg, source, username = '') {
     if (source == 'info') {
         var infoIcon = document.createElement("img");
         infoIcon.classList.add('info-icon');
-        infoIcon.src = 'info.png';
+        infoIcon.src = 'info2.png';
         div.appendChild(infoIcon);
         div.innerHTML += msg;
         div.className += "messageInstance " + source;
