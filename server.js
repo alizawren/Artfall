@@ -208,6 +208,7 @@ io.on('connection', function (clientSocket) {
         io.emit('update users', players, audience);
         if (gameStarted) {
             io.emit('update choices', choices, artThiefId);
+            io.emit('update artist', currentPlayerIndex, currentPlayer, currentColor);
         }
 
     });
