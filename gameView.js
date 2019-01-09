@@ -35,6 +35,23 @@ function setMiddleAreaGame() {
     boardOverlay.style.display = 'none';
 }
 
+/** Function: Creates an invisible overlay over the board.
+ * Pre-conditions: None.
+ */
+function showInvisibleBoard() {
+    boardOverlay.style.display = 'block';
+    boardOverlay.style.opacity = 0;
+    var boardOverlayContent = document.getElementById("board-overlay-content");
+    boardOverlayContent.style.display = 'none';
+}
+
+/** Function: Creates an invisible overlay over the board.
+ * Pre-conditions: None.
+ */
+function hideInvisibleBoard() {
+    boardOverlay.style.display = 'none';
+}
+
 /** Function: Sets the whole area if the client is an audience member walking in on a game.
  * Pre-conditions: A game has started, and the client has just joined. 
  */
@@ -82,6 +99,13 @@ function setArtist() {
     }
     else {
         currentPlayerText.innerHTML = currentPlayer.username + "'s";
+    }
+
+    if (isArtist) {
+        hideInvisibleBoard();
+    }
+    else {
+        showInvisibleBoard();
     }
 
     // update bolded text
