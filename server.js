@@ -216,9 +216,9 @@ io.on('connection', function (clientSocket) {
 
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {
-        console.log(`Player ${clientNumber} left`);
+        console.log(`Player ${clientSocket.id} left`);
         // if there are no players left, reset numClients to 0
-        if (players.length === 0 && audience.length === 0) {
+        if (players.length + audience.length <= 1) { // when the last person leaves, length is at 1 for some reason
             clientNumber = 0;
             chatHistory = [];
         }
