@@ -155,7 +155,7 @@ $(document).ready(function () {
     context.lineCap = 'round';
     context.lineJoin = 'round';
 
-    $(canvas).mousedown(function (e) {
+    canvas.addEventListener('mousedown', function (e) {
         var mouseX = getMousePos(canvas, e).x;
         var mouseY = getMousePos(canvas, e).y;
 
@@ -165,9 +165,9 @@ $(document).ready(function () {
             redraw();
         }
 
-    });
+    }, false);
 
-    $(canvas).mousemove(function (e) {
+    canvas.addEventListener('mousemove', function (e) {
         var mouseX = getMousePos(canvas, e).x;
         var mouseY = getMousePos(canvas, e).y;
 
@@ -175,10 +175,10 @@ $(document).ready(function () {
             addClick(mouseX, mouseY, true);
             redraw();
         }
-    });
+    }, false);
 
-    $(canvas).mouseup(function (e) {
-        if (e.which == 1 && isArtist) {
+    canvas.addEventListener('mouseup', function (e) {
+        if (e.which == 1 && isArtist && paint) {
             var minimumLineLength = 5;
             var tooShort = false;
             for (var i = 1; i <= minimumLineLength; i++) {
@@ -199,10 +199,10 @@ $(document).ready(function () {
             paint = false;
         }
 
-    });
+    }, false);
 
-    $(canvas).mouseleave(function (e) {
-        if (e.which == 1 && isArtist) {
+    canvas.addEventListener('mouseleave', function (e) {
+        if (e.which == 1 && isArtist && paint) {
             var minimumLineLength = 5;
             var tooShort = false;
             for (var i = 1; i <= minimumLineLength; i++) {
@@ -222,7 +222,7 @@ $(document).ready(function () {
             }
             paint = false;
         }
-    });
+    }, false);
     
 
     // Mobile
