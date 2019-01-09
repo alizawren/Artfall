@@ -52,7 +52,7 @@ io.on('connection', function (clientSocket) {
 
     /* =========== What happens when a client has connected. =========== */
     console.log('Client', clientNumber++, 'connected.');
-    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber }; // later: get rid of artThief/artist if not necessary
+    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber };
     if (!gameStarted) {
         players.push(clientObject);
     }
@@ -87,14 +87,31 @@ io.on('connection', function (clientSocket) {
         io.emit('end game message', isArtThief, didWin, item, itemChoice, artThiefUsername);
     }
 
+    /* ==== Shuffle array ==== */
+    function shuffleArray(a) {
+        var j, x, i;
+        for (i = a.length - 1; i > 0; i--) {
+            j = Math.floor(Math.random() * (i + 1));
+            x = a[i];
+            a[i] = a[j];
+            a[j] = x;
+        }
+        return a;
+    }
+
     /* =========== Event Listeners =========== */
 
     /* ------ Start game ------- */
     clientSocket.on('start game', function () {
         console.log('The game has started for this server.');
         gameStarted = true;
+
+        // Shuffle player order
+        players = shuffleArray(players);
+
         // choose random item
         item = choices[Math.floor(Math.random() * choices.length)];
+
         // choose random art thief
         artThiefIndex = Math.floor(Math.random() * players.length);
         artThiefId = players[artThiefIndex].id;
@@ -102,10 +119,12 @@ io.on('connection', function (clientSocket) {
         //start vote counts at zero
         for (let player of players) { voteCounts[player.id] = 0; }
         votes = {};
+
         //set current player info
         currentPlayerIndex = 0;
         currentPlayer = players[currentPlayerIndex];
         currentColor = playerColors[currentPlayerIndex];
+        io.emit('update users', players, audience);
         io.emit('start game on client', item, artThiefId, clientObject);
         io.emit('update choices', choices, artThiefId);
         io.emit('update artist', currentPlayerIndex, currentPlayer, currentColor);
