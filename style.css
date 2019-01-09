@@ -109,12 +109,14 @@ button:hover {
 #content {
     width: 95%;
     /* height: 600px; */
-    height: 78%;
+    height: 78vh;
     margin: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
 }
 
 .sidebar {
-    height: 100%;
     padding-top: 30px;
     width: 19.5%;
     display: flex;
@@ -128,9 +130,8 @@ button:hover {
 }
 
 #middle-area {
-    margin: 0px auto;
-    width: 58%;
-    height: 100%;
+    margin: 0px 0.5%;
+    flex-grow: 1;
 }
 
 #board-wrapper {
@@ -325,9 +326,8 @@ input {
 }
 
 #message-holder {
-    /* height: 80%; */
+    height: 85%;
     width: 100%;
-    flex-grow: 1;
     overflow-y: scroll;
     display: flex;
     list-style-type: none;
@@ -354,7 +354,7 @@ input {
 }
 
 .client {
-    background: #dabbb18c;
+    background: #b4b1da8c;
     /* color: white; */
 }
 
