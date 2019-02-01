@@ -79,7 +79,7 @@ function newGame() {
     clearCanvas();
 
     //set client vote counts
-    for(let player of players){
+    for (let player of players) {
         clientVoteCounts[player.id] = 0;
     }
 
@@ -113,9 +113,23 @@ function getMousePos(canvas, evt) {
         scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
         scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
 
+    var theX = 0;
+    var theY = 0;
+    if (evt.type === "touchstart" || evt.type === "touchmove") {
+        var clientX = evt.changedTouches[0].clientX;
+        var clientY = evt.changedTouches[0].clientY;
+
+        theX = (clientX - rect.left) * scaleX;
+        theY = (clientY - rect.top) * scaleY;
+    }
+    else if (evt.type === "mousedown" || evt.type === "mousemove") {
+        theX = (evt.clientX - rect.left) * scaleX;
+        theY = (evt.clientY - rect.top) * scaleY;
+    }
+
     return {
-        x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
-        y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+        x: theX,   // scale mouse coordinates after they have
+        y: theY     // been adjusted to be relative to element
     }
 }
 
@@ -155,30 +169,35 @@ $(document).ready(function () {
     context.lineCap = 'round';
     context.lineJoin = 'round';
 
-    canvas.addEventListener('mousedown', function (e) {
-        var mouseX = getMousePos(canvas, e).x;
-        var mouseY = getMousePos(canvas, e).y;
+    function handleStart(evt) {
+        evt.preventDefault();
 
-        if (e.which == 1 && isArtist) {
+        var mouseX = getMousePos(canvas, evt).x;
+        var mouseY = getMousePos(canvas, evt).y;
+
+        if ((evt.which == 1 || evt.type === "touchstart") && isArtist) {
             paint = true;
             addClick(mouseX, mouseY, false);
             redraw();
         }
+    }
 
-    }, false);
+    function handleMove(evt) {
+        evt.preventDefault();
 
-    canvas.addEventListener('mousemove', function (e) {
-        var mouseX = getMousePos(canvas, e).x;
-        var mouseY = getMousePos(canvas, e).y;
+        var mouseX = getMousePos(canvas, evt).x;
+        var mouseY = getMousePos(canvas, evt).y;
 
         if (paint && isArtist) {
             addClick(mouseX, mouseY, true);
             redraw();
         }
-    }, false);
+    }
 
-    canvas.addEventListener('mouseup', function (e) {
-        if (e.which == 1 && isArtist && paint) {
+    function handleEnd(evt) {
+        evt.preventDefault();
+
+        if ((evt.which == 1 || evt.type === "touchend" || evt.type === "touchcancel") && isArtist && paint) {
             var minimumLineLength = 5;
             var tooShort = false;
             for (var i = 1; i <= minimumLineLength; i++) {
@@ -188,8 +207,8 @@ $(document).ready(function () {
                 }
             }
             if (tooShort) {
-                var xpos = e.pageX - canvas.offsetLeft;
-                var ypos = e.pageY - canvas.offsetTop;
+                var xpos = evt.pageX - canvas.offsetLeft;
+                var ypos = evt.pageY - canvas.offsetTop;
                 createNotice(xpos, ypos, 'Your line is too short.');
             }
             else {
@@ -198,115 +217,19 @@ $(document).ready(function () {
             }
             paint = false;
         }
+    }
 
-    }, false);
+    canvas.addEventListener('mousedown', handleStart, false);
+    canvas.addEventListener('touchstart', handleStart, false);
 
-    canvas.addEventListener('mouseleave', function (e) {
-        if (e.which == 1 && isArtist && paint) {
-            var minimumLineLength = 5;
-            var tooShort = false;
-            for (var i = 1; i <= minimumLineLength; i++) {
-                if (!clickDrag[clickDrag.length - i]) {
-                    eraseLastLine();
-                    tooShort = true;
-                }
-            }
-            if (tooShort) {
-                var xpos = e.pageX - canvas.offsetLeft;
-                var ypos = e.pageY - canvas.offsetTop;
-                createNotice(xpos, ypos, 'Your line is too short.');
-            }
-            else {
-                redrawServer();
-                nextPlayerServer();
-            }
-            paint = false;
-        }
-    }, false);
-    
+    canvas.addEventListener('mousemove', handleMove, false);
+    canvas.addEventListener('touchmove', handleMove, false);
 
-    // Mobile
-    // canvas.addEventListener('touchstart', function(e) {
-    //     var mouseX = getMousePos(canvas, e).x;
-    //     var mouseY = getMousePos(canvas, e).y;
+    canvas.addEventListener('mouseup', handleEnd, false);
+    canvas.addEventListener('touchend', handleEnd, false);
 
-    //     if (e.which == 1 && isArtist) {
-    //         paint = true;
-    //         addClick(mouseX, mouseY, false);
-    //         redraw();
-    //     }
-    // }, false);
-    // canvas.addEventListener('touchmove', function(e) {
-    //     var mouseX = getMousePos(canvas, e).x;
-    //     var mouseY = getMousePos(canvas, e).y;
-
-    //     if (paint && isArtist) {
-    //         addClick(mouseX, mouseY, true);
-    //         redraw();
-    //     }
-    // }, false);
-    // canvas.addEventListener('touchend', function(e) {
-    //     if (e.which == 1 && isArtist) {
-    //         var minimumLineLength = 5;
-    //         var tooShort = false;
-    //         for (var i = 1; i <= minimumLineLength; i++) {
-    //             if (!clickDrag[clickDrag.length - i]) {
-    //                 eraseLastLine();
-    //                 tooShort = true;
-    //             }
-    //         }
-    //         if (tooShort) {
-    //             var xpos = e.pageX - canvas.offsetLeft;
-    //             var ypos = e.pageY - canvas.offsetTop;
-    //             createNotice(xpos, ypos, 'Your line is too short.');
-    //         }
-    //         else {
-    //             redrawServer();
-    //             nextPlayerServer();
-    //         }
-    //         paint = false;
-    //     }
-    // }, false);
-
-    // $(canvas).bind('touchstart', function(e){
-    //     var mouseX = getMousePos(canvas, e).x;
-    //     var mouseY = getMousePos(canvas, e).y;
-
-    //     if (e.which == 1 && isArtist) {
-    //         paint = true;
-    //         addClick(mouseX, mouseY, false);
-    //         redraw();
-    //     }
-    // }).bind('touchstart', function(){
-    //     var mouseX = getMousePos(canvas, e).x;
-    //     var mouseY = getMousePos(canvas, e).y;
-
-    //     if (paint && isArtist) {
-    //         addClick(mouseX, mouseY, true);
-    //         redraw();
-    //     }
-    // }).bind('touchend', function(){
-    //     if (e.which == 1 && isArtist) {
-    //         var minimumLineLength = 5;
-    //         var tooShort = false;
-    //         for (var i = 1; i <= minimumLineLength; i++) {
-    //             if (!clickDrag[clickDrag.length - i]) {
-    //                 eraseLastLine();
-    //                 tooShort = true;
-    //             }
-    //         }
-    //         if (tooShort) {
-    //             var xpos = e.pageX - canvas.offsetLeft;
-    //             var ypos = e.pageY - canvas.offsetTop;
-    //             createNotice(xpos, ypos, 'Your line is too short.');
-    //         }
-    //         else {
-    //             redrawServer();
-    //             nextPlayerServer();
-    //         }
-    //         paint = false;
-    //     }
-    // });
+    canvas.addEventListener('mouseleave', handleEnd, false);
+    canvas.addEventListener('touchcancel', handleEnd, false);
 
     // New Game button
     var newGameButton = document.getElementById('new-game');

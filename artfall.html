@@ -27,49 +27,28 @@
     <div id="banner"></div>
 
     <div id="content">
-        <!-- <div class="row"> -->
-            <div class="sidebar box" id="left-sidebar">
-                <!-- <h4>It's <span id="current-player"></span>'s turn!</h4>
-                <hr>
+        <div class="sidebar box" id="left-sidebar">
+        </div>
+        <div id="middle-area">
+            <div id="board-wrapper">
+                <canvas id="the-board"></canvas>
+                <div id="board-overlay">
+                    <div class="box" id="board-overlay-content">
 
-                <h4><span id="instruction-text"></span></h4>
-                <hr>
-
-                <h4>Players</h4>
-                <div id="players"></div>
-                <hr>
-
-                <h4>Vote</h4>
-                <div class="scroll" id="choice-list"></div>
-                <button id="submit-button">Submit</button> -->
-            </div>
-            <div id="middle-area">
-                <div id="board-wrapper">
-                    <canvas id="the-board"></canvas>
-                    <div id="board-overlay">
-                        <div class="box" id="board-overlay-content">
-                            
-
-                        </div>
                     </div>
                 </div>
-                <div class="box" id="bottom-area">
-                    <button id="new-game">New Game</button>
-                    <!-- <div class="settings-row" id="color-button-row">Brush Colors
-                    </div>
-
-                    <div class="settings-row" id="size-button-row">Brush Size
-                    </div> -->
-                    <button id="change-username-button">Change Username</button>
-
-                </div>
             </div>
-            <div class="sidebar box" id="right-sidebar">
-                <h4>Chat</h4>
-                <div class="scroll inner-box" id="message-holder"></div>
-                <input id="chatMessage" />
+            <div class="box" id="bottom-area">
+                <button id="new-game">New Game</button>
+                <button id="change-username-button">Change Username</button>
+
             </div>
-        <!-- </div> -->
+        </div>
+        <div class="sidebar box" id="right-sidebar">
+            <h4>Chat</h4>
+            <div class="scroll inner-box" id="message-holder"></div>
+            <input id="chatMessage" />
+        </div>
     </div>
 
     <div class="footer">&copy; Artfall 2018</div>
@@ -77,12 +56,12 @@
 
     <!-- Overlays -->
     <div id="change-username-overlay">
-            <div class="box" id="change-username-overlay-content">
-                <p class="overlay-text">Change Username</p>
-                <span id="change-username-overlay-close">X</span>
-                <input id="change-username-input" />
-            </div>
+        <div class="box" id="change-username-overlay-content">
+            <p class="overlay-text">Change Username</p>
+            <span id="change-username-overlay-close">X</span>
+            <input id="change-username-input" />
         </div>
+    </div>
 
 </body>
 
