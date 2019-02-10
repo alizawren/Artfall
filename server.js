@@ -55,7 +55,10 @@ io.on('connection', function (clientSocket) {
 
     /* =========== What happens when a client has connected. =========== */
     console.log('Client', clientNumber++, 'connected.');
-    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber };
+    // var address = clientSocket.request.connection.remoteAddress;
+    console.log('\tConnection from ' + clientSocket.conn.remoteAddress);
+
+    var clientObject = { id: clientSocket.id, username: 'Anonymous' + clientNumber, address: clientSocket.conn.remoteAddress};
     if (!gameStarted) {
         players.push(clientObject);
     }
@@ -162,7 +165,7 @@ io.on('connection', function (clientSocket) {
     clientSocket.on('player voted', function (isArtThief, itemChoice) {
         if (isArtThief) {
             endGame();
-            endGameMessage(isArtThief, itemChoice == item, itemChoice);
+            endGameMessage(isArtThief, itemChoice === item, itemChoice);
         } else {
             votes[clientSocket.id] = itemChoice;
             let totalVotes = 0;
@@ -203,8 +206,9 @@ io.on('connection', function (clientSocket) {
                     if (voteCounts[m] == highest) {
                         highestVoted = voteCounts[m];
                     }
+                    console.log("Voted for " + highestVoted + ", art thief was " + artThiefId);
                     endGame();
-                    endGameMessage(isArtThief, highestVoted == artThiefId, itemChoice);
+                    endGameMessage(isArtThief, highestVoted === artThiefId, itemChoice);
                 }
             }
         }
@@ -260,7 +264,7 @@ io.on('connection', function (clientSocket) {
 
     /* ------ A client has disconnected ------- */
     clientSocket.on('disconnect', function () {
-        console.log(`Player ${clientSocket.id} left`);
+        console.log(`Player ${clientSocket.id} has left (${clientObject.address})`);
         // if there are no players left, reset numClients to 0
         if (players.length + audience.length <= 1) { // when the last person leaves, length is at 1 for some reason
             clientNumber = 0;
