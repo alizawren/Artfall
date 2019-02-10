@@ -1,6 +1,8 @@
 /* The purpose of this file is to set front-end elements when the game is not running. */
 var startButton = null;
 
+var animationPlaying = false;
+
 /** Function: This method sets the left sidebar and middle area for the menu.
  * Pre-conditions: A game is not currently running in the server.
  */
@@ -60,6 +62,47 @@ function setMiddleAreaMenu() {
 }
 
 function setEndGame(isArtThief, didWin, item, itemChoice, artThiefUsername) {
+    animationPlaying = true;
+
+    // var voteText = document.getElementById('vote-text');
+    // leftSidebar.removeChild(voteText);
+
+    var votedMessage = document.createElement("div");
+    document.getElementById("content").appendChild(votedMessage);
+
+    votedMessage.classList.add("voted-message");
+    votedMessage.innerHTML = `The ${isArtThief ? 'Art Thief has' : 'Players have'} voted!`;
+    
+    
+
+    votedMessage.style.top = '-50px';
+    //votedMessage.style.left = '50%';
+    //votedMessage.style.marginLeft = -(votedMessage.offsetWidth / 2) + 'px';
+    
+    setTimeout(function() {
+        votedMessage.classList.add('voted-moved');
+        setTimeout(function() {
+            votedMessage.classList.remove('voted-moved');
+            setTimeout(function() {
+                document.getElementById("content").removeChild(votedMessage);
+                setEndGame2(isArtThief, didWin, item, itemChoice, artThiefUsername);
+            }, 500);
+        }, 2500);
+    }, 10);
+
+}
+function setEndGame2(isArtThief, didWin, item, itemChoice, artThiefUsername) {
+    // set menu
+    setMenu();
+
+    // make a message in chat
+    createHTMLMessage(`The
+                    ${isArtThief ? 'Art Thief ' : 'Players '}
+                    ${didWin ? 'Won!' : 'Lost!'} They guessed the
+                    ${isArtThief ? 'word' : 'Art Thief'}
+                    ${didWin ? 'correctly' : 'incorrectly'}.`,'info');
+
+    // center of the screen
     var boardOverlayContent = document.getElementById("board-overlay-content");
     boardOverlayContent.innerHTML = `<h4>The ${isArtThief ? 'Art Thief ' : 'Players '}${didWin ? 'Won!' : 'Lost!'}</h4>`;
     boardOverlayContent.innerHTML += `<span>The item was <b>"${item}"</b>.</span><br>`;
@@ -98,4 +141,6 @@ function setEndGame(isArtThief, didWin, item, itemChoice, artThiefUsername) {
     boardOverlay.style.display = 'block';
     boardOverlay.style.opacity = 1;
     boardOverlayContent.style.display = 'block';
+
+    animationPlaying = false;
 }

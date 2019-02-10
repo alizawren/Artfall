@@ -13,6 +13,10 @@ var changeUsernameOverlay = null;
 var changeUsernameInput = null;
 var changeUsernameClose = null;
 
+var knownBugsButton = null;
+var knownBugsOverlay = null;
+var knownBugsButtonClose = null;
+
 /* ========= Declare variables ========== */
 $(document).ready(function () {
     leftSidebar = document.getElementById("left-sidebar");
@@ -25,6 +29,10 @@ $(document).ready(function () {
     changeUsernameOverlay = document.getElementById('change-username-overlay');
     changeUsernameInput = document.getElementById('change-username-input');
     changeUsernameClose = document.getElementById('change-username-overlay-close')
+
+    knownBugsButton = document.getElementById('known-bugs');
+    knownBugsOverlay = document.getElementById('known-bugs-overlay');
+    knownBugsButtonClose = document.getElementById('known-bugs-close');
 
     setMenu()
     setChat();
@@ -51,6 +59,7 @@ function setUsersDiv() {
 
         // player text
         var playerText = document.createElement('span');
+        playerText.classList.add('player-text');
         playerText.innerHTML = players[i].username;
 
         //player votes
@@ -58,10 +67,10 @@ function setUsersDiv() {
         playerVoteCount.classList.add('vote-count');
         playerVoteCount.id = players[i].id + '-votecount';
         playerVoteCount.innerHTML = '';
-        playerText.appendChild(playerVoteCount);
 
         playerInfo.appendChild(playerDotWrapper);
         playerInfo.appendChild(playerText);
+        playerInfo.appendChild(playerVoteCount);
         playerDiv.appendChild(playerInfo);
 
     }
@@ -112,6 +121,30 @@ function setChat() {
         changeUsernameOverlay.style.display = 'none';
     }
 
+    knownBugsButton.onclick = () => {
+        knownBugsOverlay.style.display = 'block';
+    }
+
+    knownBugsButtonClose.onclick = () => {
+        knownBugsOverlay.style.display = 'none';
+    }
+
+     // New Game button
+     var newGameButton = document.getElementById('new-game');
+     newGameButton.onclick = function () {
+        if (animationPlaying) {
+            return;
+        }
+
+        if (gameStarted) {
+            newGameInServer();
+        }
+        else {
+            startGameInServer();
+        }
+        
+    };
+
     changeUsernameInput.addEventListener('keypress', function (e) {
         var key = e.which || e.keyCode;
         if (key === 13) {
@@ -128,6 +161,11 @@ function setChat() {
             changeUsernameOverlay.style.display = 'none';
         }
     });
+}
+
+function setBottomText(text) {
+    var bottomText = document.getElementById("bottom-text");
+    bottomText.innerHTML = text;
 }
 
 /** Function: Creates a message and appends it to the right sidebar
@@ -182,7 +220,7 @@ function createNotice(xpos, ypos, message) {
     // center element
     if (ypos === 0) {
         notice.style.left = '50%';
-        notice.style.marginLeft = -(notice.offsetWidth / 2);
+        notice.style.marginLeft = -(notice.offsetWidth / 2) + 'px';
     } 
 
     setTimeout(function () {

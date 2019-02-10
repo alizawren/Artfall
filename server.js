@@ -17,11 +17,14 @@ httpServer.listen(3000, function () {
 /* =========== Constants =========== */
 // const choices = ['apple', 'pear', 'orange', 'banana', 'watermelon', 'guava', 'kiwi', 'strawberry', 'grapes'];
 // const choices = ['funny', 'lousy', 'careful', 'lazy', 'playing', 'escalator', 'weights', 'monalisa', 'bartender', 'lunar', 'looking', 'discarding'];
-const choices = ["button", "computer", "shoe lace", "nail clipper", "buckle", "remote", "spring", "keys", "milk", "lip gloss", "lamp", "cat", "television", "soap", "cork", "camera", "teddies", "washing machine", "drawer"];
+// const choices = ["button", "computer", "shoe lace", "nail clipper", "buckle", "remote", "spring", "keys", "milk", "lip gloss", "lamp", "cat", "television", "soap", "cork", "camera", "teddies", "washing machine", "drawer"];
 // const choices = ['cat', 'dog', 'mouse'];
+const choices = ["Mona Lisa", "The Starry Night", "The Scream", "The Night Watch", "The Kiss", "The Arnolfini Portrait", "The Girl With a Pearl Earring", "Luncheon Of the Boating Party", "The Grand Odalisque", "The Swing", "The Liberty Leading The People", "The Birth of Venus", "Napoleon Crossing The Alps", "American Gothic", "Sunday Afternoon On the Island of Grande Le Jetta", "Primavera", "The Third Of May 1808", "The Wanderer Above The Sea Of Fog", "The Last Supper", "A Bar At The Folies Bergere", "The Storm On The Sea of Galilee", "The Lady With The Ermine", "The Grate Wave Off Kanagwa", "The Night Cafe", "Composition VIII", "A Friend In Need", "Saturn Devouring His Son", "The Lady Of Shalott", "The Anatomy Lesson of Dr. Nicolaes Tulp", "The Japanese Bridge", "Guernica", "The Creation Of Adam", "David", "Van Gogh Self Portrait ", "Impressionist Sunrise", "Campbell's Soup Can", "Number 5 1948", "One"];
 
 const playerColors = ['#27a4dd', '#f1646c', '#fac174', '#97dec3', '#f39cc3', '#e4ef8b', '#c494e8', '#625674'];
 
+var newGameCounter = 0;
+var newGameStarter = '';
 
 /* =========== Global game variables =========== */
 var item = '';
@@ -67,8 +70,41 @@ io.on('connection', function (clientSocket) {
     clientSocket.broadcast.emit('connect msg', clientObject.username);
     io.emit('update users', players, audience);
 
+    /* ========== Start a game ========== */
+    function startGame() {
+        console.log('The game has started for this server.');
+        gameStarted = true;
+
+        // Shuffle player order
+        players = shuffleArray(players);
+
+        // choose random item
+        item = choices[Math.floor(Math.random() * choices.length)];
+        console.log('The new item is ' + item);
+
+        // choose random art thief
+        artThiefIndex = Math.floor(Math.random() * players.length);
+        console.log('The new art thief index is ' + artThiefIndex);
+        artThiefId = players[artThiefIndex].id;
+        console.log('The new art thief ID is ' + artThiefId);
+
+        //start vote counts at zero
+        for (let player of players) { voteCounts[player.id] = 0; }
+        votes = {};
+
+        //set current player info
+        currentPlayerIndex = 0;
+        currentPlayer = players[currentPlayerIndex];
+        currentColor = playerColors[currentPlayerIndex];
+        io.emit('update users', players, audience);
+        io.emit('start game on client', item, artThiefId, clientObject);
+        io.emit('update choices', choices, artThiefId);
+        io.emit('update artist', currentPlayerIndex, currentPlayer, currentColor);
+    }
+
     /* ========== End the Game ==========*/
     function endGame() {
+        newGameCounter = 0;
         gameStarted = false;
         players = players.concat(audience);
         audience = [];
@@ -102,38 +138,26 @@ io.on('connection', function (clientSocket) {
     /* =========== Event Listeners =========== */
 
     /* ------ Start game ------- */
-    clientSocket.on('start game', function () {
-        console.log('The game has started for this server.');
-        gameStarted = true;
+    clientSocket.on('start game', startGame);
 
-        // Shuffle player order
-        players = shuffleArray(players);
+    clientSocket.on('new game', function () {
+        if (clientObject.id != newGameStarter) {
+            if (newGameCounter > 0) {
+                newGameCounter = 0;
+                newGameStarter = '';
+                startGame();
+            }
+            else {
+                newGameCounter++;
+                newGameStarter = clientObject.id;
+                io.emit('new game message', clientObject.username);
+            }
+        }
 
-        // choose random item
-        item = choices[Math.floor(Math.random() * choices.length)];
-
-        // choose random art thief
-        artThiefIndex = Math.floor(Math.random() * players.length);
-        artThiefId = players[artThiefIndex].id;
-
-        //start vote counts at zero
-        for (let player of players) { voteCounts[player.id] = 0; }
-        votes = {};
-
-        //set current player info
-        currentPlayerIndex = 0;
-        currentPlayer = players[currentPlayerIndex];
-        currentColor = playerColors[currentPlayerIndex];
-        io.emit('update users', players, audience);
-        io.emit('start game on client', item, artThiefId, clientObject);
-        io.emit('update choices', choices, artThiefId);
-        io.emit('update artist', currentPlayerIndex, currentPlayer, currentColor);
     });
 
     /* ------ End game/Voting ------- */
-    clientSocket.on('end game', function () {
-        endGame();
-    })
+    clientSocket.on('end game', endGame);
 
     clientSocket.on('player voted', function (isArtThief, itemChoice) {
         if (isArtThief) {

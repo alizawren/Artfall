@@ -86,6 +86,7 @@ function newGame() {
     setVoteCounts(clientVoteCounts);
     setInstructionText();
     setSubmitButton();
+    // setBottomText("");
 }
 
 function redraw() {
@@ -231,9 +232,7 @@ $(document).ready(function () {
     canvas.addEventListener('mouseleave', handleEnd, false);
     canvas.addEventListener('touchcancel', handleEnd, false);
 
-    // New Game button
-    var newGameButton = document.getElementById('new-game');
-    newGameButton.onclick = endGame;
+   
 
 });
 

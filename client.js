@@ -1,6 +1,6 @@
 /* The purpose of this file is to connect pass messages between the client and the server. */
 
-// const socket = io('http://54.67.88.29:3000');
+//const socket = io('http://54.67.88.29:3000');
 const socket = io('http://localhost:3000');
 
 var clientObject = null;
@@ -9,6 +9,11 @@ var clientObject = null;
 
 function startGameInServer() {
     socket.emit('start game');
+}
+
+// NOTE: this is different from Start Game In Server! This is if someone tries to start a new game halfway through one.
+function newGameInServer() {
+    socket.emit('new game');
 }
 
 function redrawServer() {
@@ -49,6 +54,15 @@ socket.on('update users', function (serverPlayers, serverAudience) {
     setUsersDiv();
     if (gameStarted) {
         setArtist();
+        var isAudienceMember = false;
+        for (var i = 0; i < audience.length; i++) {
+            if (audience[i].id === clientObject.id) {
+                isAudienceMember = true;
+            }
+        }
+        if (!isAudienceMember) {
+            setVoteCounts(clientVoteCounts);
+        }
     }
 });
 
@@ -91,18 +105,14 @@ socket.on('redraw', function (newClickX, newClickY, newClickColor, newClickDrag)
 });
 
 socket.on('end game on client', function () {
-    setMenu();
+    //setMenu();
     gameStarted = false;
-    createHTMLMessage('The game has ended!', 'info');
+    //createHTMLMessage('The game has ended!', 'info');
 });
 
 socket.on('end game message', function (isArtThief, didWin, item, itemChoice, artThiefUsername) {
     setEndGame(isArtThief, didWin, item, itemChoice, artThiefUsername);
-    createHTMLMessage(`The
-                    ${isArtThief ? 'Art Thief ' : 'Players '}
-                    ${didWin ? 'Won!' : 'Lost!'} They guessed the
-                    ${isArtThief ? 'word' : 'Art Thief'}
-                    ${didWin ? 'correctly' : 'incorrectly'}.`,'info');
+
 });
 socket.on('tie', function () {
     var extraText = document.getElementById('extra-text');
@@ -110,9 +120,23 @@ socket.on('tie', function () {
 });
 socket.on('update votes', function (voteCounts) {
     clientVoteCounts = voteCounts;
-    setVoteCounts(clientVoteCounts);
+    var isAudienceMember = false;
+    for (var i = 0; i < audience.length; i++) {
+        if (audience[i].id === clientObject.id) {
+            isAudienceMember = true;
+        }
+    }
+    if (!isAudienceMember) {
+        setVoteCounts(clientVoteCounts);
+    }
 
 });
+
+socket.on('new game message', function (username) {
+    // setBottomText(`${username} has clicked on New Game. Need one more person to click New Game in order to start a new game.`);
+    createHTMLMessage(`${username} has clicked on New Game! You need one more person to click on New Game in order to start a new game.`, 'info');
+});
+
 socket.on('client connect msg', function (serverClientObject) {
     clientObject = serverClientObject;
     console.log(clientObject.username);

@@ -39,8 +39,11 @@
                 </div>
             </div>
             <div class="box" id="bottom-area">
-                <button id="new-game">New Game</button>
-                <button id="change-username-button">Change Username</button>
+                <button class="bottom-button" id="new-game">New Game</button>
+                <button class="bottom-button" id="change-username-button">Change Username</button>
+                <button class="bottom-button" id="known-bugs">Known Bugs</button>
+
+                <!-- <div id='bottom-text'></div> -->
 
             </div>
         </div>
@@ -60,6 +63,21 @@
             <p class="overlay-text">Change Username</p>
             <span id="change-username-overlay-close">X</span>
             <input id="change-username-input" />
+        </div>
+    </div>
+
+    <div id="known-bugs-overlay">
+        <div class="box" id="known-bugs-content">
+                <span id="known-bugs-close">X</span>
+            <p class="overlay-text">Known bugs:</p>
+            <ul>
+                <li>No safeguards surrounding the Start Game button</li>
+                <li>Poor or uninteresting word/phrase/item choices</li>
+                <li>Not guaranteed to work on Edge or other specific browsers</li> 
+            
+            </ul>
+            For more known issues see: <a href="https://github.com/alizawren/Artfall/issues">Github issues</a>. Thanks!
+            
         </div>
     </div>
 

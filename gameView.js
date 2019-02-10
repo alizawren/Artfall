@@ -17,7 +17,7 @@ function setLeftSidebarGame() {
 
     var turnText = "<h4>It's <span id='current-player'></span> turn!</h4><hr>";
     var instructionText = "<h4><span id='instruction-text'></span></h4><hr>";
-    var playerText = "<h4>Players</h4><div class='scroll' id='players'></div><hr>";
+    var playerText = "<div class='player-votes-wrapper'><h4 class='players-title'>Players</h4><h4 class='votes-title'>Votes</h4></div><div class='scroll' id='players'></div><hr>";
     var audienceText = "<h4>Audience</h4><div class='scroll' id='audience'></div><hr>";
     var voteText = "<h4>Vote</h4><p id='vote-instructions'></p><div class='scroll inner-box' id='choice-list'><!-- Script will add --></div><button id='submit-button'>Submit</button>";
 
@@ -69,7 +69,7 @@ function setForAudience() {
 
     $(leftSidebar).append(playerText);
     $(leftSidebar).append(audienceText);
-    
+
     var waitForFinish = "Please wait for the current game to finish."
     $(leftSidebar).append(waitForFinish);
 }
@@ -149,23 +149,23 @@ function setChoices() {
         var choiceButton = document.createElement('div');
         choiceButton.classList.add('choice');
         // if they are the art thief, the choices are items
-        if(isArtThief){
-          choiceButton.id = item;
-          choiceButton.innerHTML = item;
-          choiceButton.onclick = function () {
-            selectChoice(item);
-          };
-        // otherwise, the choices are usernames
-        } else{
-          choiceButton.id = item.id;
-          choiceButton.innerHTML = item.username;
-          choiceButton.onclick = function () {
-            if(choiceButton.id == clientObject.id){
-              createNotice(50,0,'Don\'t vote yourself!');
-            } else{
-              selectChoice(item.id);
-            }
-          };
+        if (isArtThief) {
+            choiceButton.id = item;
+            choiceButton.innerHTML = item;
+            choiceButton.onclick = function () {
+                selectChoice(item);
+            };
+            // otherwise, the choices are usernames
+        } else {
+            choiceButton.id = item.id;
+            choiceButton.innerHTML = item.username;
+            choiceButton.onclick = function () {
+                if (choiceButton.id == clientObject.id) {
+                    createNotice(50, 0, 'Don\'t vote yourself!');
+                } else {
+                    selectChoice(item.id);
+                }
+            };
         }
         choiceList.appendChild(choiceButton);
     }
@@ -174,7 +174,7 @@ function setChoices() {
 /** Function: Sets the submit button functionality
  * Pre-conditions: The game has started, setLeftSidebarGame() has been called.
  */
-function setSubmitButton () {
+function setSubmitButton() {
     var leftSideBar = document.getElementById('left-sidebar');
     var bar = document.createElement('hr');
     var extraText = document.createElement('h4');
@@ -183,11 +183,14 @@ function setSubmitButton () {
     leftSideBar.appendChild(extraText);
     var submitButton = document.getElementById('submit-button');
     submitButton.onclick = function () {
-      if(currentSelectedChoice != null){
-        submitVote(currentSelectedChoice,isArtThief);
-      } else{
-        var notice = isArtThief ? 'Please select an item.' : 'Please select a user.'
-        createNotice(50,0,notice);
-      }
+        if (animationPlaying) {
+            return;
+        }
+        if (currentSelectedChoice != null) {
+            submitVote(currentSelectedChoice, isArtThief);
+        } else {
+            var notice = isArtThief ? 'Please select an item.' : 'Please select a user.'
+            createNotice(50, 0, notice);
+        }
     };
 }

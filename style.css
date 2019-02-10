@@ -75,7 +75,7 @@ button {
 
     border-radius: 5px;
     cursor: pointer;
-    margin: 5px 0px;
+    margin: 5px 2px;
 }
 
 button:hover {
@@ -199,6 +199,12 @@ button:hover {
 #bottom-area {
     height: auto;
     margin-top: 2%;
+
+}
+
+#bottom-text {
+    line-height: 14px;
+    padding: 5px;
 }
 
 /* Scroll */
@@ -238,6 +244,7 @@ button:hover {
 }
 
 .player-info {
+    width: 100%;
     display: flex;
     justify-content: left;
     align-items: center;
@@ -251,15 +258,30 @@ button:hover {
     margin: 0px 5px;
 }
 
-
 .bolded-player {
     font-weight: bold;
 }
 
 .vote-count {
-  background-color: #d4e7ff;
+  /* background-color: #d4e7ff; */
   margin: 0px 5px;
   font-weight: bold;
+  margin-left: auto;
+
+}
+
+.player-votes-wrapper {
+    width: 100%;
+}
+
+.players-title {
+    display: inline;
+    float: left;    
+}
+
+.votes-title {
+    display: inline;
+    float: right;
 }
 
 /* Choices */
@@ -286,11 +308,11 @@ button:hover {
 }
 
 .choice:hover {
-    background-color: rgba(255, 251, 243, 0.3);
+    background-color: rgba(221, 231, 240, 0.3);
 }
 
 .selected-choice {
-    background-color: #fff;
+    background-color: #ebf4ff;
 }
 
 .selected-choice:hover {
@@ -310,10 +332,39 @@ button:hover {
     text-align: center;
 }
 
+/* Misc Game stuff */
 .end-game-message {
   background:linear-gradient(to bottom, #fce99f 0%, #fcd39e 100%);
   opacity: 0.9;
   margin: 10px 0px;
+}
+
+.voted-message {
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 0px 2px rgba(0,0,0,0.3);;
+
+    position: absolute;
+    z-index: 10000;
+    top: -50px;
+
+    left: 50%;
+    width: auto;
+    transform: translateX(-50%);
+
+    transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+}
+
+.voted-moved {
+  transform: translate(-50%,230px);
+  -webkit-transform: translate(-50%,230px);
+  -moz-transform: translate(-50%,230px);
+  -o-transform: translate(-50%,230px);
+  -ms-transform: translate(-50%,230px);
 }
 
 /* Chat */
@@ -363,7 +414,7 @@ input {
 }
 
 .client {
-    background: #b4b1da8c;
+    background: #e0dfe78c;
     /* color: white; */
 }
 
@@ -410,6 +461,41 @@ input {
     cursor: pointer;
     opacity: 0.5;
 }
+
+/* Known bugs (duplicate code) */
+#known-bugs-overlay {
+    display: none;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 200;
+    left: 0;
+    top: 0;
+    background-color: rgba(39, 56, 66, 0.5);
+    overflow-x: hidden;
+}
+
+#known-bugs-content {
+    position: relative;
+    top: 10%;
+    width: 900px;
+    height: auto;
+    padding: 10px;
+    text-align: center;
+    margin: 30px auto 0px;
+    z-index: 300;
+}
+
+#known-bugs-close {
+    float: right;
+    cursor: pointer;
+}
+
+#known-bugs-close:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
 
 /* Footer */
 
